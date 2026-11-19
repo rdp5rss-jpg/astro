@@ -27,57 +27,128 @@ export default function MatchScreen({ onComplete, seekerName = 'Rohan' }) {
   }, [currentStepIndex]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-gradient-to-b from-amber-50/95 via-white/95 to-slate-100/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fade-in">
-      <div className="max-w-md w-full glass-card p-8 border border-amber-200/80 shadow-2xl relative overflow-hidden">
-        {/* Glowing aura orb */}
-        <div className="absolute -top-12 -left-12 w-44 h-44 bg-amber-400/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-12 -right-12 w-44 h-44 bg-emerald-400/20 rounded-full blur-3xl pointer-events-none" />
-
-        {/* Orbiting Compass Icon */}
-        <div className="relative w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full border-2 border-dashed border-amber-400 animate-spin" style={{ animationDuration: '10s' }} />
-          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-500 to-amber-400 text-white flex items-center justify-center shadow-lg">
-            <Compass size={32} className="animate-pulse" />
-          </div>
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      zIndex: 50,
+      background: 'radial-gradient(circle at 50% 50%, rgba(254, 243, 199, 0.7) 0%, rgba(248, 249, 254, 0.96) 100%)',
+      backdropFilter: 'blur(20px)',
+      WebkitBackdropFilter: 'blur(20px)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '24px'
+    }}>
+      <div 
+        className="glass-panel"
+        style={{
+          width: '100%',
+          maxWidth: '460px',
+          borderRadius: '32px',
+          padding: '36px 28px',
+          textAlign: 'center',
+          boxShadow: '0 25px 50px rgba(108, 74, 182, 0.15)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}
+      >
+        {/* Animated Compass Orb */}
+        <div style={{
+          width: '90px',
+          height: '90px',
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 10px 25px rgba(217, 119, 6, 0.35)',
+          marginBottom: '20px',
+          position: 'relative'
+        }}>
+          <Compass size={44} color="#FFFFFF" className="animate-spin-slow" />
         </div>
 
-        <span className="text-[11px] font-bold uppercase tracking-widest text-amber-700 bg-amber-100/80 px-3 py-1 rounded-full border border-amber-200">
+        <span style={{
+          fontSize: '11px',
+          fontWeight: '800',
+          letterSpacing: '1.5px',
+          color: '#B45309',
+          backgroundColor: '#FEF3C7',
+          padding: '4px 12px',
+          borderRadius: '20px',
+          border: '1px solid #FCD34D',
+          textTransform: 'uppercase'
+        }}>
           Cosmic Astrologer Matchmaker
         </span>
 
-        <h2 className="text-xl font-bold font-serif text-slate-800 mt-3 mb-1">
+        <h2 style={{
+          fontFamily: 'Cinzel, serif',
+          fontSize: '22px',
+          fontWeight: '800',
+          color: '#1E1B4B',
+          marginTop: '10px'
+        }}>
           Synthesizing {seekerName}'s Destiny Field
         </h2>
-        <p className="text-xs text-slate-500 mb-6">
+
+        <p style={{
+          fontSize: '12.5px',
+          color: '#64748B',
+          marginTop: '4px',
+          marginBottom: '24px'
+        }}>
           Connecting your planetary coordinates to the ideal Vedic mentor
         </p>
 
         {/* Progress Checklist */}
-        <div className="space-y-3 text-left">
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px', textAlign: 'left' }}>
           {steps.map((text, idx) => {
             const isDone = idx < currentStepIndex;
             const isCurrent = idx === currentStepIndex;
-            const isPending = idx > currentStepIndex;
 
             return (
               <div 
                 key={idx}
-                className={`flex items-center gap-3 p-2.5 rounded-xl transition-all duration-500 ${
-                  isCurrent 
-                    ? 'bg-amber-100/70 border border-amber-300 text-slate-900 shadow-xs' 
-                    : isDone 
-                    ? 'text-slate-700' 
-                    : 'text-slate-400 opacity-40'
-                }`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '10px 14px',
+                  borderRadius: '16px',
+                  backgroundColor: isCurrent ? '#FFFBEB' : isDone ? '#F8FAFC' : 'transparent',
+                  border: isCurrent ? '1.5px solid #FCD34D' : isDone ? '1px solid #E2E8F0' : '1px solid transparent',
+                  opacity: isDone || isCurrent ? 1 : 0.35,
+                  transition: 'all 0.3s ease'
+                }}
               >
                 {isDone ? (
-                  <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0" />
+                  <CheckCircle2 size={18} color="#059669" style={{ flexShrink: 0 }} />
                 ) : isCurrent ? (
-                  <div className="w-4 h-4 rounded-full border-2 border-amber-600 border-t-transparent animate-spin flex-shrink-0" />
+                  <div style={{
+                    width: '18px',
+                    height: '18px',
+                    borderRadius: '50%',
+                    border: '2.5px solid #D97706',
+                    borderTopColor: 'transparent',
+                    animation: 'spinSlow 1s linear infinite',
+                    flexShrink: 0
+                  }} />
                 ) : (
-                  <div className="w-4 h-4 rounded-full border border-slate-300 flex-shrink-0" />
+                  <div style={{
+                    width: '18px',
+                    height: '18px',
+                    borderRadius: '50%',
+                    border: '1.5px solid #CBD5E1',
+                    flexShrink: 0
+                  }} />
                 )}
-                <span className={`text-xs ${isCurrent ? 'font-bold' : isDone ? 'font-medium' : ''}`}>
+                <span style={{
+                  fontSize: '12px',
+                  fontWeight: isCurrent ? '800' : '600',
+                  color: isCurrent ? '#92400E' : isDone ? '#1E293B' : '#94A3B8'
+                }}>
                   {text}
                 </span>
               </div>
@@ -85,9 +156,18 @@ export default function MatchScreen({ onComplete, seekerName = 'Rohan' }) {
           })}
         </div>
 
-        {/* Reassurance */}
-        <div className="mt-6 pt-4 border-t border-slate-200/60 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
-          <ShieldCheck size={14} className="text-emerald-600" />
+        {/* Security / Confidentiality */}
+        <div style={{
+          marginTop: '24px',
+          paddingTop: '16px',
+          borderTop: '1px solid #E2E8F0',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          fontSize: '11.5px',
+          color: '#64748B'
+        }}>
+          <ShieldCheck size={16} color="#059669" />
           <span>Vedic privacy & sacred data confidentiality guaranteed</span>
         </div>
       </div>

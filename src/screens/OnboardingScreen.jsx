@@ -12,7 +12,6 @@ import {
   Briefcase, 
   Coins, 
   Activity, 
-  Eye, 
   ShieldCheck 
 } from 'lucide-react';
 import MatchScreen from './MatchScreen';
@@ -38,11 +37,11 @@ export default function OnboardingScreen({ onFinish }) {
   const totalSteps = 9;
 
   const concernOptions = [
-    { id: 'Career & Wealth', label: 'Career & Financial Wealth', icon: Briefcase, color: 'text-amber-600' },
-    { id: 'Marriage & Relationships', label: 'Marriage, Love & Soulmate Timing', icon: Heart, color: 'text-rose-500' },
-    { id: 'Health & Vitality', label: 'Health, Doshas & Wellness', icon: Activity, color: 'text-emerald-600' },
-    { id: 'Spiritual Dharma', label: 'Higher Dharma & Spiritual Path', icon: Sparkles, color: 'text-purple-600' },
-    { id: 'Foreign Settlement', label: 'Foreign Travel & PR Prospects', icon: Globe, color: 'text-blue-500' },
+    { id: 'Career & Wealth', label: 'Career & Financial Wealth', icon: Briefcase, color: '#D97706', bg: '#FEF3C7' },
+    { id: 'Marriage & Relationships', label: 'Marriage, Love & Soulmate Timing', icon: Heart, color: '#E11D48', bg: '#FFE4E6' },
+    { id: 'Health & Vitality', label: 'Health, Doshas & Wellness', icon: Activity, color: '#059669', bg: '#D1FAE5' },
+    { id: 'Spiritual Dharma', label: 'Higher Dharma & Spiritual Path', icon: Sparkles, color: '#7C3AED', bg: '#EDE9FE' },
+    { id: 'Foreign Settlement', label: 'Foreign Travel & PR Prospects', icon: Globe, color: '#2563EB', bg: '#DBEAFE' },
   ];
 
   const experienceOptions = [
@@ -92,280 +91,542 @@ export default function OnboardingScreen({ onFinish }) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between p-4 sm:p-6 max-w-xl mx-auto animate-fade-in">
-      {/* Top Header & Progress */}
-      <div>
-        <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-          <button
-            onClick={handleBack}
-            disabled={step === 1}
-            className={`p-2 rounded-xl text-slate-600 hover:bg-slate-200/60 transition-colors cursor-pointer ${
-              step === 1 ? 'opacity-0 pointer-events-none' : ''
-            }`}
-          >
-            <ArrowLeft size={18} />
-          </button>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px 16px',
+      background: 'radial-gradient(circle at 10% 10%, rgba(254, 243, 199, 0.6) 0%, transparent 40%), radial-gradient(circle at 90% 90%, rgba(234, 219, 255, 0.5) 0%, transparent 45%), #F8F9FE'
+    }}>
+      <div 
+        className="glass-panel"
+        style={{
+          width: '100%',
+          maxWidth: '520px',
+          borderRadius: '32px',
+          padding: '28px 24px',
+          boxShadow: '0 20px 45px rgba(108, 74, 182, 0.12)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '24px'
+        }}
+      >
+        {/* Top Header & Progress */}
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+            <button
+              onClick={handleBack}
+              disabled={step === 1}
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '12px',
+                backgroundColor: step === 1 ? 'transparent' : 'rgba(255, 255, 255, 0.9)',
+                border: step === 1 ? 'none' : '1px solid #E2E8F0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#475569',
+                cursor: step === 1 ? 'default' : 'pointer',
+                opacity: step === 1 ? 0 : 1,
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <ArrowLeft size={18} />
+            </button>
 
-          <div className="text-center">
-            <span className="text-[11px] font-bold text-amber-700 tracking-wider uppercase">
-              Step {step} of {totalSteps}
-            </span>
-            <h4 className="text-xs font-semibold text-slate-800">Sacred Janam Setup</h4>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ 
+                fontFamily: 'Cinzel, serif', 
+                fontSize: '11px', 
+                fontWeight: '800', 
+                letterSpacing: '1.5px', 
+                color: '#B45309', 
+                textTransform: 'uppercase' 
+              }}>
+                Step {step} of {totalSteps}
+              </div>
+              <h4 style={{ fontSize: '13px', fontWeight: '800', color: '#1E1B4B', marginTop: '2px' }}>
+                Sacred Janam Setup
+              </h4>
+            </div>
+
+            <button
+              onClick={onFinish}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '12px',
+                backgroundColor: '#FEF3C7',
+                border: '1px solid #FCD34D',
+                color: '#B45309',
+                fontSize: '11.5px',
+                fontWeight: '800',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              Skip to App →
+            </button>
           </div>
 
-          <button
-            onClick={onFinish}
-            className="text-xs text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1 rounded-lg font-bold cursor-pointer transition-colors"
-          >
-            Skip to App →
-          </button>
-        </div>
-
-        {/* Linear Progress */}
-        <div className="w-full bg-slate-200 h-1.5 rounded-full mt-3 overflow-hidden">
-          <div
-            className="bg-gradient-to-r from-amber-500 to-amber-600 h-1.5 rounded-full transition-all duration-300"
-            style={{ width: `${(step / totalSteps) * 100}%` }}
-          />
-        </div>
-      </div>
-
-      {/* Main Question Body */}
-      <div className="my-8">
-        {/* Step 1: Name */}
-        {step === 1 && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="text-center">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-widest">Welcome to BHAVISHYAA</span>
-              <h2 className="text-xl sm:text-2xl font-bold font-serif text-slate-800 mt-1">What is your Sacred Name?</h2>
-              <p className="text-xs text-slate-500 mt-1">Your name aligns the primordial vibration for your Vedic horoscope.</p>
-            </div>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Enter your full name"
-              className="w-full text-base sm:text-lg font-medium p-4 rounded-2xl bg-white border border-slate-200 focus:outline-none focus:border-amber-500 shadow-sm text-slate-800 text-center"
-              autoFocus
+          {/* Linear Progress Bar */}
+          <div style={{ width: '100%', height: '6px', borderRadius: '10px', backgroundColor: '#E2E8F0', overflow: 'hidden' }}>
+            <div
+              style={{
+                height: '100%',
+                borderRadius: '10px',
+                background: 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)',
+                width: `${(step / totalSteps) * 100}%`,
+                transition: 'width 0.35s ease'
+              }}
             />
           </div>
-        )}
+        </div>
 
-        {/* Step 2: Gender */}
-        {step === 2 && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="text-center">
-              <h2 className="text-xl sm:text-2xl font-bold font-serif text-slate-800">Select Gender Energy</h2>
-              <p className="text-xs text-slate-500 mt-1">Vedic astrology considers solar and lunar biorhythms.</p>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {['Male', 'Female', 'Non-Binary', 'Prefer not to say'].map((g) => (
-                <button
-                  key={g}
-                  onClick={() => setFormData({ ...formData, gender: g })}
-                  className={`p-4 rounded-2xl border text-sm font-semibold transition-all cursor-pointer ${
-                    formData.gender === g
-                      ? 'bg-amber-50 border-amber-500 text-amber-800 shadow-sm'
-                      : 'bg-white border-slate-200 text-slate-700 hover:border-amber-300'
-                  }`}
-                >
-                  {g}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Dynamic Question Body */}
+        <div>
+          {/* Step 1: Name */}
+          {step === 1 && (
+            <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <span style={{ fontSize: '11px', fontWeight: '800', color: '#D97706', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                  Welcome to BHAVISHYAA
+                </span>
+                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '24px', fontWeight: '800', color: '#1E1B4B', marginTop: '6px' }}>
+                  What is your Sacred Name?
+                </h2>
+                <p style={{ fontSize: '12.5px', color: '#64748B', marginTop: '4px' }}>
+                  Your name aligns the primordial vibration for your Vedic horoscope.
+                </p>
+              </div>
 
-        {/* Step 3: Concerns */}
-        {step === 3 && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="text-center">
-              <h2 className="text-xl sm:text-2xl font-bold font-serif text-slate-800">What brings you to the stars?</h2>
-              <p className="text-xs text-slate-500 mt-1">Select all areas where you seek planetary clarity and remedies.</p>
-            </div>
-            <div className="space-y-2.5">
-              {concernOptions.map((c) => {
-                const isSelected = formData.concerns.includes(c.id);
-                const Icon = c.icon;
-                return (
-                  <div
-                    key={c.id}
-                    onClick={() => toggleConcern(c.id)}
-                    className={`p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${
-                      isSelected
-                        ? 'bg-amber-50/80 border-amber-500 shadow-xs'
-                        : 'bg-white border-slate-200 hover:border-amber-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-xl bg-slate-100 ${c.color}`}>
-                        <Icon size={18} />
-                      </div>
-                      <span className="text-xs sm:text-sm font-bold text-slate-800">{c.label}</span>
-                    </div>
-                    <div className={`w-5 h-5 rounded-md border flex items-center justify-center ${
-                      isSelected ? 'bg-amber-500 border-amber-500 text-white' : 'border-slate-300'
-                    }`}>
-                      {isSelected && <Check size={13} />}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Step 4: Experience */}
-        {step === 4 && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="text-center">
-              <h2 className="text-xl sm:text-2xl font-bold font-serif text-slate-800">Your Astrology Experience</h2>
-              <p className="text-xs text-slate-500 mt-1">This helps us calibrate how deeply technical your readings should be.</p>
-            </div>
-            <div className="space-y-3">
-              {experienceOptions.map((e) => (
-                <div
-                  key={e.id}
-                  onClick={() => setFormData({ ...formData, experience: e.id })}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer ${
-                    formData.experience === e.id
-                      ? 'bg-amber-50/80 border-amber-500 shadow-xs'
-                      : 'bg-white border-slate-200 hover:border-amber-300'
-                  }`}
-                >
-                  <h4 className="text-xs sm:text-sm font-bold text-slate-800">{e.title}</h4>
-                  <p className="text-xs text-slate-500 mt-1">{e.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Step 5: Birth Date */}
-        {step === 5 && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="text-center">
-              <h2 className="text-xl sm:text-2xl font-bold font-serif text-slate-800">Date of Birth</h2>
-              <p className="text-xs text-slate-500 mt-1">Crucial for planetary degree and solar transits.</p>
-            </div>
-            <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-center">
-              <input
-                type="date"
-                value={formData.birthDate}
-                onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
-                className="text-base font-semibold text-slate-800 focus:outline-none"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Step 6: Birth Time */}
-        {step === 6 && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="text-center">
-              <h2 className="text-xl sm:text-2xl font-bold font-serif text-slate-800">Time of Birth</h2>
-              <p className="text-xs text-slate-500 mt-1">Determines your exact Lagna (Ascendant) and house cusps.</p>
-            </div>
-            {!formData.unknownTime && (
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-center">
+              <div style={{ marginTop: '8px' }}>
                 <input
-                  type="time"
-                  value={formData.birthTime}
-                  onChange={(e) => setFormData({ ...formData, birthTime: e.target.value })}
-                  className="text-base font-semibold text-slate-800 focus:outline-none"
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Enter your full name"
+                  style={{
+                    width: '100%',
+                    padding: '16px 20px',
+                    borderRadius: '20px',
+                    backgroundColor: '#FFFFFF',
+                    border: '2px solid #FDE68A',
+                    fontSize: '17px',
+                    fontWeight: '700',
+                    color: '#1E1B4B',
+                    textAlign: 'center',
+                    outline: 'none',
+                    boxShadow: '0 4px 15px rgba(229, 148, 0, 0.1)'
+                  }}
+                  onFocus={(e) => (e.target.style.borderColor = '#D97706')}
+                  onBlur={(e) => (e.target.style.borderColor = '#FDE68A')}
+                  autoFocus
                 />
               </div>
-            )}
-            <label className="flex items-center justify-center gap-2 text-xs text-slate-600 cursor-pointer pt-2">
-              <input
-                type="checkbox"
-                checked={formData.unknownTime}
-                onChange={(e) => setFormData({ ...formData, unknownTime: e.target.checked })}
-                className="rounded border-slate-300 text-amber-500 focus:ring-amber-500"
-              />
-              <span>I don't know my exact birth time (use Surya Lagna)</span>
-            </label>
-          </div>
-        )}
+            </div>
+          )}
 
-        {/* Step 7: Birth City */}
-        {step === 7 && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="text-center">
-              <h2 className="text-xl sm:text-2xl font-bold font-serif text-slate-800">Place of Birth</h2>
-              <p className="text-xs text-slate-500 mt-1">Used to pinpoint precise latitude, longitude and Ayanamsha.</p>
-            </div>
-            <div className="relative">
-              <MapPin size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                value={formData.birthCity}
-                onChange={(e) => setFormData({ ...formData, birthCity: e.target.value })}
-                placeholder="e.g. New Delhi, Mumbai, Varanasi..."
-                className="w-full pl-10 pr-4 py-3.5 rounded-2xl bg-white border border-slate-200 focus:outline-none focus:border-amber-500 text-slate-800 text-sm shadow-sm"
-              />
-            </div>
-          </div>
-        )}
+          {/* Step 2: Gender */}
+          {step === 2 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
+                  Select Gender Energy
+                </h2>
+                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
+                  Vedic astrology considers solar and lunar biorhythms.
+                </p>
+              </div>
 
-        {/* Step 8: Current City */}
-        {step === 8 && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="text-center">
-              <h2 className="text-xl sm:text-2xl font-bold font-serif text-slate-800">Current Residence City</h2>
-              <p className="text-xs text-slate-500 mt-1">Powers local sunrise, Rahu Kaal, and localized transit horoscopes.</p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '4px' }}>
+                {['Male', 'Female', 'Non-Binary', 'Prefer not to say'].map((g) => {
+                  const isSelected = formData.gender === g;
+                  return (
+                    <button
+                      key={g}
+                      onClick={() => setFormData({ ...formData, gender: g })}
+                      style={{
+                        padding: '16px 12px',
+                        borderRadius: '20px',
+                        border: isSelected ? '2px solid #D97706' : '1.5px solid #E2E8F0',
+                        backgroundColor: isSelected ? '#FFFBEB' : '#FFFFFF',
+                        color: isSelected ? '#B45309' : '#334155',
+                        fontSize: '14px',
+                        fontWeight: '800',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        boxShadow: isSelected ? '0 4px 12px rgba(217, 119, 6, 0.15)' : 'none'
+                      }}
+                    >
+                      {g}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-            <div className="relative">
-              <MapPin size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                value={formData.currentCity}
-                onChange={(e) => setFormData({ ...formData, currentCity: e.target.value })}
-                placeholder="e.g. Bangalore, London, New York..."
-                className="w-full pl-10 pr-4 py-3.5 rounded-2xl bg-white border border-slate-200 focus:outline-none focus:border-amber-500 text-slate-800 text-sm shadow-sm"
-              />
-            </div>
-          </div>
-        )}
+          )}
 
-        {/* Step 9: Language */}
-        {step === 9 && (
-          <div className="space-y-4 animate-fade-in">
-            <div className="text-center">
-              <h2 className="text-xl sm:text-2xl font-bold font-serif text-slate-800">Preferred Consultation Languages</h2>
-              <p className="text-xs text-slate-500 mt-1">We pair you with acharyas fluent in your native tongue.</p>
-            </div>
-            <div className="flex flex-wrap gap-2 justify-center">
-              {languageOptions.map((lang) => {
-                const isSelected = formData.languages.includes(lang);
-                return (
-                  <button
-                    key={lang}
-                    onClick={() => toggleLanguage(lang)}
-                    className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-                      isSelected
-                        ? 'bg-amber-500 text-white border-amber-500 shadow-xs'
-                        : 'bg-white text-slate-700 border-slate-200 hover:border-amber-300'
-                    }`}
-                  >
-                    {lang}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div>
+          {/* Step 3: Concerns */}
+          {step === 3 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
+                  What brings you to the stars?
+                </h2>
+                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
+                  Select all areas where you seek planetary clarity and remedies.
+                </p>
+              </div>
 
-      {/* Bottom Action Button */}
-      <div className="pt-4 border-t border-slate-200">
-        <button
-          onClick={handleNext}
-          className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
-        >
-          <span>{step === totalSteps ? 'Synthesize My Destiny Chart' : 'Continue'}</span>
-          <ArrowRight size={16} />
-        </button>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {concernOptions.map((c) => {
+                  const isSelected = formData.concerns.includes(c.id);
+                  const Icon = c.icon;
+                  return (
+                    <div
+                      key={c.id}
+                      onClick={() => toggleConcern(c.id)}
+                      style={{
+                        padding: '14px 16px',
+                        borderRadius: '20px',
+                        border: isSelected ? '2px solid #D97706' : '1.5px solid #E2E8F0',
+                        backgroundColor: isSelected ? '#FFFBEB' : '#FFFFFF',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{
+                          width: '38px',
+                          height: '38px',
+                          borderRadius: '12px',
+                          backgroundColor: c.bg,
+                          color: c.color,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>
+                          <Icon size={20} />
+                        </div>
+                        <span style={{ fontSize: '13.5px', fontWeight: '800', color: '#1E1B4B' }}>
+                          {c.label}
+                        </span>
+                      </div>
+
+                      <div style={{
+                        width: '22px',
+                        height: '22px',
+                        borderRadius: '6px',
+                        border: isSelected ? 'none' : '2px solid #CBD5E1',
+                        backgroundColor: isSelected ? '#D97706' : 'transparent',
+                        color: '#FFFFFF',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        {isSelected && <Check size={14} />}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Experience */}
+          {step === 4 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
+                  Your Astrology Experience
+                </h2>
+                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
+                  Helps us calibrate how deeply technical your readings should be.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {experienceOptions.map((e) => {
+                  const isSelected = formData.experience === e.id;
+                  return (
+                    <div
+                      key={e.id}
+                      onClick={() => setFormData({ ...formData, experience: e.id })}
+                      style={{
+                        padding: '16px',
+                        borderRadius: '20px',
+                        border: isSelected ? '2px solid #D97706' : '1.5px solid #E2E8F0',
+                        backgroundColor: isSelected ? '#FFFBEB' : '#FFFFFF',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <h4 style={{ fontSize: '14px', fontWeight: '800', color: '#1E1B4B' }}>{e.title}</h4>
+                      <p style={{ fontSize: '12px', color: '#64748B', marginTop: '3px' }}>{e.desc}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Step 5: Birth Date */}
+          {step === 5 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
+              <div>
+                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
+                  Date of Birth
+                </h2>
+                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
+                  Crucial for planetary degree and solar transits.
+                </p>
+              </div>
+
+              <div style={{
+                backgroundColor: '#FFFFFF',
+                padding: '20px',
+                borderRadius: '22px',
+                border: '1.5px solid #E2E8F0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.03)'
+              }}>
+                <Calendar size={22} color="#D97706" />
+                <input
+                  type="date"
+                  value={formData.birthDate}
+                  onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
+                  style={{
+                    fontSize: '17px',
+                    fontWeight: '700',
+                    color: '#1E1B4B',
+                    border: 'none',
+                    outline: 'none',
+                    backgroundColor: 'transparent'
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Step 6: Birth Time */}
+          {step === 6 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
+              <div>
+                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
+                  Time of Birth
+                </h2>
+                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
+                  Determines your exact Lagna (Ascendant) and house cusps.
+                </p>
+              </div>
+
+              {!formData.unknownTime && (
+                <div style={{
+                  backgroundColor: '#FFFFFF',
+                  padding: '20px',
+                  borderRadius: '22px',
+                  border: '1.5px solid #E2E8F0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '10px',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.03)'
+                }}>
+                  <Clock size={22} color="#D97706" />
+                  <input
+                    type="time"
+                    value={formData.birthTime}
+                    onChange={(e) => setFormData({ ...formData, birthTime: e.target.value })}
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: '700',
+                      color: '#1E1B4B',
+                      border: 'none',
+                      outline: 'none',
+                      backgroundColor: 'transparent'
+                    }}
+                  />
+                </div>
+              )}
+
+              <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer', fontSize: '12px', color: '#64748B' }}>
+                <input
+                  type="checkbox"
+                  checked={formData.unknownTime}
+                  onChange={(e) => setFormData({ ...formData, unknownTime: e.target.checked })}
+                  style={{ width: '16px', height: '16px', accentColor: '#D97706', cursor: 'pointer' }}
+                />
+                <span>I don't know my exact birth time (use Surya Lagna)</span>
+              </label>
+            </div>
+          )}
+
+          {/* Step 7: Birth City */}
+          {step === 7 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
+              <div>
+                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
+                  Place of Birth
+                </h2>
+                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
+                  Used to pinpoint precise latitude, longitude and Ayanamsha.
+                </p>
+              </div>
+
+              <div style={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <MapPin size={20} color="#94A3B8" style={{ position: 'absolute', left: '16px' }} />
+                <input
+                  type="text"
+                  value={formData.birthCity}
+                  onChange={(e) => setFormData({ ...formData, birthCity: e.target.value })}
+                  placeholder="e.g. New Delhi, Mumbai, Varanasi..."
+                  style={{
+                    width: '100%',
+                    padding: '16px 16px 16px 48px',
+                    borderRadius: '20px',
+                    backgroundColor: '#FFFFFF',
+                    border: '1.5px solid #E2E8F0',
+                    fontSize: '15px',
+                    fontWeight: '700',
+                    color: '#1E1B4B',
+                    outline: 'none'
+                  }}
+                  onFocus={(e) => (e.target.style.borderColor = '#D97706')}
+                  onBlur={(e) => (e.target.style.borderColor = '#E2E8F0')}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Step 8: Current City */}
+          {step === 8 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
+              <div>
+                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
+                  Current Residence City
+                </h2>
+                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
+                  Powers local sunrise, Rahu Kaal, and localized transit horoscopes.
+                </p>
+              </div>
+
+              <div style={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <MapPin size={20} color="#94A3B8" style={{ position: 'absolute', left: '16px' }} />
+                <input
+                  type="text"
+                  value={formData.currentCity}
+                  onChange={(e) => setFormData({ ...formData, currentCity: e.target.value })}
+                  placeholder="e.g. Bangalore, London, New York..."
+                  style={{
+                    width: '100%',
+                    padding: '16px 16px 16px 48px',
+                    borderRadius: '20px',
+                    backgroundColor: '#FFFFFF',
+                    border: '1.5px solid #E2E8F0',
+                    fontSize: '15px',
+                    fontWeight: '700',
+                    color: '#1E1B4B',
+                    outline: 'none'
+                  }}
+                  onFocus={(e) => (e.target.style.borderColor = '#D97706')}
+                  onBlur={(e) => (e.target.style.borderColor = '#E2E8F0')}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Step 9: Language */}
+          {step === 9 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
+              <div>
+                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
+                  Consultation Languages
+                </h2>
+                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
+                  We pair you with certified acharyas fluent in your native tongue.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
+                {languageOptions.map((lang) => {
+                  const isSelected = formData.languages.includes(lang);
+                  return (
+                    <button
+                      key={lang}
+                      onClick={() => toggleLanguage(lang)}
+                      style={{
+                        padding: '10px 18px',
+                        borderRadius: '16px',
+                        border: isSelected ? '2px solid #D97706' : '1.5px solid #E2E8F0',
+                        backgroundColor: isSelected ? '#D97706' : '#FFFFFF',
+                        color: isSelected ? '#FFFFFF' : '#334155',
+                        fontSize: '13px',
+                        fontWeight: '800',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        boxShadow: isSelected ? '0 4px 12px rgba(217, 119, 6, 0.25)' : 'none'
+                      }}
+                    >
+                      {lang}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Continue Action */}
+        <div style={{ paddingTop: '10px', borderTop: '1px solid #E2E8F0' }}>
+          <button
+            onClick={handleNext}
+            style={{
+              width: '100%',
+              padding: '16px 24px',
+              borderRadius: '20px',
+              background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+              color: '#FFFFFF',
+              fontSize: '15px',
+              fontWeight: '800',
+              boxShadow: '0 8px 24px rgba(217, 119, 6, 0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              cursor: 'pointer',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 12px 28px rgba(217, 119, 6, 0.45)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(217, 119, 6, 0.35)';
+            }}
+          >
+            <span>{step === totalSteps ? '✨ Synthesize My Destiny Chart' : 'Continue'}</span>
+            <ArrowRight size={18} />
+          </button>
+        </div>
       </div>
     </div>
   );
