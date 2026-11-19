@@ -1,5 +1,8 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'theme/app_theme.dart';
 import 'widgets/glass_header.dart';
 import 'widgets/glass_bottom_nav.dart';
@@ -13,14 +16,30 @@ import 'screens/wallet_screen.dart';
 import 'screens/match_screen.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-    ),
-  );
-  runApp(const BhavishyaaApp());
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    GoogleFonts.config.allowRuntimeFetching = true;
+
+    FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.presentError(details);
+      debugPrint('Caught Flutter Error: ${details.exception}');
+    };
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      debugPrint('Caught Platform Error: $error');
+      return true; // Prevents crash
+    };
+
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+    );
+    runApp(const BhavishyaaApp());
+  }, (error, stack) {
+    debugPrint('Zoned Exception: $error');
+  });
 }
 
 class BhavishyaaApp extends StatelessWidget {

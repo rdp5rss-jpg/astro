@@ -66,7 +66,7 @@ class AppTheme {
         primary: primaryPurple,
         secondary: vedicGold,
       ),
-      fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
+      fontFamilyFallback: const ['Roboto', 'sans-serif'],
       textTheme: TextTheme(
         displayLarge: GoogleFonts.plusJakartaSans(
           fontSize: 32,
