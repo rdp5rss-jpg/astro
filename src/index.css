@@ -1,0 +1,127 @@
+:root {
+  --bg-primary: #F7F8FD;
+  --surface-white: #FFFFFF;
+  --glass-white: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.92);
+  
+  --primary-purple: #6C4AB6;
+  --primary-purple-light: #8D72E1;
+  --pastel-lavender: #EADBFF;
+  --celestial-indigo: #4D47C3;
+
+  --vedic-gold: #E59400;
+  --vedic-gold-light: #FFF3DB;
+  --vedic-gold-dark: #C77700;
+
+  --emerald-green: #10B981;
+  --soft-rose: #F43F5E;
+  --pastel-mint: #E6F9F3;
+  --pastel-pink: #FFEEF3;
+  --pastel-blue: #E8F1FF;
+
+  --text-dark: #1E1B4B;
+  --text-medium: #475569;
+  --text-muted: #94A3B8;
+
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Cinzel', serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-primary);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 25px -5px rgba(108, 74, 182, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 20px rgba(108, 74, 182, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(108, 74, 182, 0.1);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(141, 114, 225, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(141, 114, 225, 0.4);
+}
+
+/* Animations */
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes reverseSpin {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 14s linear infinite;
+}
+
+.animate-reverse-spin {
+  animation: reverseSpin 20s linear infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+/* Buttons and Clickables */
+button {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: none;
+}
