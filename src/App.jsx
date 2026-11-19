@@ -7,13 +7,18 @@ import KundliScreen from './screens/KundliScreen';
 import ReportsScreen from './screens/ReportsScreen';
 import ChatScreen from './screens/ChatScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
+import MatchScreen from './screens/MatchScreen';
 import WalletScreen from './screens/WalletScreen';
 import { astrologers } from './data/astrologers';
 import { X, Bell, Sparkles } from 'lucide-react';
 
 export default function App() {
+  // Tab mapping for both integer indices and string keys
+  const TAB_KEYS = ['explore', 'consult', 'kundli', 'reports'];
+
+  // Start directly on onboarding as requested by the user
+  const [activeScreen, setActiveScreen] = useState('onboarding'); // 'onboarding' | 'main' | 'chat' | 'matchmaker'
   const [activeTab, setActiveTab] = useState('explore'); // 'explore' | 'consult' | 'kundli' | 'reports'
-  const [activeScreen, setActiveScreen] = useState('main'); // 'main' | 'chat' | 'onboarding'
   const [activeAstrologer, setActiveAstrologer] = useState(astrologers[0]);
   const [isWalletOpen, setIsWalletOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -25,18 +30,51 @@ export default function App() {
     { id: 3, title: 'New Panchang Active', text: 'Abhijit Muhurat starts at 11:45 AM today. Ideal for new ventures.', time: '1d ago' },
   ];
 
+  const handleTabChange = (targetTab) => {
+    let normalizedTab = targetTab;
+    if (typeof targetTab === 'number') {
+      normalizedTab = TAB_KEYS[targetTab] || 'explore';
+    }
+    setActiveTab(normalizedTab);
+    setActiveScreen('main');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleStartChat = (astro) => {
     setActiveAstrologer(astro || astrologers[0]);
     setActiveScreen('chat');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleConsultFromKundli = () => {
     setActiveTab('consult');
     setActiveScreen('main');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Render 9-Step Onboarding Screen
   if (activeScreen === 'onboarding') {
-    return <OnboardingScreen onFinish={() => setActiveScreen('main')} />;
+    return (
+      <OnboardingScreen 
+        onFinish={() => {
+          setActiveScreen('main');
+          setActiveTab('explore');
+        }} 
+      />
+    );
+  }
+
+  // Render 5-Step Celestial Matchmaker
+  if (activeScreen === 'matchmaker') {
+    return (
+      <MatchScreen 
+        seekerName="Rohan" 
+        onComplete={() => {
+          setActiveScreen('main');
+          setActiveTab('kundli');
+        }} 
+      />
+    );
   }
 
   return (
@@ -46,11 +84,13 @@ export default function App() {
         walletBalance={walletBalance}
         onOpenWallet={() => setIsWalletOpen(true)}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
+        onOpenProfile={() => setIsWalletOpen(true)}
+        onToggleOnboarding={() => setActiveScreen('onboarding')}
         onStartOnboarding={() => setActiveScreen('onboarding')}
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 pt-20 pb-24">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 pt-2 pb-24">
         {activeScreen === 'chat' ? (
           <ChatScreen 
             astrologer={activeAstrologer} 
@@ -61,10 +101,8 @@ export default function App() {
             {activeTab === 'explore' && (
               <HomeScreen 
                 onSelectAstrologer={handleStartChat}
-                onNavigateTab={(tab) => {
-                  setActiveTab(tab);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onNavigateTab={handleTabChange}
+                onOpenMatchmaker={() => setActiveScreen('matchmaker')}
               />
             )}
 
@@ -87,14 +125,10 @@ export default function App() {
       {activeScreen !== 'chat' && (
         <BottomNav 
           activeTab={activeTab} 
-          onSelectTab={(tab) => {
-            setActiveTab(tab);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          onCenterStarClick={() => {
-            setActiveTab('kundli');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onTabChange={handleTabChange}
+          onSelectTab={handleTabChange}
+          onOpenMatchmaker={() => setActiveScreen('matchmaker')}
+          onCenterStarClick={() => setActiveScreen('matchmaker')}
         />
       )}
 

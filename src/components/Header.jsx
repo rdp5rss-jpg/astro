@@ -7,6 +7,7 @@ export default function Header({
   onOpenNotifications,
   onOpenProfile,
   onToggleOnboarding,
+  onStartOnboarding,
 }) {
   return (
     <header style={{ padding: '10px 16px 6px', position: 'sticky', top: 0, zIndex: 40 }}>
@@ -208,21 +209,31 @@ export default function Header({
         </div>
 
         <button
-          onClick={onToggleOnboarding}
+          onClick={onToggleOnboarding || onStartOnboarding}
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '5px',
-            padding: '3px 9px',
-            borderRadius: '10px',
-            backgroundColor: '#EADBFF',
+            gap: '6px',
+            padding: '5px 12px',
+            borderRadius: '12px',
+            backgroundColor: '#F3E8FF',
+            border: '1px solid #D8B4FE',
             color: '#6C4AB6',
-            fontSize: '11px',
-            fontWeight: '700',
+            fontSize: '11.5px',
+            fontWeight: '800',
             cursor: 'pointer',
+            transition: 'all 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#6C4AB6';
+            e.currentTarget.style.color = '#FFFFFF';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#F3E8FF';
+            e.currentTarget.style.color = '#6C4AB6';
           }}
         >
-          <SlidersHorizontal size={12} />
+          <SlidersHorizontal size={13} />
           View 9-Step Onboarding Flow
         </button>
       </div>

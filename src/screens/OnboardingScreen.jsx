@@ -115,9 +115,9 @@ export default function OnboardingScreen({ onFinish }) {
 
           <button
             onClick={onFinish}
-            className="text-xs text-slate-400 hover:text-slate-700 font-medium cursor-pointer"
+            className="text-xs text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1 rounded-lg font-bold cursor-pointer transition-colors"
           >
-            Skip
+            Skip to App →
           </button>
         </div>
 
