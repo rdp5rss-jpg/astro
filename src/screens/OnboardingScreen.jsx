@@ -259,12 +259,12 @@ export default function OnboardingScreen({ onFinish, onSignOut }) {
           {step === 1 && (
             <div>
               <h1 style={{
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                fontSize: '28px',
+                fontSize: 'clamp(21px, 5.5vw, 26px)',
                 fontWeight: '800',
                 color: '#1E1B4B',
                 marginBottom: '24px',
-                letterSpacing: '-0.5px'
+                letterSpacing: '-0.5px',
+                whiteSpace: 'nowrap',
               }}>
                 What should we call you?
               </h1>
@@ -297,11 +297,12 @@ export default function OnboardingScreen({ onFinish, onSignOut }) {
           {step === 2 && (
             <div>
               <h1 style={{
-                fontSize: '28px',
+                fontSize: 'clamp(21px, 5.5vw, 26px)',
                 fontWeight: '800',
                 color: '#1E1B4B',
                 marginBottom: '24px',
-                letterSpacing: '-0.5px'
+                letterSpacing: '-0.5px',
+                whiteSpace: 'nowrap',
               }}>
                 What is your gender?
               </h1>
@@ -510,11 +511,12 @@ export default function OnboardingScreen({ onFinish, onSignOut }) {
           {step === 5 && (
             <div>
               <h1 style={{
-                fontSize: '28px',
+                fontSize: 'clamp(21px, 5.5vw, 26px)',
                 fontWeight: '800',
                 color: '#1E1B4B',
                 marginBottom: '20px',
-                letterSpacing: '-0.5px'
+                letterSpacing: '-0.5px',
+                whiteSpace: 'nowrap',
               }}>
                 When were you born?
               </h1>
@@ -570,11 +572,12 @@ export default function OnboardingScreen({ onFinish, onSignOut }) {
           {step === 6 && (
             <div>
               <h1 style={{
-                fontSize: '28px',
+                fontSize: 'clamp(21px, 5.5vw, 26px)',
                 fontWeight: '800',
                 color: '#1E1B4B',
                 marginBottom: '20px',
-                letterSpacing: '-0.5px'
+                letterSpacing: '-0.5px',
+                whiteSpace: 'nowrap',
               }}>
                 Where were you born?
               </h1>
@@ -635,11 +638,12 @@ export default function OnboardingScreen({ onFinish, onSignOut }) {
           {step === 7 && (
             <div>
               <h1 style={{
-                fontSize: '28px',
+                fontSize: 'clamp(21px, 5.5vw, 26px)',
                 fontWeight: '800',
                 color: '#1E1B4B',
                 marginBottom: '6px',
-                letterSpacing: '-0.5px'
+                letterSpacing: '-0.5px',
+                whiteSpace: 'nowrap',
               }}>
                 Where do you live now?
               </h1>
