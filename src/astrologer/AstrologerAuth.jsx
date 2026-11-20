@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sparkles, 
   ShieldCheck, 
@@ -12,18 +12,20 @@ import {
   ArrowRight,
   CheckCircle2,
   ChevronRight,
-  UserPlus
+  UserPlus,
+  RefreshCw,
+  AlertCircle
 } from 'lucide-react';
 import { astrologers } from '../data/astrologers';
 
 export default function AstrologerAuth({ onLoginSuccess }) {
-  const [mode, setMode] = useState('login'); // 'login' | 'register'
+  const [mode, setMode] = useState('login'); // 'login' | 'register' | 'verify'
   
-  // Login Form State (empty by default, no auto-fill)
+  // Login Form State (empty by default)
   const [loginIdentifier, setLoginIdentifier] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   
-  // Register Form State (empty by default, no auto-fill)
+  // Register Form State (empty by default)
   const [regName, setRegName] = useState('');
   const [regSpecialty, setRegSpecialty] = useState('');
   const [regExp, setRegExp] = useState('');
@@ -32,18 +34,57 @@ export default function AstrologerAuth({ onLoginSuccess }) {
   const [regLanguages, setRegLanguages] = useState('');
   const [regBio, setRegBio] = useState('');
 
-  const handleLogin = (e) => {
+  // Verification Step State
+  const [pendingAstro, setPendingAstro] = useState(null);
+  const [verificationContext, setVerificationContext] = useState('login'); // 'login' | 'register'
+  const [verificationTarget, setVerificationTarget] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  const [otpError, setOtpError] = useState('');
+  const [countdown, setCountdown] = useState(30);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isVerifiedSuccess, setIsVerifiedSuccess] = useState(false);
+
+  // Standard demo OTP
+  const DEMO_OTP = '482910';
+
+  useEffect(() => {
+    let timer;
+    if (mode === 'verify' && countdown > 0) {
+      timer = setInterval(() => setCountdown(prev => prev - 1), 1000);
+    }
+    return () => clearInterval(timer);
+  }, [mode, countdown]);
+
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
-    // Default to first astrologer (Acharya Rudranand Shastri) or matched
+    if (!loginIdentifier.trim() || !loginPassword.trim()) {
+      alert('Please enter your registered mobile/email and security PIN.');
+      return;
+    }
+
     const matched = astrologers.find(a => 
       a.name.toLowerCase().includes(loginIdentifier.toLowerCase())
-    ) || astrologers[0];
-    onLoginSuccess(matched);
+    ) || {
+      ...astrologers[0],
+      name: loginIdentifier.includes('@') ? 'Acharya Rudranand Shastri' : 'Acharya ' + loginIdentifier,
+    };
+
+    setPendingAstro(matched);
+    setVerificationContext('login');
+    setVerificationTarget(loginIdentifier);
+    setOtpCode('');
+    setOtpError('');
+    setCountdown(30);
+    setMode('verify');
   };
 
-  const handleRegister = (e) => {
+  const handleRegisterSubmit = (e) => {
     e.preventDefault();
-    if (!regName.trim()) return;
+    if (!regName.trim() || !regPhone.trim()) {
+      alert('Please fill out your full name and mobile number.');
+      return;
+    }
+
     const newAstro = {
       id: String(Date.now()),
       name: regName,
@@ -57,8 +98,36 @@ export default function AstrologerAuth({ onLoginSuccess }) {
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300',
       isOnline: true,
       isCelebrity: false,
+      phone: regPhone,
+      verified: true,
     };
-    onLoginSuccess(newAstro);
+
+    setPendingAstro(newAstro);
+    setVerificationContext('register');
+    setVerificationTarget(regPhone);
+    setOtpCode('');
+    setOtpError('');
+    setCountdown(30);
+    setMode('verify');
+  };
+
+  const handleVerifyOtp = (e) => {
+    e.preventDefault();
+    if (otpCode.trim().length !== 6) {
+      setOtpError('Please enter the complete 6-digit verification code.');
+      return;
+    }
+
+    setIsVerifying(true);
+    setOtpError('');
+
+    setTimeout(() => {
+      setIsVerifying(false);
+      setIsVerifiedSuccess(true);
+      setTimeout(() => {
+        onLoginSuccess(pendingAstro);
+      }, 700);
+    }, 700);
   };
 
   return (
@@ -92,22 +161,22 @@ export default function AstrologerAuth({ onLoginSuccess }) {
         <div style={{ textAlign: 'center', marginBottom: '22px' }}>
           <div
             style={{
-              width: '60px',
-              height: '60px',
+              width: '58px',
+              height: '58px',
               borderRadius: '20px',
               background: 'linear-gradient(135deg, #E06D3F 0%, #C85A32 100%)',
               color: '#FFFFFF',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '28px',
+              fontSize: '26px',
               margin: '0 auto 12px',
               boxShadow: '0 8px 20px rgba(200, 90, 50, 0.35)',
             }}
           >
             🕉️
           </div>
-          <h1 style={{ fontSize: '22px', fontWeight: '900', color: '#1E1B4B', letterSpacing: '-0.3px' }}>
+          <h1 style={{ fontSize: '22px', fontWeight: '900', color: '#1E1B4B', letterSpacing: '-0.3px', margin: 0 }}>
             BHAVISHYAA GURU
           </h1>
           <p style={{ fontSize: '13px', color: '#64748B', marginTop: '4px', fontWeight: '600' }}>
@@ -115,58 +184,60 @@ export default function AstrologerAuth({ onLoginSuccess }) {
           </p>
         </div>
 
-        {/* Auth Mode Toggle Pill */}
-        <div
-          style={{
-            display: 'flex',
-            backgroundColor: '#F1F5F9',
-            borderRadius: '16px',
-            padding: '4px',
-            marginBottom: '22px',
-          }}
-        >
-          <button
-            onClick={() => setMode('login')}
+        {/* Auth Mode Toggle Pill (Only shown when not in verify step) */}
+        {mode !== 'verify' ? (
+          <div
             style={{
-              flex: 1,
-              padding: '10px 0',
-              borderRadius: '12px',
-              border: 'none',
-              backgroundColor: mode === 'login' ? '#FFFFFF' : 'transparent',
-              color: mode === 'login' ? '#C85A32' : '#64748B',
-              fontWeight: '800',
-              fontSize: '13px',
-              cursor: 'pointer',
-              boxShadow: mode === 'login' ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
-              transition: 'all 0.15s ease',
+              display: 'flex',
+              backgroundColor: '#F1F5F9',
+              borderRadius: '16px',
+              padding: '4px',
+              marginBottom: '22px',
             }}
           >
-            Sign In to Console
-          </button>
+            <button
+              onClick={() => setMode('login')}
+              style={{
+                flex: 1,
+                padding: '10px 0',
+                borderRadius: '12px',
+                border: 'none',
+                backgroundColor: mode === 'login' ? '#FFFFFF' : 'transparent',
+                color: mode === 'login' ? '#C85A32' : '#64748B',
+                fontWeight: '800',
+                fontSize: '13px',
+                cursor: 'pointer',
+                boxShadow: mode === 'login' ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              Sign In to Console
+            </button>
 
-          <button
-            onClick={() => setMode('register')}
-            style={{
-              flex: 1,
-              padding: '10px 0',
-              borderRadius: '12px',
-              border: 'none',
-              backgroundColor: mode === 'register' ? '#FFFFFF' : 'transparent',
-              color: mode === 'register' ? '#C85A32' : '#64748B',
-              fontWeight: '800',
-              fontSize: '13px',
-              cursor: 'pointer',
-              boxShadow: mode === 'register' ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            Register as Guru
-          </button>
-        </div>
+            <button
+              onClick={() => setMode('register')}
+              style={{
+                flex: 1,
+                padding: '10px 0',
+                borderRadius: '12px',
+                border: 'none',
+                backgroundColor: mode === 'register' ? '#FFFFFF' : 'transparent',
+                color: mode === 'register' ? '#C85A32' : '#64748B',
+                fontWeight: '800',
+                fontSize: '13px',
+                cursor: 'pointer',
+                boxShadow: mode === 'register' ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              Register as Guru
+            </button>
+          </div>
+        ) : null}
 
-        {/* LOGIN FORM */}
+        {/* 1. SIGN IN FORM */}
         {mode === 'login' && (
-          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <div>
               <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>
                 Astrologer Mobile or Registered Email
@@ -248,7 +319,6 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                 marginTop: '10px',
                 padding: '14px',
                 borderRadius: '16px',
-                backgroundColor: '#C85A32',
                 background: 'linear-gradient(135deg, #D46A43 0%, #C85A32 100%)',
                 color: '#FFFFFF',
                 fontSize: '15px',
@@ -260,18 +330,17 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                transition: 'transform 0.15s ease',
               }}
             >
-              <span>Access Guru Console</span>
+              <span>Verify & Access Console</span>
               <ArrowRight size={17} />
             </button>
           </form>
         )}
 
-        {/* REGISTER FORM */}
+        {/* 2. REGISTER FORM */}
         {mode === 'register' && (
-          <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div>
               <label style={{ fontSize: '11px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '4px' }}>
                 Full Name with Title (e.g. Acharya / Pandit / Dr.)
@@ -441,13 +510,186 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                transition: 'transform 0.15s ease',
               }}
             >
               <UserPlus size={18} />
-              <span>Register</span>
+              <span>Proceed to Verification</span>
             </button>
           </form>
+        )}
+
+        {/* 3. DEDICATED VERIFICATION STEP */}
+        {mode === 'verify' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ textAlign: 'center' }}>
+              <div
+                style={{
+                  width: '54px',
+                  height: '54px',
+                  borderRadius: '18px',
+                  backgroundColor: '#DCFCE7',
+                  border: '1.5px solid #86EFAC',
+                  color: '#15803D',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 12px',
+                  boxShadow: '0 6px 16px rgba(21, 128, 61, 0.15)',
+                }}
+              >
+                <ShieldCheck size={28} />
+              </div>
+
+              <h2 style={{ fontSize: '18px', fontWeight: '900', color: '#1E1B4B', margin: 0 }}>
+                {verificationContext === 'register' ? 'Astrologer Phone & Identity Verification' : 'Two-Factor Security Verification'}
+              </h2>
+              <p style={{ fontSize: '12px', color: '#64748B', marginTop: '6px', lineHeight: 1.4 }}>
+                Enter the 6-digit verification code sent to <br />
+                <strong style={{ color: '#1E1B4B' }}>{verificationTarget}</strong>
+              </p>
+            </div>
+
+            {/* Test Helper Pill */}
+            <div
+              onClick={() => setOtpCode(DEMO_OTP)}
+              style={{
+                backgroundColor: '#FFFBEB',
+                border: '1.5px solid #FCD34D',
+                borderRadius: '14px',
+                padding: '10px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Sparkles size={15} color="#D97706" />
+                <span style={{ fontSize: '12px', fontWeight: '800', color: '#92400E' }}>
+                  Verification Code: <span style={{ letterSpacing: '2px', fontFamily: 'monospace' }}>{DEMO_OTP}</span>
+                </span>
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: '800', color: '#C85A32' }}>
+                Tap to Fill
+              </span>
+            </div>
+
+            <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div>
+                <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '6px', textAlign: 'center' }}>
+                  Enter 6-Digit OTP Code
+                </label>
+                <input
+                  type="text"
+                  required
+                  maxLength={6}
+                  value={otpCode}
+                  onChange={(e) => {
+                    setOtpCode(e.target.value.replace(/[^0-9]/g, ''));
+                    setOtpError('');
+                  }}
+                  placeholder="• • • • • •"
+                  style={{
+                    width: '100%',
+                    padding: '14px 16px',
+                    borderRadius: '14px',
+                    border: otpError ? '2px solid #EF4444' : '2px solid #CBD5E1',
+                    backgroundColor: '#F8FAFC',
+                    fontSize: '24px',
+                    fontWeight: '900',
+                    color: '#1E1B4B',
+                    textAlign: 'center',
+                    letterSpacing: '10px',
+                    outline: 'none',
+                    fontFamily: 'monospace',
+                  }}
+                />
+                {otpError && (
+                  <p style={{ fontSize: '11px', color: '#DC2626', fontWeight: '700', marginTop: '4px', textAlign: 'center' }}>
+                    {otpError}
+                  </p>
+                )}
+              </div>
+
+              {/* Countdown / Resend */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '12px' }}>
+                <Clock size={13} color="#94A3B8" />
+                {countdown > 0 ? (
+                  <span style={{ color: '#64748B', fontWeight: '600' }}>
+                    Resend code in <strong style={{ color: '#1E1B4B' }}>{countdown}s</strong>
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCountdown(30);
+                      setOtpCode(DEMO_OTP);
+                      alert(`📲 A new verification code has been dispatched: ${DEMO_OTP}`);
+                    }}
+                    style={{ background: 'none', border: 'none', color: '#C85A32', fontWeight: '800', cursor: 'pointer', fontSize: '12px' }}
+                  >
+                    Resend OTP Code
+                  </button>
+                )}
+              </div>
+
+              {/* Verify & Enter Console Button */}
+              <button
+                type="submit"
+                disabled={isVerifying || isVerifiedSuccess}
+                style={{
+                  marginTop: '6px',
+                  padding: '14px',
+                  borderRadius: '16px',
+                  background: isVerifiedSuccess 
+                    ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)' 
+                    : 'linear-gradient(135deg, #D46A43 0%, #C85A32 100%)',
+                  color: '#FFFFFF',
+                  fontSize: '15px',
+                  fontWeight: '900',
+                  border: 'none',
+                  cursor: isVerifying ? 'wait' : 'pointer',
+                  boxShadow: '0 6px 18px rgba(200, 90, 50, 0.35)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                }}
+              >
+                {isVerifying ? (
+                  <span>Verifying Credentials...</span>
+                ) : isVerifiedSuccess ? (
+                  <>
+                    <CheckCircle2 size={18} />
+                    <span>Identity Verified! Launching Console...</span>
+                  </>
+                ) : (
+                  <>
+                    <ShieldCheck size={18} />
+                    <span>Verify Code & Enter Console</span>
+                  </>
+                )}
+              </button>
+
+              {/* Back to Edit Button */}
+              <button
+                type="button"
+                onClick={() => setMode(verificationContext)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#64748B',
+                  fontSize: '12px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  textAlign: 'center',
+                  marginTop: '4px',
+                }}
+              >
+                ← Back to Edit {verificationContext === 'register' ? 'Registration' : 'Login'} Details
+              </button>
+            </form>
+          </div>
         )}
       </div>
     </div>

@@ -34,8 +34,8 @@ export default function App() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [walletBalance, setWalletBalance] = useState(185);
-  // Portal Perspective: Directly launches Admin Portal by default
-  const [activePortal, setActivePortal] = useState('admin');
+  // Portal Perspective: Directly launches Astrologer Portal by default
+  const [activePortal, setActivePortal] = useState('astrologer');
 
   const notifications = [
     { id: 1, title: 'Rudranand Live Call', text: 'Acharya Rudranand is available right now for 50% off.', time: '2m ago' },
