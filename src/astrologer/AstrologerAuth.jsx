@@ -60,10 +60,6 @@ export default function AstrologerAuth({ onLoginSuccess }) {
     onLoginSuccess(newAstro);
   };
 
-  const handleQuickLogin = (astro) => {
-    onLoginSuccess(astro);
-  };
-
   return (
     <div
       style={{
@@ -449,46 +445,6 @@ export default function AstrologerAuth({ onLoginSuccess }) {
             </button>
           </form>
         )}
-
-        {/* Quick Demo Logins Bar */}
-        <div style={{ marginTop: '22px', paddingTop: '16px', borderTop: '1px solid #F1F5F9' }}>
-          <p style={{ fontSize: '11px', color: '#64748B', fontWeight: '800', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>
-            Instant Demo Sign-in:
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {astrologers.slice(0, 2).map((astro) => (
-              <button
-                key={astro.id}
-                type="button"
-                onClick={() => handleQuickLogin(astro)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '8px 12px',
-                  borderRadius: '12px',
-                  backgroundColor: '#F8FAFC',
-                  border: '1px solid #E2E8F0',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <img
-                    src={astro.avatar}
-                    alt={astro.name}
-                    style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }}
-                  />
-                  <div>
-                    <div style={{ fontSize: '12px', fontWeight: '800', color: '#1E1B4B' }}>{astro.name}</div>
-                    <div style={{ fontSize: '10px', color: '#64748B' }}>{astro.title} • ₹{astro.ratePerMin}/m</div>
-                  </div>
-                </div>
-                <ChevronRight size={14} color="#94A3B8" />
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
