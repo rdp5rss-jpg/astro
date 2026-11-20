@@ -14,6 +14,9 @@ import ChatScreen from './screens/ChatScreen';
 import CallScreen from './screens/CallScreen';
 import WalletScreen from './screens/WalletScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import AstrologerPanel from './astrologer/AstrologerPanel';
+import AdminPanel from './admin/AdminPanel';
+import PortalSwitcher from './components/PortalSwitcher';
 import { astrologers } from './data/astrologers';
 import { X, Bell } from 'lucide-react';
 
@@ -31,6 +34,8 @@ export default function App() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [walletBalance, setWalletBalance] = useState(185);
+  // Portal Perspective: 'seeker' (User app) | 'astrologer' (Guru portal) | 'admin' (HQ console)
+  const [activePortal, setActivePortal] = useState('seeker');
 
   const notifications = [
     { id: 1, title: 'Rudranand Live Call', text: 'Acharya Rudranand is available right now for 50% off.', time: '2m ago' },
@@ -60,6 +65,25 @@ export default function App() {
     setActiveScreen('call');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // 0. Astrologer Portal & Admin Portal Guards
+  if (activePortal === 'astrologer') {
+    return (
+      <>
+        <AstrologerPanel onExitToUserApp={() => setActivePortal('seeker')} />
+        <PortalSwitcher currentPortal={activePortal} onSelectPortal={setActivePortal} />
+      </>
+    );
+  }
+
+  if (activePortal === 'admin') {
+    return (
+      <>
+        <AdminPanel onExitToUserApp={() => setActivePortal('seeker')} />
+        <PortalSwitcher currentPortal={activePortal} onSelectPortal={setActivePortal} />
+      </>
+    );
+  }
 
   // 1. Splash Screen
   if (activeScreen === 'splash') {
@@ -210,6 +234,12 @@ export default function App() {
         onOpenMatchmaker={() => setActiveScreen('matchmaker')}
       />
 
+      {/* Floating Portal Switcher (Seeker / Astrologer / Admin) */}
+      <PortalSwitcher 
+        currentPortal={activePortal} 
+        onSelectPortal={setActivePortal} 
+      />
+
       {/* Profile Modal Overlay */}
       {isProfileOpen && (
         <div style={{
@@ -238,6 +268,10 @@ export default function App() {
               onClose={() => setIsProfileOpen(false)}
               walletBalance={walletBalance}
               seekerName="Mahi Sharma"
+              onSwitchPortal={(portal) => {
+                setIsProfileOpen(false);
+                setActivePortal(portal);
+              }}
               onOpenWallet={() => {
                 setIsProfileOpen(false);
                 setIsWalletOpen(true);
