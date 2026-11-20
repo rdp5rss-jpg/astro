@@ -1,6 +1,6 @@
 {
-  "appId": "com.bhavishyaa.vedic",
-  "appName": "BHAVISHYAA",
+  "appId": "com.astrologer.panel",
+  "appName": "Astrologer Panel",
   "webDir": "dist",
   "server": {
     "androidScheme": "https"

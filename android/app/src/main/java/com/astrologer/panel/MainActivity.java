@@ -1,4 +1,4 @@
-package com.bhavishyaa.vedic;
+package com.astrologer.panel;
 
 import com.getcapacitor.BridgeActivity;
 

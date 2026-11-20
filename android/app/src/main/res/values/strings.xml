@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">BHAVISHYAA</string>
-    <string name="title_activity_main">BHAVISHYAA</string>
-    <string name="package_name">com.bhavishyaa.vedic</string>
-    <string name="custom_url_scheme">com.bhavishyaa.vedic</string>
+    <string name="app_name">Astrologer Panel</string>
+    <string name="title_activity_main">Astrologer Panel</string>
+    <string name="package_name">com.astrologer.panel</string>
+    <string name="custom_url_scheme">com.astrologer.panel</string>
 </resources>
