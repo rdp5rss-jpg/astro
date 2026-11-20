@@ -165,7 +165,14 @@ export default function OnboardingScreen({ onFinish, onSignOut }) {
   };
 
   if (showMatch) {
-    return <MatchScreen seekerName={formData.name.trim() || 'Seeker'} seekerData={formData} onComplete={() => onFinish(formData)} />;
+    return (
+      <MatchScreen 
+        seekerName={formData.name.trim() || 'Seeker'} 
+        seekerData={formData} 
+        onComplete={(matchedAstro) => onFinish(formData, matchedAstro)} 
+        onExploreAll={() => onFinish(formData, null)}
+      />
+    );
   }
 
   return (

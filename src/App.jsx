@@ -79,9 +79,15 @@ export default function App() {
   if (activeScreen === 'onboarding') {
     return (
       <OnboardingScreen 
-        onFinish={() => {
-          setActiveScreen('main');
-          setActiveTab('explore');
+        onFinish={(formData, matchedAstro) => {
+          if (matchedAstro) {
+            setActiveAstrologer(matchedAstro);
+            setActiveScreen('chat');
+          } else {
+            setActiveScreen('main');
+            setActiveTab('explore');
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         onSignOut={() => setActiveScreen('login')}
       />
@@ -93,10 +99,21 @@ export default function App() {
     return (
       <MatchScreen 
         seekerName="Mahi" 
-        onComplete={() => {
+        onComplete={(matchedAstro) => {
+          if (matchedAstro) {
+            setActiveAstrologer(matchedAstro);
+            setActiveScreen('chat');
+          } else {
+            setActiveScreen('main');
+            setActiveTab('explore');
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onExploreAll={() => {
           setActiveScreen('main');
           setActiveTab('explore');
-        }} 
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
       />
     );
   }
