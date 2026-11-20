@@ -19,15 +19,15 @@ export default function AstrologerEarnings({ astrologer }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [payoutSuccess, setPayoutSuccess] = useState(null);
 
-  // Bank Form State
+  // Bank Form State (empty by default, no auto-fill)
   const [payoutMethod, setPayoutMethod] = useState('bank'); // 'bank' | 'upi'
-  const [accountNumber, setAccountNumber] = useState('50100428921820');
-  const [confirmAccountNumber, setConfirmAccountNumber] = useState('50100428921820');
-  const [ifsc, setIfsc] = useState('HDFC0000240');
-  const [bankName, setBankName] = useState('HDFC Bank Ltd');
-  const [accountHolder, setAccountHolder] = useState(astrologer?.name || 'Acharya Rudranand Shastri');
-  const [upiId, setUpiId] = useState('rudranand@okhdfcbank');
-  const [withdrawAmount, setWithdrawAmount] = useState(24850);
+  const [accountNumber, setAccountNumber] = useState('');
+  const [confirmAccountNumber, setConfirmAccountNumber] = useState('');
+  const [ifsc, setIfsc] = useState('');
+  const [bankName, setBankName] = useState('');
+  const [accountHolder, setAccountHolder] = useState('');
+  const [upiId, setUpiId] = useState('');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
 
   const [transactions, setTransactions] = useState([
     { id: 'tx-101', seeker: 'Mahi Sharma', type: 'Chat', mins: 15, gross: 525, net: 420, time: 'Today, 04:38 PM', status: 'Credited' },
@@ -39,7 +39,8 @@ export default function AstrologerEarnings({ astrologer }) {
 
   const handleWithdrawSubmit = (e) => {
     e.preventDefault();
-    if (withdrawAmount <= 0 || withdrawAmount > balance) {
+    const transferred = Number(withdrawAmount);
+    if (!transferred || transferred <= 0 || transferred > balance) {
       alert('Please enter a valid withdrawal amount within your available balance.');
       return;
     }
@@ -51,12 +52,11 @@ export default function AstrologerEarnings({ astrologer }) {
     setIsProcessing(true);
 
     setTimeout(() => {
-      const transferred = Number(withdrawAmount);
       setBalance(prev => Math.max(0, prev - transferred));
       
       const newTx = {
         id: `wth-${Date.now()}`,
-        seeker: payoutMethod === 'bank' ? `${bankName} (${accountNumber.slice(-4)})` : upiId,
+        seeker: payoutMethod === 'bank' ? `${bankName || 'Bank'} (${accountNumber.slice(-4)})` : upiId,
         type: 'Bank Payout',
         mins: 0,
         gross: transferred,
@@ -70,7 +70,7 @@ export default function AstrologerEarnings({ astrologer }) {
       setShowWithdrawModal(false);
       setPayoutSuccess({
         amount: transferred,
-        destination: payoutMethod === 'bank' ? `${bankName} (A/C ending in ${accountNumber.slice(-4)})` : upiId,
+        destination: payoutMethod === 'bank' ? `${bankName || 'Bank'} (A/C ending in ${accountNumber.slice(-4)})` : upiId,
         refNo: `NEFT${Math.floor(100000000 + Math.random() * 900000000)}`
       });
     }, 1000);
@@ -396,7 +396,8 @@ export default function AstrologerEarnings({ astrologer }) {
                     min={100}
                     max={balance}
                     value={withdrawAmount}
-                    onChange={(e) => setWithdrawAmount(Number(e.target.value))}
+                    onChange={(e) => setWithdrawAmount(e.target.value)}
+                    placeholder="Enter amount (min ₹100)"
                     style={{
                       border: 'none',
                       background: 'transparent',
@@ -440,7 +441,7 @@ export default function AstrologerEarnings({ astrologer }) {
                       required
                       value={accountHolder}
                       onChange={(e) => setAccountHolder(e.target.value)}
-                      placeholder="Acharya Rudranand Shastri"
+                      placeholder="e.g. Acharya Govind Shastri"
                       style={{
                         width: '100%',
                         padding: '11px 12px',
@@ -465,7 +466,7 @@ export default function AstrologerEarnings({ astrologer }) {
                       required
                       value={accountNumber}
                       onChange={(e) => setAccountNumber(e.target.value)}
-                      placeholder="Enter 9-18 digit account number"
+                      placeholder="Enter 9 to 18-digit account number"
                       style={{
                         width: '100%',
                         padding: '11px 12px',
@@ -490,7 +491,7 @@ export default function AstrologerEarnings({ astrologer }) {
                       required
                       value={confirmAccountNumber}
                       onChange={(e) => setConfirmAccountNumber(e.target.value)}
-                      placeholder="Re-enter account number"
+                      placeholder="Re-enter bank account number"
                       style={{
                         width: '100%',
                         padding: '11px 12px',
@@ -516,7 +517,7 @@ export default function AstrologerEarnings({ astrologer }) {
                         required
                         value={ifsc}
                         onChange={(e) => setIfsc(e.target.value.toUpperCase())}
-                        placeholder="HDFC0000240"
+                        placeholder="e.g. SBIN0001234"
                         style={{
                           width: '100%',
                           padding: '11px 12px',
@@ -540,7 +541,7 @@ export default function AstrologerEarnings({ astrologer }) {
                         required
                         value={bankName}
                         onChange={(e) => setBankName(e.target.value)}
-                        placeholder="HDFC Bank"
+                        placeholder="e.g. State Bank of India"
                         style={{
                           width: '100%',
                           padding: '11px 12px',
@@ -567,7 +568,7 @@ export default function AstrologerEarnings({ astrologer }) {
                     required
                     value={upiId}
                     onChange={(e) => setUpiId(e.target.value)}
-                    placeholder="e.g. rudranand@okhdfcbank"
+                    placeholder="e.g. mobile@upi or name@okhdfcbank"
                     style={{
                       width: '100%',
                       padding: '12px 14px',
