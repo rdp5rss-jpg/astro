@@ -1,4 +1,4 @@
-package com.astrologer.panel;
+package com.admin.panel;
 
 import com.getcapacitor.BridgeActivity;
 

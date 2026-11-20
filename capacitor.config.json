@@ -1,6 +1,6 @@
 {
-  "appId": "com.astrologer.panel",
-  "appName": "Astrologer Panel",
+  "appId": "com.admin.panel",
+  "appName": "Admin Panel",
   "webDir": "dist",
   "server": {
     "androidScheme": "https"
