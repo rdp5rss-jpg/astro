@@ -96,11 +96,11 @@ export default function HomeScreen({ onSelectAstrologer, onNavigateTab, onOpenMa
         })}
       </div>
 
-      {/* Festive Maha Offer Banner with Live Countdown Timer */}
+      {/* Festive Maha Offer Banner with Live Countdown Timer & Guru Visual */}
       <div
         style={{
           margin: '14px 16px',
-          padding: '22px 20px',
+          padding: '20px 18px',
           borderRadius: '28px',
           backgroundColor: '#B84D28',
           background: 'linear-gradient(135deg, #D46A43 0%, #B84D28 60%, #9E3D1B 100%)',
@@ -109,8 +109,9 @@ export default function HomeScreen({ onSelectAstrologer, onNavigateTab, onOpenMa
           position: 'relative',
           overflow: 'hidden',
           display: 'flex',
-          flexDirection: 'column',
+          alignItems: 'center',
           justifyContent: 'space-between',
+          minHeight: '165px',
         }}
       >
         {/* Background decorative Diwali/Puja glow & Diya */}
@@ -119,22 +120,24 @@ export default function HomeScreen({ onSelectAstrologer, onNavigateTab, onOpenMa
             position: 'absolute',
             top: '-20px',
             right: '-20px',
-            width: '160px',
-            height: '160px',
+            width: '180px',
+            height: '180px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(254, 240, 138, 0.3) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(254, 240, 138, 0.4) 0%, transparent 70%)',
             pointerEvents: 'none',
           }}
         />
 
-        <div style={{ position: 'relative', zIndex: 10 }}>
+        {/* Left Side: Offer Details & Live Countdown */}
+        <div style={{ position: 'relative', zIndex: 10, maxWidth: '62%' }}>
           <span
             style={{
-              fontSize: '11px',
+              fontSize: '10px',
               fontWeight: '900',
               letterSpacing: '2px',
               textTransform: 'uppercase',
               color: '#FEF3C7',
+              display: 'block',
             }}
           >
             FESTIVE MAHA OFFER
@@ -143,7 +146,7 @@ export default function HomeScreen({ onSelectAstrologer, onNavigateTab, onOpenMa
           <h2
             style={{
               fontFamily: 'Cinzel, serif',
-              fontSize: '24px',
+              fontSize: 'clamp(19px, 4.8vw, 24px)',
               fontWeight: '800',
               color: '#FFFFFF',
               marginTop: '4px',
@@ -152,57 +155,99 @@ export default function HomeScreen({ onSelectAstrologer, onNavigateTab, onOpenMa
           >
             Every reading<br />is half price
           </h2>
+
+          {/* Live Countdown Timer Boxes matching reference */}
+          <div style={{ marginTop: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div
+              style={{
+                backgroundColor: '#FEF3C7',
+                color: '#92400E',
+                fontWeight: '900',
+                fontSize: 'clamp(16px, 3.8vw, 19px)',
+                padding: '6px 10px',
+                borderRadius: '10px',
+                boxShadow: '0 3px 8px rgba(0, 0, 0, 0.15)',
+                minWidth: '40px',
+                textAlign: 'center',
+              }}
+            >
+              {timerParts[0]}
+            </div>
+            <span style={{ color: '#FEF3C7', fontWeight: '900', fontSize: '18px' }}>:</span>
+            <div
+              style={{
+                backgroundColor: '#FEF3C7',
+                color: '#92400E',
+                fontWeight: '900',
+                fontSize: 'clamp(16px, 3.8vw, 19px)',
+                padding: '6px 10px',
+                borderRadius: '10px',
+                boxShadow: '0 3px 8px rgba(0, 0, 0, 0.15)',
+                minWidth: '40px',
+                textAlign: 'center',
+              }}
+            >
+              {timerParts[1]}
+            </div>
+            <span style={{ color: '#FEF3C7', fontWeight: '900', fontSize: '18px' }}>:</span>
+            <div
+              style={{
+                backgroundColor: '#FEF3C7',
+                color: '#92400E',
+                fontWeight: '900',
+                fontSize: 'clamp(16px, 3.8vw, 19px)',
+                padding: '6px 10px',
+                borderRadius: '10px',
+                boxShadow: '0 3px 8px rgba(0, 0, 0, 0.15)',
+                minWidth: '40px',
+                textAlign: 'center',
+              }}
+            >
+              {timerParts[2]}
+            </div>
+          </div>
         </div>
 
-        {/* Live Countdown Timer Boxes matching reference */}
-        <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '8px', position: 'relative', zIndex: 10 }}>
+        {/* Right Side: Vedic Astrologer Guru / Person Image */}
+        <div
+          style={{
+            position: 'absolute',
+            right: '-6px',
+            bottom: '-6px',
+            width: 'clamp(135px, 36vw, 168px)',
+            height: 'clamp(145px, 38vw, 180px)',
+            zIndex: 5,
+            pointerEvents: 'none',
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+          }}
+        >
+          {/* Subtle cosmic aura halo */}
           <div
             style={{
-              backgroundColor: '#FEF3C7',
-              color: '#92400E',
-              fontWeight: '900',
-              fontSize: '20px',
-              padding: '8px 12px',
-              borderRadius: '12px',
-              boxShadow: '0 3px 8px rgba(0, 0, 0, 0.15)',
-              minWidth: '46px',
-              textAlign: 'center',
+              position: 'absolute',
+              top: '40%',
+              left: '48%',
+              transform: 'translate(-50%, -50%)',
+              width: '120px',
+              height: '120px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(254, 240, 138, 0.55) 0%, rgba(217, 119, 6, 0.25) 55%, transparent 75%)',
+              filter: 'blur(10px)',
             }}
-          >
-            {timerParts[0]}
-          </div>
-          <span style={{ color: '#FEF3C7', fontWeight: '900', fontSize: '20px' }}>:</span>
-          <div
+          />
+          <img
+            src="/guru-banner.png"
+            alt="Vedic Astrologer Guru"
             style={{
-              backgroundColor: '#FEF3C7',
-              color: '#92400E',
-              fontWeight: '900',
-              fontSize: '20px',
-              padding: '8px 12px',
-              borderRadius: '12px',
-              boxShadow: '0 3px 8px rgba(0, 0, 0, 0.15)',
-              minWidth: '46px',
-              textAlign: 'center',
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: 'bottom right',
+              filter: 'drop-shadow(0 6px 16px rgba(0, 0, 0, 0.35))',
             }}
-          >
-            {timerParts[1]}
-          </div>
-          <span style={{ color: '#FEF3C7', fontWeight: '900', fontSize: '20px' }}>:</span>
-          <div
-            style={{
-              backgroundColor: '#FEF3C7',
-              color: '#92400E',
-              fontWeight: '900',
-              fontSize: '20px',
-              padding: '8px 12px',
-              borderRadius: '12px',
-              boxShadow: '0 3px 8px rgba(0, 0, 0, 0.15)',
-              minWidth: '46px',
-              textAlign: 'center',
-            }}
-          >
-            {timerParts[2]}
-          </div>
+          />
         </div>
       </div>
 
