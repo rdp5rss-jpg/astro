@@ -11,24 +11,25 @@ import {
   Clock, 
   ArrowRight,
   CheckCircle2,
-  ChevronRight
+  ChevronRight,
+  UserPlus
 } from 'lucide-react';
 import { astrologers } from '../data/astrologers';
 
 export default function AstrologerAuth({ onLoginSuccess }) {
   const [mode, setMode] = useState('login'); // 'login' | 'register'
   
-  // Login Form State
-  const [loginIdentifier, setLoginIdentifier] = useState('rudranand@bhavishyaa.com');
-  const [loginPassword, setLoginPassword] = useState('vedic1234');
+  // Login Form State (empty by default, no auto-fill)
+  const [loginIdentifier, setLoginIdentifier] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
   
-  // Register Form State
+  // Register Form State (empty by default, no auto-fill)
   const [regName, setRegName] = useState('');
-  const [regSpecialty, setRegSpecialty] = useState('Vedic Kundli & KP');
-  const [regExp, setRegExp] = useState('12');
-  const [regRate, setRegRate] = useState('35');
+  const [regSpecialty, setRegSpecialty] = useState('');
+  const [regExp, setRegExp] = useState('');
+  const [regRate, setRegRate] = useState('');
   const [regPhone, setRegPhone] = useState('');
-  const [regLanguages, setRegLanguages] = useState('Hindi, English');
+  const [regLanguages, setRegLanguages] = useState('');
   const [regBio, setRegBio] = useState('');
 
   const handleLogin = (e) => {
@@ -46,10 +47,10 @@ export default function AstrologerAuth({ onLoginSuccess }) {
     const newAstro = {
       id: String(Date.now()),
       name: regName,
-      title: regSpecialty,
-      experienceYears: Number(regExp),
-      ratePerMin: Number(regRate),
-      languages: regLanguages.split(',').map(s => s.trim()),
+      title: regSpecialty || 'Vedic Astrologer',
+      experienceYears: Number(regExp) || 5,
+      ratePerMin: Number(regRate) || 30,
+      languages: regLanguages ? regLanguages.split(',').map(s => s.trim()).filter(Boolean) : ['Hindi', 'English'],
       bio: regBio || 'Certified Jyotish Acharya dedicated to authentic Vedic remedies and destiny alignment.',
       rating: 5.0,
       consultations: '0',
@@ -186,7 +187,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                   required
                   value={loginIdentifier}
                   onChange={(e) => setLoginIdentifier(e.target.value)}
-                  placeholder="rudranand@bhavishyaa.com"
+                  placeholder="Enter registered mobile or email"
                   style={{
                     border: 'none',
                     outline: 'none',
@@ -226,7 +227,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                   required
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="Enter password / PIN"
                   style={{
                     border: 'none',
                     outline: 'none',
@@ -280,7 +281,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                 required
                 value={regName}
                 onChange={(e) => setRegName(e.target.value)}
-                placeholder="Acharya Govind Shastri"
+                placeholder="e.g. Acharya Govind Shastri"
                 style={{
                   width: '100%',
                   padding: '10px 14px',
@@ -301,6 +302,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                   Primary Lineage
                 </label>
                 <select
+                  required
                   value={regSpecialty}
                   onChange={(e) => setRegSpecialty(e.target.value)}
                   style={{
@@ -311,10 +313,11 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                     backgroundColor: '#F8FAFC',
                     fontSize: '12px',
                     fontWeight: '700',
-                    color: '#1E1B4B',
+                    color: regSpecialty ? '#1E1B4B' : '#64748B',
                     outline: 'none',
                   }}
                 >
+                  <option value="" disabled>Select Lineage</option>
                   <option value="Vedic Kundli & KP">Vedic Kundli & KP</option>
                   <option value="Celebrity Tarot">Celebrity Tarot</option>
                   <option value="Vastu & Dasha Remedies">Vastu & Dasha</option>
@@ -332,7 +335,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                   required
                   value={regExp}
                   onChange={(e) => setRegExp(e.target.value)}
-                  placeholder="12"
+                  placeholder="e.g. 10"
                   style={{
                     width: '100%',
                     padding: '10px 12px',
@@ -358,7 +361,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                   required
                   value={regRate}
                   onChange={(e) => setRegRate(e.target.value)}
-                  placeholder="35"
+                  placeholder="e.g. 35"
                   style={{
                     width: '100%',
                     padding: '10px 12px',
@@ -382,7 +385,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                   required
                   value={regPhone}
                   onChange={(e) => setRegPhone(e.target.value)}
-                  placeholder="+91 98765 00000"
+                  placeholder="e.g. +91 98765 43210"
                   style={{
                     width: '100%',
                     padding: '10px 12px',
@@ -406,7 +409,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                 type="text"
                 value={regLanguages}
                 onChange={(e) => setRegLanguages(e.target.value)}
-                placeholder="Hindi, English, Sanskrit"
+                placeholder="e.g. Hindi, English, Sanskrit"
                 style={{
                   width: '100%',
                   padding: '10px 12px',
@@ -427,21 +430,22 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                 marginTop: '10px',
                 padding: '14px',
                 borderRadius: '16px',
-                background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                background: 'linear-gradient(135deg, #D46A43 0%, #C85A32 100%)',
                 color: '#FFFFFF',
-                fontSize: '14px',
+                fontSize: '15px',
                 fontWeight: '900',
                 border: 'none',
                 cursor: 'pointer',
-                boxShadow: '0 6px 18px rgba(16, 185, 129, 0.35)',
+                boxShadow: '0 6px 18px rgba(200, 90, 50, 0.35)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
+                transition: 'transform 0.15s ease',
               }}
             >
-              <CheckCircle2 size={16} />
-              <span>Submit KYC & Enter Console</span>
+              <UserPlus size={18} />
+              <span>Register</span>
             </button>
           </form>
         )}
