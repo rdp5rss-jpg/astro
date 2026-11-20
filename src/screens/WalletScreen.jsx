@@ -5,21 +5,21 @@ import {
   CreditCard, 
   CheckCircle2, 
   ShieldCheck, 
-  User, 
   Users, 
   HelpCircle, 
-  ChevronRight,
-  Sparkles,
-  ArrowUpRight,
-  Trash2
+  Sparkles, 
+  ArrowUpRight, 
+  Trash2,
+  Lock,
+  X
 } from 'lucide-react';
 
 export default function WalletScreen({ onClose }) {
   const [balance, setBalance] = useState(185);
   const [selectedPack, setSelectedPack] = useState(250);
   const [profiles, setProfiles] = useState([
-    { id: 1, name: 'Rohan Sharma (Self)', rashi: 'Mithuna (Gemini)', relation: 'Primary' },
-    { id: 2, name: 'Priya Sharma (Spouse)', rashi: 'Tula (Libra)', relation: 'Spouse' },
+    { id: 1, name: 'Mahi Sharma (Self)', rashi: 'Mithuna (Gemini)', relation: 'Primary' },
+    { id: 2, name: 'Rohit Sharma (Spouse)', rashi: 'Tula (Libra)', relation: 'Spouse' },
     { id: 3, name: 'Sunita Sharma (Mother)', rashi: 'Karka (Cancer)', relation: 'Family' },
   ]);
   const [recharging, setRecharging] = useState(false);
@@ -38,8 +38,8 @@ export default function WalletScreen({ onClose }) {
     setTimeout(() => {
       setBalance(prev => prev + pack.total);
       setRecharging(false);
-      alert(`🎉 Successfully added ₹${pack.amount} (+₹${pack.bonus} Free Bonus) to your BHAVISHYAA wallet!`);
-    }, 800);
+      alert(`🎉 Successfully added ₹${pack.amount} (+₹${pack.bonus} Free Bonus) to your BHAVISHYAA wallet! Total credited: ₹${pack.total}`);
+    }, 600);
   };
 
   const handleAddProfile = () => {
@@ -55,133 +55,352 @@ export default function WalletScreen({ onClose }) {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in pb-12">
-      {/* Wallet Balance Card */}
-      <div className="glass-card-amber p-6 relative overflow-hidden">
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', color: '#1E1B4B', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      {/* Header bar if inside modal */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '12px', borderBottom: '1px solid #F1F5F9' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '10px', backgroundColor: '#FEF3C7', border: '1px solid #FCD34D', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Coins size={18} color="#D97706" />
+          </div>
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-100/90 px-2.5 py-0.5 rounded-full border border-amber-200">
+            <h2 style={{ fontSize: '16px', fontWeight: '900', color: '#1E1B4B', lineHeight: 1.2 }}>
+              Cosmic Astral Wallet
+            </h2>
+            <p style={{ fontSize: '11px', color: '#64748B' }}>
+              Instant credits for Live Gurus & Dossiers
+            </p>
+          </div>
+        </div>
+
+        {onClose && (
+          <button
+            onClick={onClose}
+            style={{
+              padding: '6px',
+              borderRadius: '50%',
+              backgroundColor: '#F1F5F9',
+              border: 'none',
+              cursor: 'pointer',
+              color: '#64748B',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <X size={16} />
+          </button>
+        )}
+      </div>
+
+      {/* Wallet Balance Hero Card */}
+      <div
+        style={{
+          background: 'linear-gradient(135deg, rgba(254, 243, 199, 0.85) 0%, rgba(253, 230, 138, 0.6) 100%)',
+          border: '1.5px solid rgba(245, 158, 11, 0.35)',
+          borderRadius: '20px',
+          padding: '18px 20px',
+          boxShadow: '0 8px 24px rgba(217, 119, 6, 0.12)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '14px'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: '800',
+                textTransform: 'uppercase',
+                letterSpacing: '0.6px',
+                color: '#92400E',
+                backgroundColor: 'rgba(254, 243, 199, 0.9)',
+                padding: '3px 10px',
+                borderRadius: '999px',
+                border: '1px solid #FCD34D',
+                display: 'inline-block'
+              }}
+            >
               Cosmic Astral Balance
             </span>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-4xl font-extrabold text-slate-800">₹{balance}</span>
-              <span className="text-xs font-semibold text-slate-500">Available for Chats & Calls</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginTop: '8px' }}>
+              <span style={{ fontSize: '36px', fontWeight: '900', color: '#78350F', lineHeight: 1 }}>
+                ₹{balance}
+              </span>
+              <span style={{ fontSize: '12px', fontWeight: '700', color: '#B45309' }}>
+                Available for Chats & Calls
+              </span>
             </div>
-            <p className="text-xs text-slate-600 mt-1">
-              ✨ 1 Coin = ₹1 • No expiry • Valid across all certified Vedic Gurus
+            <p style={{ fontSize: '11px', color: '#78350F', marginTop: '4px', opacity: 0.9 }}>
+              ✨ 1 Coin = ₹1 • No expiry • Valid across all verified Vedic Astrologers
             </p>
           </div>
 
           <button
             onClick={handleRecharge}
             disabled={recharging}
-            className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer self-start sm:self-auto"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '10px 18px',
+              borderRadius: '14px',
+              background: 'linear-gradient(135deg, #D97706 0%, #B45309 100%)',
+              color: '#FFFFFF',
+              fontWeight: '800',
+              fontSize: '13px',
+              border: 'none',
+              boxShadow: '0 4px 12px rgba(180, 83, 9, 0.3)',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              transition: 'transform 0.15s ease'
+            }}
           >
-            <Plus size={16} />
-            {recharging ? 'Processing...' : `Quick Recharge ₹${selectedPack}`}
+            <Plus size={15} />
+            {recharging ? 'Recharging...' : `Recharge ₹${selectedPack}`}
           </button>
         </div>
       </div>
 
-      {/* Select Recharge Pack */}
-      <div className="glass-card p-5">
-        <div className="flex items-center justify-between mb-4">
+      {/* Select Recharge Package Section */}
+      <div
+        style={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          border: '1.5px solid #E2E8F0',
+          borderRadius: '20px',
+          padding: '18px',
+          boxShadow: '0 4px 16px rgba(108, 74, 182, 0.05)'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div>
-            <h3 className="text-sm font-bold text-slate-800">
+            <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#1E1B4B' }}>
               Select Recharge Package
             </h3>
-            <p className="text-xs text-slate-500">Includes complimentary bonus coins & priority astrologer queue</p>
+            <p style={{ fontSize: '11px', color: '#64748B' }}>
+              Includes complimentary bonus coins & priority queue
+            </p>
           </div>
-          <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-            Instant Credit
+          <span
+            style={{
+              fontSize: '11px',
+              fontWeight: '800',
+              color: '#15803D',
+              backgroundColor: '#DCFCE7',
+              border: '1px solid #86EFAC',
+              padding: '3px 10px',
+              borderRadius: '999px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            ⚡ Instant Credit
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {/* 2x2 Grid of Packages with Robust Inline Flex/Grid Styles */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+            gap: '12px'
+          }}
+        >
           {rechargePacks.map((pack) => {
             const isSelected = selectedPack === pack.amount;
             return (
               <div
                 key={pack.amount}
                 onClick={() => setSelectedPack(pack.amount)}
-                className={`relative p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
-                  isSelected
-                    ? 'border-amber-500 bg-amber-50/70 shadow-sm'
-                    : 'border-slate-200/80 bg-white/70 hover:border-amber-300'
-                }`}
+                style={{
+                  position: 'relative',
+                  padding: '16px 12px 12px',
+                  borderRadius: '16px',
+                  border: isSelected ? '2px solid #D97706' : '1.5px solid #E2E8F0',
+                  backgroundColor: isSelected ? '#FFFBEB' : '#FFFFFF',
+                  boxShadow: isSelected ? '0 4px 14px rgba(217, 119, 6, 0.15)' : 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  textAlign: 'center',
+                  transition: 'all 0.15s ease'
+                }}
               >
                 {pack.badge && (
-                  <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-600 to-amber-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '-10px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'linear-gradient(135deg, #D97706 0%, #B45309 100%)',
+                      color: '#FFFFFF',
+                      fontSize: '9px',
+                      fontWeight: '900',
+                      letterSpacing: '0.5px',
+                      padding: '2px 8px',
+                      borderRadius: '999px',
+                      whiteSpace: 'nowrap',
+                      boxShadow: '0 2px 6px rgba(180, 83, 9, 0.25)'
+                    }}
+                  >
                     {pack.badge}
                   </span>
                 )}
-                <div className="text-center pt-1">
-                  <span className="text-xl font-bold text-slate-800">₹{pack.amount}</span>
-                  <div className="text-xs font-semibold text-emerald-700 mt-1">
+
+                <div>
+                  <div style={{ fontSize: '20px', fontWeight: '900', color: '#1E1B4B' }}>
+                    ₹{pack.amount}
+                  </div>
+                  <div style={{ fontSize: '11px', fontWeight: '800', color: '#15803D', marginTop: '2px' }}>
                     +₹{pack.bonus} Bonus
                   </div>
                 </div>
-                <div className="mt-3 pt-2 border-t border-slate-200/60 text-center">
-                  <span className="text-[11px] font-bold text-amber-800">
-                    Get ₹{pack.total}
-                  </span>
+
+                <div
+                  style={{
+                    marginTop: '10px',
+                    paddingTop: '8px',
+                    borderTop: isSelected ? '1px solid #FCD34D' : '1px solid #F1F5F9',
+                    fontSize: '12px',
+                    fontWeight: '900',
+                    color: isSelected ? '#92400E' : '#475569'
+                  }}
+                >
+                  Get ₹{pack.total}
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* UPI & Payment reassurance */}
-        <div className="mt-4 pt-3 border-t border-slate-200/60 flex flex-wrap items-center justify-between text-xs text-slate-500 gap-2">
-          <div className="flex items-center gap-1.5">
-            <ShieldCheck size={15} className="text-emerald-600" />
+        {/* Security / Trust reassurance badge */}
+        <div
+          style={{
+            marginTop: '16px',
+            paddingTop: '12px',
+            borderTop: '1px solid #F1F5F9',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '8px',
+            fontSize: '11px',
+            color: '#64748B'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <ShieldCheck size={14} color="#16A34A" />
             <span>256-bit Bank Grade Encryption • UPI, Cards & NetBanking</span>
           </div>
-          <span className="text-slate-400">100% Refund Guarantee if call drops</span>
+          <span style={{ color: '#94A3B8' }}>100% Refund Guarantee</span>
         </div>
       </div>
 
-      {/* Saved Kundli Profiles */}
-      <div className="glass-card p-5">
-        <div className="flex items-center justify-between mb-4">
+      {/* Saved Family Kundli Profiles */}
+      <div
+        style={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          border: '1.5px solid #E2E8F0',
+          borderRadius: '20px',
+          padding: '18px',
+          boxShadow: '0 4px 16px rgba(108, 74, 182, 0.05)'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifySelf: 'space-between', justifyContent: 'space-between', marginBottom: '14px' }}>
           <div>
-            <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-              <Users size={16} className="text-amber-600" />
+            <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#1E1B4B', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Users size={16} color="#D97706" />
               Saved Family Kundli Profiles
             </h3>
-            <p className="text-xs text-slate-500">Quickly consult for your loved ones without re-entering birth details</p>
+            <p style={{ fontSize: '11px', color: '#64748B' }}>
+              Quickly consult for loved ones without re-entering birth coordinates
+            </p>
           </div>
-          <button 
+          <button
             onClick={handleAddProfile}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-xs font-semibold transition-all cursor-pointer"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '6px 10px',
+              borderRadius: '10px',
+              backgroundColor: '#FEF3C7',
+              border: '1px solid #FCD34D',
+              color: '#92400E',
+              fontSize: '11px',
+              fontWeight: '800',
+              cursor: 'pointer'
+            }}
           >
-            <Plus size={14} /> Add Profile
+            <Plus size={13} /> Add
           </button>
         </div>
 
-        <div className="space-y-2.5">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {profiles.map((p) => (
-            <div 
+            <div
               key={p.id}
-              className="p-3.5 rounded-xl bg-white/70 border border-slate-200/80 flex items-center justify-between hover:bg-amber-50/30 transition-all"
+              style={{
+                padding: '10px 14px',
+                borderRadius: '12px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-700 font-bold text-xs">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    backgroundColor: '#FEF3C7',
+                    border: '1px solid #FCD34D',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#B45309',
+                    fontSize: '12px',
+                    fontWeight: '900'
+                  }}
+                >
                   {p.name.charAt(0)}
                 </div>
                 <div>
-                  <h4 className="text-xs sm:text-sm font-bold text-slate-800">{p.name}</h4>
-                  <p className="text-[11px] text-slate-500">Moon Sign: {p.rashi}</p>
+                  <h4 style={{ fontSize: '13px', fontWeight: '800', color: '#1E1B4B' }}>{p.name}</h4>
+                  <p style={{ fontSize: '11px', color: '#64748B' }}>Moon Sign: {p.rashi}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span
+                  style={{
+                    fontSize: '10px',
+                    fontWeight: '800',
+                    color: '#64748B',
+                    backgroundColor: '#E2E8F0',
+                    padding: '2px 8px',
+                    borderRadius: '999px'
+                  }}
+                >
                   {p.relation}
                 </span>
                 {p.id !== 1 && (
-                  <button 
+                  <button
                     onClick={() => setProfiles(profiles.filter(x => x.id !== p.id))}
-                    className="p-1 text-slate-400 hover:text-rose-500 transition-colors cursor-pointer"
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#94A3B8',
+                      cursor: 'pointer',
+                      padding: '4px'
+                    }}
+                    title="Remove member"
                   >
                     <Trash2 size={13} />
                   </button>
@@ -190,25 +409,6 @@ export default function WalletScreen({ onClose }) {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Vedic Concierge & Support */}
-      <div className="glass-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-indigo-50 border border-indigo-200 rounded-xl text-indigo-700">
-            <HelpCircle size={20} />
-          </div>
-          <div>
-            <h4 className="text-xs sm:text-sm font-bold text-slate-800">Need Vedic Consultation Assistance?</h4>
-            <p className="text-[11px] text-slate-500">24x7 Priority Concierge available on WhatsApp & Phone</p>
-          </div>
-        </div>
-        <button 
-          onClick={() => alert('💬 Connecting you to BHAVISHYAA Vedic Concierge on WhatsApp...')}
-          className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-all self-start sm:self-auto cursor-pointer"
-        >
-          Contact Support <ArrowUpRight size={14} />
-        </button>
       </div>
     </div>
   );

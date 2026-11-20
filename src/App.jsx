@@ -12,6 +12,7 @@ import KundliScreen from './screens/KundliScreen';
 import ReportsScreen from './screens/ReportsScreen';
 import ChatScreen from './screens/ChatScreen';
 import WalletScreen from './screens/WalletScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import { astrologers } from './data/astrologers';
 import { X, Bell } from 'lucide-react';
 
@@ -26,6 +27,7 @@ export default function App() {
   
   const [activeAstrologer, setActiveAstrologer] = useState(astrologers[0]);
   const [isWalletOpen, setIsWalletOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [walletBalance, setWalletBalance] = useState(185);
 
@@ -125,7 +127,7 @@ export default function App() {
         walletBalance={walletBalance}
         onOpenWallet={() => setIsWalletOpen(true)}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
-        onOpenProfile={() => setIsWalletOpen(true)}
+        onOpenProfile={() => setIsProfileOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -159,6 +161,47 @@ export default function App() {
         onOpenMatchmaker={() => setActiveScreen('matchmaker')}
       />
 
+      {/* Profile Modal Overlay */}
+      {isProfileOpen && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 90,
+          backgroundColor: 'rgba(0,0,0,0.45)',
+          backdropFilter: 'blur(4px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '16px'
+        }}>
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '480px',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '28px',
+            padding: '24px',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.2)'
+          }}>
+            <ProfileScreen 
+              onClose={() => setIsProfileOpen(false)}
+              walletBalance={walletBalance}
+              seekerName="Mahi Sharma"
+              onOpenWallet={() => {
+                setIsProfileOpen(false);
+                setIsWalletOpen(true);
+              }}
+              onSignOut={() => {
+                setIsProfileOpen(false);
+                setActiveScreen('login');
+              }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Wallet Modal Overlay */}
       {isWalletOpen && (
         <div style={{
@@ -183,21 +226,6 @@ export default function App() {
             padding: '24px',
             boxShadow: '0 20px 50px rgba(0,0,0,0.2)'
           }}>
-            <button
-              onClick={() => setIsWalletOpen(false)}
-              style={{
-                position: 'absolute',
-                top: '16px',
-                right: '16px',
-                padding: '6px',
-                borderRadius: '50%',
-                backgroundColor: '#F1F5F9',
-                cursor: 'pointer',
-                color: '#64748B'
-              }}
-            >
-              <X size={18} />
-            </button>
             <WalletScreen onClose={() => setIsWalletOpen(false)} />
           </div>
         </div>
