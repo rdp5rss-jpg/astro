@@ -93,88 +93,176 @@ export default function ChatScreen({ astrologer, onBack }) {
       flexDirection: 'column',
       justifyContent: 'space-between',
     }}>
-      {/* Top App Bar matching WhatsApp Image 2026-11-19 at 4.39.11 PM (1).jpeg */}
+      {/* Top App Bar - Simple, Premium & Responsive One-Line Header */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '12px 16px',
+        padding: '10px clamp(10px, 3vw, 16px)',
         borderBottom: '1px solid #F1F5F9',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'rgba(255, 255, 255, 0.96)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+        gap: '8px',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <button onClick={onBack} style={{ padding: '6px', cursor: 'pointer' }}>
-            <ArrowLeft size={20} color="#1E1B4B" />
+        {/* Left: Back button + Avatar + Astrologer Name in ONE single line */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'clamp(6px, 2vw, 10px)',
+          minWidth: 0,
+          flex: 1,
+        }}>
+          <button
+            onClick={onBack}
+            style={{
+              padding: '6px',
+              borderRadius: '50%',
+              backgroundColor: '#F8FAFC',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              color: '#1E1B4B',
+            }}
+            aria-label="Back"
+          >
+            <ArrowLeft size={19} color="#1E1B4B" />
           </button>
 
-          <img
-            src={astrologer.avatar}
-            alt={astrologer.name}
-            style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover' }}
-          />
-
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <span style={{ fontSize: '15px', fontWeight: '800', color: '#1E1B4B' }}>
-                {astrologer.name}
-              </span>
-              <span style={{
-                width: '15px',
-                height: '15px',
+          <div style={{ position: 'relative', flexShrink: 0 }}>
+            <img
+              src={astrologer.avatar}
+              alt={astrologer.name}
+              style={{
+                width: 'clamp(36px, 9vw, 40px)',
+                height: 'clamp(36px, 9vw, 40px)',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '1.5px solid #FCD34D',
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.08)',
+              }}
+            />
+            <span
+              style={{
+                position: 'absolute',
+                bottom: '0px',
+                right: '0px',
+                width: '10px',
+                height: '10px',
                 borderRadius: '50%',
                 backgroundColor: '#10B981',
-                color: '#FFFFFF',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '10px',
-              }}>
+                border: '1.5px solid #FFFFFF',
+              }}
+            />
+          </div>
+
+          {/* Name & Timer: STRICT ONE LINE FOR NAME */}
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              minWidth: 0,
+            }}>
+              <span
+                style={{
+                  fontSize: 'clamp(13px, 3.6vw, 15px)',
+                  fontWeight: '800',
+                  color: '#1E1B4B',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  lineHeight: 1.2,
+                  display: 'block',
+                }}
+              >
+                {astrologer.name}
+              </span>
+              <span
+                style={{
+                  width: '14px',
+                  height: '14px',
+                  borderRadius: '50%',
+                  backgroundColor: '#10B981',
+                  color: '#FFFFFF',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '9px',
+                  fontWeight: '900',
+                  flexShrink: 0,
+                }}
+                title="Verified Astrologer"
+              >
                 ✓
               </span>
             </div>
-            <div style={{ fontSize: '12px', color: '#059669', fontWeight: '700' }}>
+
+            <div style={{
+              fontSize: '11px',
+              color: '#059669',
+              fontWeight: '700',
+              lineHeight: 1.2,
+              marginTop: '1px',
+              whiteSpace: 'nowrap',
+            }}>
               {formatTime(secondsRemaining)}
             </div>
           </div>
         </div>
 
-        {/* Right actions: End pill button & Info circle button */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        {/* Right actions: Simple & Premium End pill button + Info circle button */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'clamp(6px, 1.8vw, 10px)',
+          flexShrink: 0,
+        }}>
           <button
             onClick={onBack}
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
-              padding: '6px 14px',
+              gap: '5px',
+              padding: '6px clamp(10px, 2.5vw, 14px)',
               borderRadius: '20px',
-              backgroundColor: '#FEE2E2',
-              color: '#B91C1C',
-              fontSize: '13px',
+              backgroundColor: '#FEF2F2',
+              border: '1px solid #FECACA',
+              color: '#DC2626',
+              fontSize: 'clamp(11px, 2.8vw, 12.5px)',
               fontWeight: '800',
               cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              boxShadow: '0 1px 3px rgba(220, 38, 38, 0.08)',
+              transition: 'all 0.15s ease',
             }}
           >
-            <span style={{ width: '8px', height: '8px', backgroundColor: '#B91C1C', borderRadius: '2px' }} />
+            <span style={{ width: '6px', height: '6px', backgroundColor: '#DC2626', borderRadius: '1.5px', flexShrink: 0 }} />
             <span>End</span>
           </button>
 
           <button
             onClick={() => setShowDetailsSheet(true)}
             style={{
-              width: '36px',
-              height: '36px',
+              width: '34px',
+              height: '34px',
               borderRadius: '50%',
-              border: '1.5px solid #E2E8F0',
-              backgroundColor: '#FFFFFF',
+              border: '1px solid #E2E8F0',
+              backgroundColor: '#F8FAFC',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#475569',
+              color: '#64748B',
               cursor: 'pointer',
+              flexShrink: 0,
             }}
+            aria-label="Astrologer Info"
           >
-            <Info size={18} />
+            <Info size={17} />
           </button>
         </div>
       </div>
