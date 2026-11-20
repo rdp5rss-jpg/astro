@@ -5,19 +5,26 @@ import {
   Users, 
   Settings, 
   ArrowLeft,
-  Sparkles
+  Sparkles,
+  Phone,
+  Building,
+  DollarSign
 } from 'lucide-react';
 import AdminDashboard from './AdminDashboard';
+import AdminConsultations from './AdminConsultations';
 import AdminAstrologers from './AdminAstrologers';
+import AdminPayouts from './AdminPayouts';
 import AdminUsers from './AdminUsers';
 import AdminSettings from './AdminSettings';
 
 export default function AdminPanel({ onExitToUserApp }) {
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'astrologers' | 'users' | 'settings'
+  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'sessions' | 'astrologers' | 'payouts' | 'users' | 'settings'
 
   const tabs = [
     { id: 'overview', label: 'Metrics', icon: BarChart3 },
+    { id: 'sessions', label: 'Sessions', icon: Phone, badge: 'Live 3' },
     { id: 'astrologers', label: 'Gurus', icon: ShieldCheck },
+    { id: 'payouts', label: 'Payouts', icon: Building, badge: '2' },
     { id: 'users', label: 'Seekers', icon: Users },
     { id: 'settings', label: 'Config', icon: Settings },
   ];
@@ -27,87 +34,172 @@ export default function AdminPanel({ onExitToUserApp }) {
       style={{
         minHeight: '100vh',
         backgroundColor: '#F8FAFC',
-        background: 'radial-gradient(circle at 10% 10%, rgba(254, 243, 199, 0.45) 0%, transparent 40%), radial-gradient(circle at 90% 15%, rgba(219, 234, 254, 0.35) 0%, transparent 45%), #F8FAFC',
         color: '#1E1B4B',
         fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
       }}
     >
-      {/* Admin Top Header */}
+      {/* Admin Top Sticky Header */}
       <header
         style={{
           position: 'sticky',
           top: 0,
           zIndex: 40,
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
+          backgroundColor: '#FFFFFF',
           borderBottom: '1px solid #E2E8F0',
-          padding: '12px 16px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
         }}
       >
         <div
           style={{
             maxWidth: '520px',
             margin: '0 auto',
+            padding: '12px 16px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
           {/* Platform Identity */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div
               style={{
-                width: '34px',
-                height: '34px',
-                borderRadius: '10px',
+                width: '36px',
+                height: '36px',
+                borderRadius: '12px',
                 background: 'linear-gradient(135deg, #1E1B4B 0%, #312E81 100%)',
                 color: '#FFFFFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontWeight: '900',
-                fontSize: '15px',
+                fontSize: '16px',
                 boxShadow: '0 2px 8px rgba(30, 27, 75, 0.25)',
               }}
             >
               ⚡
             </div>
             <div>
-              <h2 style={{ fontSize: '15px', fontWeight: '900', color: '#1E1B4B', lineHeight: 1.1 }}>
-                BHAVISHYAA HQ
-              </h2>
-              <p style={{ fontSize: '10px', color: '#64748B', fontWeight: '700' }}>
-                Platform Admin Console
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <h2 style={{ fontSize: '15px', fontWeight: '900', color: '#1E1B4B', letterSpacing: '-0.3px', margin: 0 }}>
+                  BHAVISHYAA HQ
+                </h2>
+                <span
+                  style={{
+                    fontSize: '9px',
+                    fontWeight: '900',
+                    backgroundColor: '#1E1B4B',
+                    color: '#FFFFFF',
+                    padding: '2px 5px',
+                    borderRadius: '4px',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  ADMIN
+                </span>
+              </div>
+              <p style={{ fontSize: '11px', color: '#64748B', fontWeight: '600', margin: 0 }}>
+                Enterprise Platform Console
               </p>
             </div>
           </div>
 
           {/* Platform Status Pill */}
-          <span
-            style={{
-              padding: '6px 12px',
-              borderRadius: '999px',
-              backgroundColor: '#DCFCE7',
-              border: '1px solid #86EFAC',
-              color: '#15803D',
-              fontSize: '11px',
-              fontWeight: '800',
-            }}
-          >
-            ● Live HQ
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span
+              style={{
+                padding: '4px 10px',
+                borderRadius: '999px',
+                backgroundColor: '#DCFCE7',
+                border: '1px solid #86EFAC',
+                color: '#15803D',
+                fontSize: '11px',
+                fontWeight: '800',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+              }}
+            >
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#16A34A', display: 'inline-block' }} />
+              Live HQ
+            </span>
+          </div>
+        </div>
+
+        {/* Horizontal Scrolling Pill Sub-Navigation */}
+        <div
+          style={{
+            maxWidth: '520px',
+            margin: '0 auto',
+            padding: '0 12px 10px',
+            display: 'flex',
+            gap: '6px',
+            overflowX: 'auto',
+            scrollbarWidth: 'none',
+          }}
+        >
+          {tabs.map((tab) => {
+            const isSelected = activeTab === tab.id;
+            const Icon = tab.icon;
+
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '7px 12px',
+                  borderRadius: '12px',
+                  border: isSelected ? '1.5px solid #1E1B4B' : '1.5px solid #E2E8F0',
+                  backgroundColor: isSelected ? '#1E1B4B' : '#FFFFFF',
+                  color: isSelected ? '#FFFFFF' : '#64748B',
+                  fontSize: '12px',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  transition: 'all 0.15s ease',
+                  flexShrink: 0,
+                }}
+              >
+                <Icon size={14} color={isSelected ? '#FFFFFF' : '#64748B'} />
+                <span>{tab.label}</span>
+                {tab.badge && (
+                  <span
+                    style={{
+                      fontSize: '9px',
+                      fontWeight: '900',
+                      padding: '1px 5px',
+                      borderRadius: '999px',
+                      backgroundColor: isSelected ? '#C85A32' : tab.badge.startsWith('Live') ? '#DCFCE7' : '#FEF3C7',
+                      color: isSelected ? '#FFFFFF' : tab.badge.startsWith('Live') ? '#15803D' : '#92400E',
+                    }}
+                  >
+                    {tab.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <main style={{ maxWidth: '520px', margin: '0 auto', padding: '16px 16px 0' }}>
+      {/* Main Content Viewport */}
+      <main style={{ maxWidth: '520px', margin: '0 auto', padding: '16px 16px 20px' }}>
         {activeTab === 'overview' && (
           <AdminDashboard onNavigateTab={(tab) => setActiveTab(tab)} />
         )}
 
+        {activeTab === 'sessions' && (
+          <AdminConsultations />
+        )}
+
         {activeTab === 'astrologers' && (
           <AdminAstrologers />
+        )}
+
+        {activeTab === 'payouts' && (
+          <AdminPayouts />
         )}
 
         {activeTab === 'users' && (
@@ -119,11 +211,11 @@ export default function AdminPanel({ onExitToUserApp }) {
         )}
       </main>
 
-      {/* Bottom Admin Navigation Bar */}
+      {/* Bottom Floating Navigation Dock */}
       <nav
         style={{
           position: 'fixed',
-          bottom: '14px',
+          bottom: '12px',
           left: 0,
           right: 0,
           maxWidth: '480px',
@@ -135,17 +227,15 @@ export default function AdminPanel({ onExitToUserApp }) {
       >
         <div
           style={{
-            borderRadius: '36px',
-            height: '66px',
+            borderRadius: '28px',
+            height: '62px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-around',
             padding: '0 8px',
-            boxShadow: '0 12px 36px rgba(0, 0, 0, 0.12)',
-            backgroundColor: 'rgba(255, 255, 255, 0.96)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1.5px solid rgba(255, 255, 255, 0.95)',
+            boxShadow: '0 12px 30px rgba(0, 0, 0, 0.15)',
+            backgroundColor: '#FFFFFF',
+            border: '1.5px solid #E2E8F0',
             pointerEvents: 'auto',
           }}
         >
@@ -161,24 +251,37 @@ export default function AdminPanel({ onExitToUserApp }) {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '3px',
+                  gap: '2px',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
-                  color: isSelected ? '#1E1B4B' : '#94A3B8',
-                  padding: '6px 14px',
+                  color: isSelected ? '#C85A32' : '#94A3B8',
+                  padding: '6px 8px',
                   transition: 'all 0.15s ease',
+                  position: 'relative',
                 }}
               >
-                <Icon size={20} color={isSelected ? '#1E1B4B' : '#94A3B8'} strokeWidth={isSelected ? 2.5 : 2} />
+                <Icon size={18} color={isSelected ? '#C85A32' : '#94A3B8'} strokeWidth={isSelected ? 2.5 : 2} />
                 <span
                   style={{
-                    fontSize: '11px',
-                    fontWeight: isSelected ? '800' : '600',
+                    fontSize: '10px',
+                    fontWeight: isSelected ? '900' : '600',
                   }}
                 >
                   {tab.label}
                 </span>
+                {isSelected && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      bottom: '2px',
+                      width: '4px',
+                      height: '4px',
+                      borderRadius: '50%',
+                      backgroundColor: '#C85A32',
+                    }}
+                  />
+                )}
               </button>
             );
           })}
