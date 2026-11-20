@@ -4,11 +4,8 @@ import {
   ShieldCheck, 
   Users, 
   Settings, 
-  ArrowLeft,
-  Sparkles,
-  Phone,
-  Building,
-  DollarSign
+  Phone, 
+  Building
 } from 'lucide-react';
 import AdminDashboard from './AdminDashboard';
 import AdminConsultations from './AdminConsultations';
@@ -29,24 +26,26 @@ export default function AdminPanel({ onExitToUserApp }) {
     { id: 'settings', label: 'Config', icon: Settings },
   ];
 
+  const currentTab = tabs.find(t => t.id === activeTab);
+
   return (
     <div
       style={{
         minHeight: '100vh',
         backgroundColor: '#F8FAFC',
-        color: '#1E1B4B',
-        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+        color: '#0F172A',
+        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* Admin Top Sticky Header */}
+      {/* Clean & Light Top Header */}
       <header
         style={{
           position: 'sticky',
           top: 0,
           zIndex: 40,
-          backgroundColor: '#FFFFFF',
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(8px)',
           borderBottom: '1px solid #E2E8F0',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
         }}
       >
         <div
@@ -63,129 +62,54 @@ export default function AdminPanel({ onExitToUserApp }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div
               style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '12px',
-                background: 'linear-gradient(135deg, #1E1B4B 0%, #312E81 100%)',
+                width: '32px',
+                height: '32px',
+                borderRadius: '10px',
+                backgroundColor: '#C85A32',
                 color: '#FFFFFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontWeight: '900',
-                fontSize: '16px',
-                boxShadow: '0 2px 8px rgba(30, 27, 75, 0.25)',
+                fontWeight: '700',
+                fontSize: '14px',
               }}
             >
-              ⚡
+              🕉️
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <h2 style={{ fontSize: '15px', fontWeight: '900', color: '#1E1B4B', letterSpacing: '-0.3px', margin: 0 }}>
+                <h1 style={{ fontSize: '15px', fontWeight: '700', color: '#0F172A', margin: 0, letterSpacing: '-0.2px' }}>
                   BHAVISHYAA HQ
-                </h2>
+                </h1>
                 <span
                   style={{
-                    fontSize: '9px',
-                    fontWeight: '900',
-                    backgroundColor: '#1E1B4B',
-                    color: '#FFFFFF',
-                    padding: '2px 5px',
+                    fontSize: '10px',
+                    fontWeight: '600',
+                    backgroundColor: '#F1F5F9',
+                    color: '#475569',
+                    padding: '1px 6px',
                     borderRadius: '4px',
-                    letterSpacing: '0.5px',
                   }}
                 >
-                  ADMIN
+                  Admin
                 </span>
               </div>
-              <p style={{ fontSize: '11px', color: '#64748B', fontWeight: '600', margin: 0 }}>
-                Enterprise Platform Console
+              <p style={{ fontSize: '11px', color: '#64748B', margin: 0, fontWeight: '400' }}>
+                {currentTab?.label || 'Console'} Management
               </p>
             </div>
           </div>
 
-          {/* Platform Status Pill */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span
-              style={{
-                padding: '4px 10px',
-                borderRadius: '999px',
-                backgroundColor: '#DCFCE7',
-                border: '1px solid #86EFAC',
-                color: '#15803D',
-                fontSize: '11px',
-                fontWeight: '800',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '5px',
-              }}
-            >
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#16A34A', display: 'inline-block' }} />
-              Live HQ
-            </span>
+          {/* Simple Light Status Pill */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '4px 9px', borderRadius: '999px', backgroundColor: '#F0FDF4', border: '1px solid #DCFCE7' }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#16A34A', display: 'inline-block' }} />
+            <span style={{ fontSize: '11px', fontWeight: '600', color: '#15803D' }}>Live HQ</span>
           </div>
-        </div>
-
-        {/* Horizontal Scrolling Pill Sub-Navigation */}
-        <div
-          style={{
-            maxWidth: '520px',
-            margin: '0 auto',
-            padding: '0 12px 10px',
-            display: 'flex',
-            gap: '6px',
-            overflowX: 'auto',
-            scrollbarWidth: 'none',
-          }}
-        >
-          {tabs.map((tab) => {
-            const isSelected = activeTab === tab.id;
-            const Icon = tab.icon;
-
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '7px 12px',
-                  borderRadius: '12px',
-                  border: isSelected ? '1.5px solid #1E1B4B' : '1.5px solid #E2E8F0',
-                  backgroundColor: isSelected ? '#1E1B4B' : '#FFFFFF',
-                  color: isSelected ? '#FFFFFF' : '#64748B',
-                  fontSize: '12px',
-                  fontWeight: '800',
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.15s ease',
-                  flexShrink: 0,
-                }}
-              >
-                <Icon size={14} color={isSelected ? '#FFFFFF' : '#64748B'} />
-                <span>{tab.label}</span>
-                {tab.badge && (
-                  <span
-                    style={{
-                      fontSize: '9px',
-                      fontWeight: '900',
-                      padding: '1px 5px',
-                      borderRadius: '999px',
-                      backgroundColor: isSelected ? '#C85A32' : tab.badge.startsWith('Live') ? '#DCFCE7' : '#FEF3C7',
-                      color: isSelected ? '#FFFFFF' : tab.badge.startsWith('Live') ? '#15803D' : '#92400E',
-                    }}
-                  >
-                    {tab.badge}
-                  </span>
-                )}
-              </button>
-            );
-          })}
         </div>
       </header>
 
       {/* Main Content Viewport */}
-      <main style={{ maxWidth: '520px', margin: '0 auto', padding: '16px 16px 20px' }}>
+      <main style={{ maxWidth: '520px', margin: '0 auto', padding: '16px 16px 90px' }}>
         {activeTab === 'overview' && (
           <AdminDashboard onNavigateTab={(tab) => setActiveTab(tab)} />
         )}
@@ -211,14 +135,14 @@ export default function AdminPanel({ onExitToUserApp }) {
         )}
       </main>
 
-      {/* Bottom Floating Navigation Dock */}
+      {/* Light & Clean Bottom Navigation Dock */}
       <nav
         style={{
           position: 'fixed',
           bottom: '12px',
           left: 0,
           right: 0,
-          maxWidth: '480px',
+          maxWidth: '460px',
           margin: '0 auto',
           padding: '0 16px',
           zIndex: 50,
@@ -227,15 +151,15 @@ export default function AdminPanel({ onExitToUserApp }) {
       >
         <div
           style={{
-            borderRadius: '28px',
-            height: '62px',
+            borderRadius: '24px',
+            height: '58px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-around',
-            padding: '0 8px',
-            boxShadow: '0 12px 30px rgba(0, 0, 0, 0.15)',
+            padding: '0 6px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.07)',
             backgroundColor: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
+            border: '1px solid #E2E8F0',
             pointerEvents: 'auto',
           }}
         >
@@ -255,17 +179,31 @@ export default function AdminPanel({ onExitToUserApp }) {
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
-                  color: isSelected ? '#C85A32' : '#94A3B8',
+                  color: isSelected ? '#C85A32' : '#64748B',
                   padding: '6px 8px',
-                  transition: 'all 0.15s ease',
                   position: 'relative',
                 }}
               >
-                <Icon size={18} color={isSelected ? '#C85A32' : '#94A3B8'} strokeWidth={isSelected ? 2.5 : 2} />
+                <div style={{ position: 'relative' }}>
+                  <Icon size={18} color={isSelected ? '#C85A32' : '#64748B'} strokeWidth={isSelected ? 2.2 : 1.7} />
+                  {tab.badge && !isSelected && (
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '-3px',
+                        right: '-5px',
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        backgroundColor: tab.id === 'sessions' ? '#16A34A' : '#D97706',
+                      }}
+                    />
+                  )}
+                </div>
                 <span
                   style={{
                     fontSize: '10px',
-                    fontWeight: isSelected ? '900' : '600',
+                    fontWeight: isSelected ? '700' : '500',
                   }}
                 >
                   {tab.label}

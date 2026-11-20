@@ -8,159 +8,114 @@ import {
   MessageSquare, 
   Phone, 
   ArrowUpRight,
-  Calendar,
-  AlertTriangle,
   Clock,
-  Gem,
-  CheckCircle2,
-  Bell,
   Sliders,
-  DollarSign
+  DollarSign,
+  AlertCircle
 } from 'lucide-react';
 import { astrologers } from '../data/astrologers';
 
 export default function AdminDashboard({ onNavigateTab }) {
   const liveSessions = [
-    { id: 'sess-1', astro: 'Acharya Rudranand Shastri', seeker: 'Mahi Sharma', type: 'Call', duration: '09:14', amount: '₹315', status: 'Live' },
-    { id: 'sess-2', astro: 'Mehak Sharma', seeker: 'Ankit Tiwari', type: 'Chat', duration: '04:45', amount: '₹125', status: 'Live' },
-    { id: 'sess-3', astro: 'Dr. Preeti Ganguly', seeker: 'Sneha Patel', type: 'Call', duration: '03:10', amount: '₹70', status: 'Live' },
+    { id: 'sess-1', astro: 'Acharya Rudranand', seeker: 'Mahi Sharma', type: 'Call', duration: '09:14', amount: '₹315' },
+    { id: 'sess-2', astro: 'Mehak Sharma', seeker: 'Ankit Tiwari', type: 'Chat', duration: '04:45', amount: '₹125' },
+    { id: 'sess-3', astro: 'Dr. Preeti Ganguly', seeker: 'Sneha Patel', type: 'Call', duration: '03:10', amount: '₹70' },
   ];
 
   const recentRecharges = [
-    { id: 'rech-1', user: 'Mahi Sharma', amount: '₹500', bonus: '+₹150', total: '₹650', time: '12 mins ago', method: 'UPI' },
-    { id: 'rech-2', user: 'Vikram Joshi', amount: '₹1000', bonus: '+₹350', total: '₹1350', time: '28 mins ago', method: 'GPay' },
-    { id: 'rech-3', user: 'Pooja Hegde', amount: '₹250', bonus: '+₹65', total: '₹315', time: '1 hour ago', method: 'NetBanking' },
-  ];
-
-  const quickAlerts = [
-    { id: 'alt-1', type: 'payout', text: 'Acharya Rudranand requested ₹24,850 bank payout', action: 'payouts' },
-    { id: 'alt-2', type: 'guru', text: '2 new astrologer onboarding applications awaiting review', action: 'astrologers' },
+    { id: 'rech-1', user: 'Mahi Sharma', amount: '₹500', time: '12m ago', method: 'UPI' },
+    { id: 'rech-2', user: 'Vikram Joshi', amount: '₹1000', time: '28m ago', method: 'GPay' },
+    { id: 'rech-3', user: 'Pooja Hegde', amount: '₹250', time: '1h ago', method: 'Card' },
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', paddingBottom: '90px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-      {/* System Status Strip */}
-      <div
-        style={{
-          borderRadius: '18px',
-          padding: '12px 16px',
-          backgroundColor: '#FFFFFF',
-          border: '1.5px solid #BBF7D0',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ width: '9px', height: '9px', borderRadius: '50%', backgroundColor: '#10B981', display: 'inline-block', boxShadow: '0 0 8px #10B981' }} />
-          <span style={{ fontSize: '13px', fontWeight: '800', color: '#166534' }}>
-            BHAVISHYAA Core Engine: All Nodes Live
-          </span>
-        </div>
-        <span style={{ fontSize: '11px', color: '#15803D', fontWeight: '800', backgroundColor: '#DCFCE7', padding: '3px 8px', borderRadius: '999px' }}>
-          99.98% Uptime
-        </span>
-      </div>
-
-      {/* 4 Executive KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      {/* 4 Clean Metric Cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
         {/* Gross Volume */}
         <div
           style={{
-            padding: '16px',
-            borderRadius: '20px',
+            padding: '14px',
+            borderRadius: '16px',
             backgroundColor: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+            border: '1px solid #E2E8F0',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B', textTransform: 'uppercase' }}>Gross Volume</span>
-            <span style={{ fontSize: '10px', fontWeight: '800', color: '#15803D', backgroundColor: '#DCFCE7', padding: '2px 6px', borderRadius: '6px' }}>+34%</span>
+            <span style={{ fontSize: '11px', fontWeight: '600', color: '#64748B' }}>Gross Billed</span>
+            <span style={{ fontSize: '10px', fontWeight: '600', color: '#16A34A', backgroundColor: '#F0FDF4', padding: '1px 5px', borderRadius: '4px' }}>+34%</span>
           </div>
-          <div style={{ fontSize: '24px', fontWeight: '900', color: '#1E1B4B', marginTop: '6px' }}>
+          <div style={{ fontSize: '20px', fontWeight: '700', color: '#0F172A', marginTop: '4px' }}>
             ₹3,42,850
           </div>
-          <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
-            Total GMV Billed
-          </div>
+          <span style={{ fontSize: '11px', color: '#94A3B8' }}>Total consultations</span>
         </div>
 
         {/* Platform Net Commission */}
         <div
           style={{
-            padding: '16px',
-            borderRadius: '20px',
+            padding: '14px',
+            borderRadius: '16px',
             backgroundColor: '#FFFFFF',
-            border: '1.5px solid #FED7AA',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+            border: '1px solid #E2E8F0',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '11px', fontWeight: '800', color: '#C85A32', textTransform: 'uppercase' }}>Platform Share (20%)</span>
-            <Sparkles size={14} color="#C85A32" />
+            <span style={{ fontSize: '11px', fontWeight: '600', color: '#64748B' }}>Platform (20%)</span>
+            <Sparkles size={13} color="#C85A32" />
           </div>
-          <div style={{ fontSize: '24px', fontWeight: '900', color: '#C85A32', marginTop: '6px' }}>
+          <div style={{ fontSize: '20px', fontWeight: '700', color: '#C85A32', marginTop: '4px' }}>
             ₹68,570
           </div>
-          <div style={{ fontSize: '11px', color: '#9A3412', marginTop: '2px' }}>
-            Net Platform Revenue
-          </div>
+          <span style={{ fontSize: '11px', color: '#94A3B8' }}>Net HQ revenue</span>
         </div>
 
-        {/* Live Active Sessions */}
+        {/* Active Calls */}
         <div
           style={{
-            padding: '16px',
-            borderRadius: '20px',
+            padding: '14px',
+            borderRadius: '16px',
             backgroundColor: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+            border: '1px solid #E2E8F0',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B', textTransform: 'uppercase' }}>Active Calls & Chats</span>
-            <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+            <span style={{ fontSize: '11px', fontWeight: '600', color: '#64748B' }}>Live Sessions</span>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#16A34A' }} />
           </div>
-          <div style={{ fontSize: '24px', fontWeight: '900', color: '#166534', marginTop: '6px' }}>
-            {liveSessions.length} Live
+          <div style={{ fontSize: '20px', fontWeight: '700', color: '#15803D', marginTop: '4px' }}>
+            {liveSessions.length} Active
           </div>
-          <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
-            In-progress consultations
-          </div>
+          <span style={{ fontSize: '11px', color: '#94A3B8' }}>Realtime audio & chat</span>
         </div>
 
-        {/* Verified Astrologers */}
+        {/* Active Astrologers */}
         <div
           style={{
-            padding: '16px',
-            borderRadius: '20px',
+            padding: '14px',
+            borderRadius: '16px',
             backgroundColor: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+            border: '1px solid #E2E8F0',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B', textTransform: 'uppercase' }}>Vetted Astrologers</span>
-            <ShieldCheck size={15} color="#2563EB" />
+            <span style={{ fontSize: '11px', fontWeight: '600', color: '#64748B' }}>Astrologers</span>
+            <ShieldCheck size={13} color="#2563EB" />
           </div>
-          <div style={{ fontSize: '24px', fontWeight: '900', color: '#1E1B4B', marginTop: '6px' }}>
-            {astrologers.length} Active
+          <div style={{ fontSize: '20px', fontWeight: '700', color: '#0F172A', marginTop: '4px' }}>
+            {astrologers.length} Registered
           </div>
-          <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
-            {astrologers.filter(a => a.isOnline).length} currently online
-          </div>
+          <span style={{ fontSize: '11px', color: '#94A3B8' }}>{astrologers.filter(a => a.isOnline).length} online now</span>
         </div>
       </div>
 
       {/* Quick Action Navigation Buttons */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
         {[
-          { label: 'Live Sessions', tab: 'sessions', icon: Phone, color: '#2563EB', bg: '#EFF6FF' },
-          { label: 'Approve Payouts', tab: 'payouts', icon: DollarSign, color: '#166534', bg: '#DCFCE7' },
-          { label: 'Manage Gurus', tab: 'astrologers', icon: ShieldCheck, color: '#C85A32', bg: '#FFF7ED' },
-          { label: 'Platform Config', tab: 'settings', icon: Sliders, color: '#7C3AED', bg: '#F5F3FF' },
+          { label: 'Sessions', tab: 'sessions', icon: Phone, color: '#2563EB' },
+          { label: 'Payouts', tab: 'payouts', icon: DollarSign, color: '#15803D' },
+          { label: 'Gurus', tab: 'astrologers', icon: ShieldCheck, color: '#C85A32' },
+          { label: 'Config', tab: 'settings', icon: Sliders, color: '#7C3AED' },
         ].map(btn => {
           const Icon = btn.icon;
           return (
@@ -171,16 +126,16 @@ export default function AdminDashboard({ onNavigateTab }) {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '6px',
-                padding: '12px 6px',
-                borderRadius: '16px',
-                backgroundColor: btn.bg,
-                border: '1px solid rgba(0,0,0,0.04)',
+                gap: '5px',
+                padding: '10px 4px',
+                borderRadius: '14px',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #E2E8F0',
                 cursor: 'pointer',
               }}
             >
-              <Icon size={18} color={btn.color} />
-              <span style={{ fontSize: '11px', fontWeight: '800', color: '#1E1B4B', textAlign: 'center' }}>
+              <Icon size={16} color={btn.color} />
+              <span style={{ fontSize: '11px', fontWeight: '600', color: '#334155' }}>
                 {btn.label}
               </span>
             </button>
@@ -188,68 +143,54 @@ export default function AdminDashboard({ onNavigateTab }) {
         })}
       </div>
 
-      {/* Actionable Pending Alerts */}
-      <div style={{ backgroundColor: '#FFFBEB', borderRadius: '18px', padding: '14px 16px', border: '1.5px solid #FDE68A' }}>
-        <h4 style={{ fontSize: '13px', fontWeight: '900', color: '#92400E', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-          <AlertTriangle size={15} color="#D97706" />
-          <span>Pending Management Actions</span>
-        </h4>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {quickAlerts.map(alt => (
-            <div
-              key={alt.id}
-              onClick={() => onNavigateTab && onNavigateTab(alt.action)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '8px 12px',
-                borderRadius: '12px',
-                backgroundColor: '#FFFFFF',
-                border: '1px solid #FCD34D',
-                cursor: 'pointer',
-              }}
-            >
-              <span style={{ fontSize: '12px', fontWeight: '700', color: '#78350F' }}>
-                {alt.text}
-              </span>
-              <span style={{ fontSize: '11px', fontWeight: '800', color: '#C85A32', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                Resolve <ArrowUpRight size={13} />
-              </span>
-            </div>
-          ))}
+      {/* Actionable Pending Item */}
+      <div
+        onClick={() => onNavigateTab && onNavigateTab('payouts')}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '10px 14px',
+          borderRadius: '14px',
+          backgroundColor: '#FFFBEB',
+          border: '1px solid #FEF3C7',
+          cursor: 'pointer',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <AlertCircle size={15} color="#D97706" />
+          <span style={{ fontSize: '12px', fontWeight: '600', color: '#92400E' }}>
+            2 payout requests waiting for approval
+          </span>
         </div>
+        <span style={{ fontSize: '11px', fontWeight: '700', color: '#C85A32', display: 'flex', alignItems: 'center', gap: '2px' }}>
+          Review <ArrowUpRight size={13} />
+        </span>
       </div>
 
-      {/* Live Consultations Pulse */}
-      <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '16px', border: '1.5px solid #E2E8F0', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-          <div>
-            <h3 style={{ fontSize: '15px', fontWeight: '900', color: '#1E1B4B' }}>
-              Live Consultation Pulse
-            </h3>
-            <p style={{ fontSize: '11px', color: '#64748B' }}>
-              Real-time active voice and chat sessions
-            </p>
-          </div>
+      {/* Live Sessions List */}
+      <div style={{ backgroundColor: '#FFFFFF', borderRadius: '16px', padding: '14px', border: '1px solid #E2E8F0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+          <h3 style={{ fontSize: '13px', fontWeight: '700', color: '#0F172A', margin: 0 }}>
+            Live Consultations
+          </h3>
           <button
             onClick={() => onNavigateTab && onNavigateTab('sessions')}
             style={{
-              padding: '6px 12px',
-              borderRadius: '10px',
-              backgroundColor: '#F8FAFC',
-              border: '1px solid #E2E8F0',
+              background: 'none',
+              border: 'none',
               fontSize: '11px',
-              fontWeight: '800',
+              fontWeight: '600',
               color: '#C85A32',
               cursor: 'pointer',
+              padding: 0,
             }}
           >
-            View All ({liveSessions.length})
+            View All →
           </button>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {liveSessions.map(sess => (
             <div
               key={sess.id}
@@ -257,75 +198,44 @@ export default function AdminDashboard({ onNavigateTab }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '12px 14px',
-                borderRadius: '14px',
+                padding: '9px 12px',
+                borderRadius: '12px',
                 backgroundColor: '#F8FAFC',
-                border: '1px solid #E2E8F0',
+                border: '1px solid #F1F5F9',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '10px',
-                    backgroundColor: sess.type === 'Call' ? '#EFF6FF' : '#F5F3FF',
-                    color: sess.type === 'Call' ? '#2563EB' : '#7C3AED',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {sess.type === 'Call' ? <Phone size={15} /> : <MessageSquare size={15} />}
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '12px', color: sess.type === 'Call' ? '#2563EB' : '#7C3AED' }}>
+                  {sess.type === 'Call' ? '📞' : '💬'}
+                </span>
                 <div>
-                  <h4 style={{ fontSize: '13px', fontWeight: '800', color: '#1E1B4B' }}>
+                  <div style={{ fontSize: '12px', fontWeight: '600', color: '#0F172A' }}>
                     {sess.seeker} ↔ {sess.astro}
-                  </h4>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
-                    <span style={{ color: '#166534', fontWeight: '800' }}>● {sess.duration}</span>
-                    <span>Accrued: {sess.amount}</span>
+                  </div>
+                  <div style={{ fontSize: '10px', color: '#64748B' }}>
+                    {sess.duration} elapsed • {sess.amount}
                   </div>
                 </div>
               </div>
 
-              <button
-                onClick={() => onNavigateTab && onNavigateTab('sessions')}
-                style={{
-                  padding: '6px 10px',
-                  borderRadius: '10px',
-                  backgroundColor: '#FFFFFF',
-                  border: '1px solid #CBD5E1',
-                  fontSize: '11px',
-                  fontWeight: '800',
-                  color: '#475569',
-                  cursor: 'pointer',
-                }}
-              >
-                Inspect
-              </button>
+              <span style={{ fontSize: '10px', fontWeight: '600', color: '#16A34A', backgroundColor: '#F0FDF4', padding: '2px 6px', borderRadius: '4px' }}>
+                Live
+              </span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Recent Seeker Wallet Recharges */}
-      <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '16px', border: '1.5px solid #E2E8F0', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-          <div>
-            <h3 style={{ fontSize: '15px', fontWeight: '900', color: '#1E1B4B' }}>
-              Recent Wallet Inflows
-            </h3>
-            <p style={{ fontSize: '11px', color: '#64748B' }}>
-              Real-time payment gateway transactions
-            </p>
-          </div>
-          <span style={{ fontSize: '11px', fontWeight: '800', color: '#15803D' }}>
-            Razorpay UPI Active
-          </span>
+      {/* Recent Inflows */}
+      <div style={{ backgroundColor: '#FFFFFF', borderRadius: '16px', padding: '14px', border: '1px solid #E2E8F0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+          <h3 style={{ fontSize: '13px', fontWeight: '700', color: '#0F172A', margin: 0 }}>
+            Recent Recharges
+          </h3>
+          <span style={{ fontSize: '10px', color: '#64748B' }}>Razorpay UPI</span>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
           {recentRecharges.map(rech => (
             <div
               key={rech.id}
@@ -333,21 +243,16 @@ export default function AdminDashboard({ onNavigateTab }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '10px 12px',
-                borderRadius: '12px',
+                padding: '8px 10px',
+                borderRadius: '10px',
                 backgroundColor: '#F8FAFC',
-                border: '1px solid #F1F5F9',
               }}
             >
               <div>
-                <h4 style={{ fontSize: '13px', fontWeight: '800', color: '#1E1B4B' }}>{rech.user}</h4>
-                <p style={{ fontSize: '11px', color: '#64748B' }}>{rech.time} via {rech.method}</p>
+                <div style={{ fontSize: '12px', fontWeight: '600', color: '#0F172A' }}>{rech.user}</div>
+                <div style={{ fontSize: '10px', color: '#94A3B8' }}>{rech.time} via {rech.method}</div>
               </div>
-
-              <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: '14px', fontWeight: '900', color: '#166534' }}>{rech.amount}</span>
-                <span style={{ fontSize: '10px', color: '#C85A32', fontWeight: '800', display: 'block' }}>{rech.bonus} bonus</span>
-              </div>
+              <span style={{ fontSize: '13px', fontWeight: '700', color: '#15803D' }}>{rech.amount}</span>
             </div>
           ))}
         </div>
