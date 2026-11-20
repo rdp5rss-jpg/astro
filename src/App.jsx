@@ -126,10 +126,6 @@ export default function App() {
         onOpenWallet={() => setIsWalletOpen(true)}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
         onOpenProfile={() => setIsWalletOpen(true)}
-        onGoToSplash={() => setActiveScreen('splash')}
-        onGoToLogin={() => setActiveScreen('login')}
-        onGoToWelcome={() => setActiveScreen('welcome')}
-        onGoToOnboarding={() => setActiveScreen('onboarding')}
       />
 
       {/* Main Content Area */}
