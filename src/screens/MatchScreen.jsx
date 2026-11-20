@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Check, X } from 'lucide-react';
 
-export default function MatchScreen({ onComplete, seekerName = 'Mahi' }) {
+export default function MatchScreen({ onComplete, seekerName = 'Seeker', seekerData }) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
+  const birthDesc = seekerData?.birthDay && seekerData?.birthMonth && seekerData?.birthYear
+    ? `${seekerData.birthDay} ${seekerData.birthMonth} ${seekerData.birthYear} · ${seekerData.birthCity || 'Kundli'}`
+    : 'Aligning planetary birth coordinates...';
+
+  const topicDesc = seekerData?.subTopic || seekerData?.topic || 'Synthesizing your primary intention...';
+
+  const langDesc = seekerData?.languages && seekerData.languages.length > 0
+    ? seekerData.languages.join(' · ')
+    : 'Matching certified linguistic affinity...';
+
   const steps = [
-    { title: 'Reading your birth chart', desc: '14 October 1980 · New Delhi, India' },
-    { title: 'Focusing on what\'s on your mind', desc: 'Career & Promotions' },
-    { title: 'Shortlisting astrologers who speak', desc: 'English · हिंदी' },
+    { title: 'Reading your birth chart', desc: birthDesc },
+    { title: 'Focusing on what\'s on your mind', desc: topicDesc },
+    { title: 'Shortlisting astrologers who speak', desc: langDesc },
     { title: 'Checking who\'s available right now', desc: '12 online' },
     { title: 'Picking your best match', desc: 'Best fit for you' },
   ];

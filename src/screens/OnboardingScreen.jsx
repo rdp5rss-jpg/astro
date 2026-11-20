@@ -19,30 +19,31 @@ import {
   X
 } from 'lucide-react';
 import MatchScreen from './MatchScreen';
+import { DateWheelPicker, TimeWheelPicker } from '../components/VedicWheelPicker';
 
 export default function OnboardingScreen({ onFinish, onSignOut }) {
   const [step, setStep] = useState(1);
   const [subStep, setSubStep] = useState(null); // for category drills (e.g. 'money', 'marriage', 'health', 'career')
   const [showMatch, setShowMatch] = useState(false);
 
-  // Form State
+  // Form State - Empty by default (no autofill)
   const [formData, setFormData] = useState({
-    name: 'Mahi',
-    gender: 'Female',
-    topic: 'Career',
-    subTopic: 'A job change or promotion',
-    experience: 'Yes, once or twice',
-    birthDay: '14',
-    birthMonth: 'October',
-    birthYear: '1980',
-    birthHour: '12',
-    birthMinute: '00',
+    name: '',
+    gender: '',
+    topic: '',
+    subTopic: '',
+    experience: '',
+    birthDay: '',
+    birthMonth: '',
+    birthYear: '',
+    birthHour: '',
+    birthMinute: '',
     birthAmPm: 'AM',
     unknownTime: false,
-    birthCity: 'New Delhi, India',
-    currentCity: 'Bangalore, India',
-    languages: ['English', 'हिंदी'],
-    referral: 'Instagram',
+    birthCity: '',
+    currentCity: '',
+    languages: [],
+    referral: '',
   });
 
   const totalSteps = 9;
@@ -164,7 +165,7 @@ export default function OnboardingScreen({ onFinish, onSignOut }) {
   };
 
   if (showMatch) {
-    return <MatchScreen seekerName={formData.name || 'Mahi'} onComplete={onFinish} />;
+    return <MatchScreen seekerName={formData.name.trim() || 'Seeker'} seekerData={formData} onComplete={() => onFinish(formData)} />;
   }
 
   return (
@@ -518,99 +519,35 @@ export default function OnboardingScreen({ onFinish, onSignOut }) {
                 When were you born?
               </h1>
 
-              {/* Date of birth wheel capsule */}
+              {/* Date of birth wheel capsule matching WhatsApp reference */}
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ fontSize: '13px', fontWeight: '700', color: '#64748B', marginBottom: '8px', display: 'block' }}>
                   Date of birth
                 </label>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-around',
-                  padding: '16px',
-                  borderRadius: '35px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                  border: '1.5px solid #E2E8F0',
-                  boxShadow: '0 4px 15px rgba(0,0,0,0.03)'
-                }}>
-                  <select
-                    value={formData.birthDay}
-                    onChange={(e) => setFormData({ ...formData, birthDay: e.target.value })}
-                    style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
-                  >
-                    {[...Array(31)].map((_, i) => (
-                      <option key={i+1} value={String(i+1)}>{i+1}</option>
-                    ))}
-                  </select>
-
-                  <select
-                    value={formData.birthMonth}
-                    onChange={(e) => setFormData({ ...formData, birthMonth: e.target.value })}
-                    style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
-                  >
-                    {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(m => (
-                      <option key={m} value={m}>{m}</option>
-                    ))}
-                  </select>
-
-                  <select
-                    value={formData.birthYear}
-                    onChange={(e) => setFormData({ ...formData, birthYear: e.target.value })}
-                    style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
-                  >
-                    {[...Array(70)].map((_, i) => {
-                      const yr = 2010 - i;
-                      return <option key={yr} value={String(yr)}>{yr}</option>;
-                    })}
-                  </select>
-                </div>
+                <DateWheelPicker
+                  day={formData.birthDay}
+                  month={formData.birthMonth}
+                  year={formData.birthYear}
+                  onDayChange={(d) => setFormData(prev => ({ ...prev, birthDay: d }))}
+                  onMonthChange={(m) => setFormData(prev => ({ ...prev, birthMonth: m }))}
+                  onYearChange={(y) => setFormData(prev => ({ ...prev, birthYear: y }))}
+                />
               </div>
 
-              {/* Time of birth wheel capsule */}
+              {/* Time of birth wheel capsule matching WhatsApp reference */}
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ fontSize: '13px', fontWeight: '700', color: '#64748B', marginBottom: '8px', display: 'block' }}>
                   Time of birth
                 </label>
                 {!formData.unknownTime && (
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-around',
-                    padding: '16px',
-                    borderRadius: '35px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                    border: '1.5px solid #E2E8F0',
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.03)'
-                  }}>
-                    <select
-                      value={formData.birthHour}
-                      onChange={(e) => setFormData({ ...formData, birthHour: e.target.value })}
-                      style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
-                    >
-                      {[...Array(12)].map((_, i) => (
-                        <option key={i+1} value={String(i+1).padStart(2, '0')}>{String(i+1).padStart(2, '0')}</option>
-                      ))}
-                    </select>
-                    <span>:</span>
-                    <select
-                      value={formData.birthMinute}
-                      onChange={(e) => setFormData({ ...formData, birthMinute: e.target.value })}
-                      style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
-                    >
-                      {['00', '15', '30', '45'].map(m => (
-                        <option key={m} value={m}>{m}</option>
-                      ))}
-                    </select>
-
-                    <select
-                      value={formData.birthAmPm}
-                      onChange={(e) => setFormData({ ...formData, birthAmPm: e.target.value })}
-                      style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
-                    >
-                      <option value="AM">AM</option>
-                      <option value="PM">PM</option>
-                    </select>
-                  </div>
+                  <TimeWheelPicker
+                    hour={formData.birthHour}
+                    minute={formData.birthMinute}
+                    ampm={formData.birthAmPm}
+                    onHourChange={(h) => setFormData(prev => ({ ...prev, birthHour: h }))}
+                    onMinuteChange={(m) => setFormData(prev => ({ ...prev, birthMinute: m }))}
+                    onAmPmChange={(a) => setFormData(prev => ({ ...prev, birthAmPm: a }))}
+                  />
                 )}
               </div>
 
