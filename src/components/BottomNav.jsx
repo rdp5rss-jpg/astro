@@ -6,22 +6,15 @@ export default function BottomNav({
   onTabChange, 
   onSelectTab, 
   onOpenMatchmaker,
-  onCenterStarClick 
 }) {
   const handleTab = (id, key) => {
     if (onTabChange) onTabChange(id);
     if (onSelectTab) onSelectTab(key);
   };
 
-  const handleCenterClick = () => {
-    if (onOpenMatchmaker) onOpenMatchmaker();
-    else if (onCenterStarClick) onCenterStarClick();
-    else handleTab(2, 'kundli');
-  };
-
   const navItems = [
     { id: 0, key: 'explore', label: 'Explore', icon: Compass },
-    { id: 1, key: 'consult', label: 'Consult', icon: MessageSquare, badge: 'LIVE' },
+    { id: 1, key: 'readings', label: 'Readings', icon: MessageSquare, badge: 'LIVE' },
     { id: 'fab', isFab: true },
     { id: 2, key: 'kundli', label: 'Kundli', icon: Grid },
     { id: 3, key: 'reports', label: 'Reports', icon: BookOpen },
@@ -34,7 +27,7 @@ export default function BottomNav({
         bottom: '16px',
         left: 0,
         right: 0,
-        maxWidth: '480px',
+        maxWidth: '460px',
         margin: '0 auto',
         padding: '0 16px',
         zIndex: 50,
@@ -43,17 +36,15 @@ export default function BottomNav({
       <div
         className="glass-panel"
         style={{
-          borderRadius: '32px',
+          borderRadius: '35px',
           height: '74px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-around',
-          padding: '0 10px',
-          boxShadow: '0 12px 30px rgba(108, 74, 182, 0.18)',
-          backgroundColor: 'rgba(255, 255, 255, 0.94)',
-          border: '1.5px solid rgba(255, 255, 255, 0.9)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
+          padding: '0 8px',
+          boxShadow: '0 12px 35px rgba(0, 0, 0, 0.12)',
+          backgroundColor: 'rgba(255, 255, 255, 0.96)',
+          border: '1.5px solid rgba(255, 255, 255, 0.95)',
         }}
       >
         {navItems.map((item) => {
@@ -61,15 +52,15 @@ export default function BottomNav({
             return (
               <button
                 key="fab"
-                onClick={handleCenterClick}
-                title="Smart Cosmic Matchmaker & Kundli"
+                onClick={onOpenMatchmaker}
+                title="Smart Cosmic Matchmaker"
                 style={{
                   width: '54px',
                   height: '54px',
                   borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #FFA726 0%, #E59400 50%, #D97706 100%)',
+                  background: 'linear-gradient(135deg, #D46A43 0%, #B84D28 100%)',
                   border: '3px solid #FFFFFF',
-                  boxShadow: '0 6px 20px rgba(229, 148, 0, 0.5)',
+                  boxShadow: '0 6px 20px rgba(184, 77, 40, 0.5)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -80,7 +71,7 @@ export default function BottomNav({
                 onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)')}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(-6px) scale(1)')}
               >
-                <Sparkles size={25} color="#FFFFFF" />
+                <Sparkles size={24} color="#FFFFFF" />
               </button>
             );
           }
@@ -97,10 +88,9 @@ export default function BottomNav({
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '3px',
-                padding: '8px 12px',
+                padding: '6px 12px',
                 borderRadius: '20px',
                 cursor: 'pointer',
-                position: 'relative',
                 background: 'transparent',
                 border: 'none',
                 outline: 'none',
@@ -110,7 +100,7 @@ export default function BottomNav({
                 style={{
                   padding: isSelected ? '6px' : '4px',
                   borderRadius: '50%',
-                  backgroundColor: isSelected ? 'rgba(217, 119, 6, 0.15)' : 'transparent',
+                  backgroundColor: isSelected ? 'rgba(200, 90, 50, 0.12)' : 'transparent',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -120,7 +110,7 @@ export default function BottomNav({
               >
                 <IconComponent
                   size={isSelected ? 22 : 20}
-                  color={isSelected ? '#D97706' : '#64748B'}
+                  color={isSelected ? '#C85A32' : '#64748B'}
                 />
 
                 {item.badge && (
@@ -133,7 +123,7 @@ export default function BottomNav({
                       fontWeight: '900',
                       backgroundColor: '#10B981',
                       color: '#FFFFFF',
-                      padding: '1.5px 4.5px',
+                      padding: '1px 4.5px',
                       borderRadius: '6px',
                     }}
                   >
@@ -145,9 +135,8 @@ export default function BottomNav({
               <span
                 style={{
                   fontSize: '11px',
-                  fontWeight: isSelected ? '800' : '500',
-                  color: isSelected ? '#B45309' : '#64748B',
-                  letterSpacing: '0.2px',
+                  fontWeight: isSelected ? '800' : '600',
+                  color: isSelected ? '#C85A32' : '#64748B',
                 }}
               >
                 {item.label}

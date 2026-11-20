@@ -1,60 +1,142 @@
 import React, { useState } from 'react';
 import { 
-  Sparkles, 
-  ArrowRight, 
-  ArrowLeft, 
+  Headphones, 
+  Wallet, 
+  Gem, 
+  Heart, 
+  Activity, 
+  Briefcase, 
   Check, 
+  Repeat, 
+  MessageCircle, 
+  Search, 
+  Eye, 
   Calendar, 
   Clock, 
   MapPin, 
-  Globe, 
-  Heart, 
-  Briefcase, 
-  Coins, 
-  Activity, 
-  ShieldCheck 
+  Compass,
+  ArrowRight,
+  X
 } from 'lucide-react';
 import MatchScreen from './MatchScreen';
 
-export default function OnboardingScreen({ onFinish }) {
+export default function OnboardingScreen({ onFinish, onSignOut }) {
   const [step, setStep] = useState(1);
+  const [subStep, setSubStep] = useState(null); // for category drills (e.g. 'money', 'marriage', 'health', 'career')
   const [showMatch, setShowMatch] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
-    name: 'Rohan Sharma',
-    gender: 'Male',
-    concerns: ['Career & Wealth', 'Marriage & Relationships'],
-    experience: 'Enthusiast (Know my Sun/Moon)',
-    birthDate: '1996-05-15',
-    birthTime: '09:45',
+    name: 'Mahi',
+    gender: 'Female',
+    topic: 'Career',
+    subTopic: 'A job change or promotion',
+    experience: 'Yes, once or twice',
+    birthDay: '14',
+    birthMonth: 'October',
+    birthYear: '1980',
+    birthHour: '12',
+    birthMinute: '00',
+    birthAmPm: 'AM',
     unknownTime: false,
     birthCity: 'New Delhi, India',
     currentCity: 'Bangalore, India',
-    languages: ['English', 'Hindi']
+    languages: ['English', 'हिंदी'],
+    referral: 'Instagram',
   });
 
   const totalSteps = 9;
 
-  const concernOptions = [
-    { id: 'Career & Wealth', label: 'Career & Financial Wealth', icon: Briefcase, color: '#D97706', bg: '#FEF3C7' },
-    { id: 'Marriage & Relationships', label: 'Marriage, Love & Soulmate Timing', icon: Heart, color: '#E11D48', bg: '#FFE4E6' },
-    { id: 'Health & Vitality', label: 'Health, Doshas & Wellness', icon: Activity, color: '#059669', bg: '#D1FAE5' },
-    { id: 'Spiritual Dharma', label: 'Higher Dharma & Spiritual Path', icon: Sparkles, color: '#7C3AED', bg: '#EDE9FE' },
-    { id: 'Foreign Settlement', label: 'Foreign Travel & PR Prospects', icon: Globe, color: '#2563EB', bg: '#DBEAFE' },
+  const topics = [
+    { id: 'Money', label: 'Money', icon: Wallet, hasSub: true },
+    { id: 'Marriage', label: 'Marriage', icon: Gem, hasSub: true },
+    { id: 'Love', label: 'Love', icon: Heart, hasSub: false },
+    { id: 'Health', label: 'Health', icon: Activity, hasSub: true },
+    { id: 'Career', label: 'Career', icon: Briefcase, hasSub: true },
+    { id: 'Something else', label: 'Something else', icon: Check, hasSub: false },
   ];
 
-  const experienceOptions = [
-    { id: 'Beginner', title: 'Beginner', desc: 'Curious about what the stars hold for me' },
-    { id: 'Enthusiast (Know my Sun/Moon)', title: 'Astro Enthusiast', desc: 'Familiar with my Zodiac sign and Moon nakshatra' },
-    { id: 'Deep Seeker', title: 'Deep Vedic Seeker', desc: 'Regularly follow planetary transits, Dashas & Kundli' },
+  const subOptionsMap = {
+    Money: {
+      title: 'What about money?',
+      options: [
+        'Money owed to me',
+        'Property or an investment',
+        'Money from my business',
+        'Debt or a loss',
+        'When will money come',
+        'My finances in general',
+      ]
+    },
+    Marriage: {
+      title: 'What about marriage?',
+      options: [
+        'When will I marry',
+        'Will this person marry me',
+        'Divorce or a second marriage',
+        'Trouble in my marriage',
+        'Convincing my family',
+        'My marriage in general',
+      ]
+    },
+    Health: {
+      title: 'Whose health, and what?',
+      options: [
+        'Stress and anxiety',
+        'A family member\'s health',
+        'Pregnancy and children',
+        'My physical health',
+        'My health in general',
+      ]
+    },
+    Career: {
+      title: 'What about your career?',
+      options: [
+        'Moving abroad',
+        'Getting a job',
+        'A job change or promotion',
+        'Exams and studies',
+        'My business',
+        'My career in general',
+      ]
+    }
+  };
+
+  const astrologerExp = [
+    { id: 'Yes, regularly', label: 'Yes, regularly', icon: Repeat },
+    { id: 'Yes, once or twice', label: 'Yes, once or twice', icon: MessageCircle },
+    { id: 'No, but I need answers', label: 'No, but I need answers', icon: Search },
+    { id: 'No, just curious', label: 'No, just curious', icon: Eye },
   ];
 
-  const languageOptions = [
-    'Hindi', 'English', 'Gujarati', 'Marathi', 'Bengali', 'Tamil', 'Telugu', 'Kannada', 'Punjabi'
+  const languagesList = [
+    'English', 'हिंदी', 'தமிழ்', 'తెలుగు', 'বাংলা', 'मराठी', 'ગુજરાતી', 'ಕನ್ನಡ', 'മലയാളം', 'ਪੰਜਾਬੀ', 'اردو', 'ଓଡ଼ିଆ'
+  ];
+
+  const referralSources = [
+    { id: 'Instagram', label: 'Instagram' },
+    { id: 'YouTube', label: 'YouTube' },
+    { id: 'Friend or family', label: 'Friend or family' },
+    { id: 'ChatGPT / AI', label: 'ChatGPT / AI' },
+    { id: 'Google search', label: 'Google search' },
+    { id: 'Astrologer told me', label: 'Astrologer told me' },
+    { id: 'TikTok', label: 'TikTok' },
+    { id: 'Play / App store', label: 'Play / App store' },
+    { id: 'Facebook', label: 'Facebook' },
+    { id: 'Other', label: 'Other' },
   ];
 
   const handleNext = () => {
+    // If on topic selection step and user picked an expandable topic without drilldown
+    if (step === 3 && !subStep && subOptionsMap[formData.topic]) {
+      setSubStep(formData.topic);
+      return;
+    }
+
+    if (step === 3 && subStep) {
+      setSubStep(null);
+    }
+
     if (step < totalSteps) {
       setStep(prev => prev + 1);
     } else {
@@ -63,18 +145,13 @@ export default function OnboardingScreen({ onFinish }) {
   };
 
   const handleBack = () => {
+    if (step === 3 && subStep) {
+      setSubStep(null);
+      return;
+    }
     if (step > 1) {
       setStep(prev => prev - 1);
     }
-  };
-
-  const toggleConcern = (id) => {
-    setFormData(prev => ({
-      ...prev,
-      concerns: prev.concerns.includes(id)
-        ? prev.concerns.filter(c => c !== id)
-        : [...prev.concerns, id]
-    }));
   };
 
   const toggleLanguage = (lang) => {
@@ -87,182 +164,171 @@ export default function OnboardingScreen({ onFinish }) {
   };
 
   if (showMatch) {
-    return <MatchScreen seekerName={formData.name.split(' ')[0]} onComplete={onFinish} />;
+    return <MatchScreen seekerName={formData.name || 'Mahi'} onComplete={onFinish} />;
   }
 
   return (
     <div style={{
       minHeight: '100vh',
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px 16px',
-      background: 'radial-gradient(circle at 10% 10%, rgba(254, 243, 199, 0.6) 0%, transparent 40%), radial-gradient(circle at 90% 90%, rgba(234, 219, 255, 0.5) 0%, transparent 45%), #F8F9FE'
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      padding: '24px 20px',
+      background: 'radial-gradient(circle at 10% 10%, rgba(254, 240, 138, 0.45) 0%, transparent 40%), radial-gradient(circle at 90% 15%, rgba(244, 114, 182, 0.35) 0%, transparent 45%), radial-gradient(circle at 85% 85%, rgba(147, 197, 253, 0.4) 0%, transparent 50%), radial-gradient(circle at 15% 85%, rgba(167, 243, 208, 0.4) 0%, transparent 40%), #FFFFFF',
+      color: '#1E1B4B',
+      userSelect: 'none',
+      position: 'relative',
+      overflowX: 'hidden',
     }}>
-      <div 
-        className="glass-panel"
-        style={{
-          width: '100%',
-          maxWidth: '520px',
-          borderRadius: '32px',
-          padding: '28px 24px',
-          boxShadow: '0 20px 45px rgba(108, 74, 182, 0.12)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '24px'
-        }}
-      >
-        {/* Top Header & Progress */}
+      {/* Background Subtle Constellation Overlay */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: 'radial-gradient(rgba(108, 74, 182, 0.08) 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
+        pointerEvents: 'none',
+      }} />
+
+      <div style={{ maxWidth: '480px', width: '100%', margin: '0 auto', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        
+        {/* Top Header: Support & Sign out */}
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
             <button
-              onClick={handleBack}
-              disabled={step === 1}
+              onClick={() => alert('🎧 Connecting to Bhavishyaa Vedic Support...')}
               style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '12px',
-                backgroundColor: step === 1 ? 'transparent' : 'rgba(255, 255, 255, 0.9)',
-                border: step === 1 ? 'none' : '1px solid #E2E8F0',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                color: '#475569',
-                cursor: step === 1 ? 'default' : 'pointer',
-                opacity: step === 1 ? 0 : 1,
-                transition: 'all 0.2s ease'
+                gap: '8px',
+                padding: '8px 16px',
+                borderRadius: '30px',
+                backgroundColor: 'rgba(255, 255, 255, 0.92)',
+                border: '1.5px solid #E2E8F0',
+                color: '#1E1B4B',
+                fontSize: '13px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.03)'
               }}
             >
-              <ArrowLeft size={18} />
+              <Headphones size={15} color="#D97706" />
+              <span>Support</span>
             </button>
 
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ 
-                fontFamily: 'Cinzel, serif', 
-                fontSize: '11px', 
-                fontWeight: '800', 
-                letterSpacing: '1.5px', 
-                color: '#B45309', 
-                textTransform: 'uppercase' 
-              }}>
-                Step {step} of {totalSteps}
-              </div>
-              <h4 style={{ fontSize: '13px', fontWeight: '800', color: '#1E1B4B', marginTop: '2px' }}>
-                Sacred Janam Setup
-              </h4>
-            </div>
-
             <button
-              onClick={onFinish}
+              onClick={onSignOut}
               style={{
-                padding: '6px 12px',
-                borderRadius: '12px',
-                backgroundColor: '#FEF3C7',
-                border: '1px solid #FCD34D',
-                color: '#B45309',
-                fontSize: '11.5px',
-                fontWeight: '800',
+                fontSize: '13.5px',
+                fontWeight: '700',
+                color: '#64748B',
                 cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px'
+                padding: '6px 10px',
               }}
             >
-              Skip to App →
+              Sign out
             </button>
           </div>
 
-          {/* Linear Progress Bar */}
-          <div style={{ width: '100%', height: '6px', borderRadius: '10px', backgroundColor: '#E2E8F0', overflow: 'hidden' }}>
-            <div
+          {/* Progress Indicator: e.g. 1 of 9 */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: '8px' }}>
+            <span style={{ fontSize: '12px', fontWeight: '800', color: '#64748B' }}>
+              {step} of {totalSteps}
+            </span>
+          </div>
+
+          {/* Progress Bar */}
+          <div style={{ width: '100%', height: '5px', borderRadius: '10px', backgroundColor: '#E2E8F0', overflow: 'hidden' }}>
+            <div 
               style={{
                 height: '100%',
                 borderRadius: '10px',
-                background: 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)',
+                backgroundColor: '#C85A32',
+                background: 'linear-gradient(90deg, #F59E0B 0%, #C85A32 100%)',
                 width: `${(step / totalSteps) * 100}%`,
-                transition: 'width 0.35s ease'
+                transition: 'width 0.3s ease'
               }}
             />
           </div>
         </div>
 
-        {/* Dynamic Question Body */}
-        <div>
-          {/* Step 1: Name */}
-          {step === 1 && (
-            <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div>
-                <span style={{ fontSize: '11px', fontWeight: '800', color: '#D97706', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                  Welcome to BHAVISHYAA
-                </span>
-                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '24px', fontWeight: '800', color: '#1E1B4B', marginTop: '6px' }}>
-                  What is your Sacred Name?
-                </h2>
-                <p style={{ fontSize: '12.5px', color: '#64748B', marginTop: '4px' }}>
-                  Your name aligns the primordial vibration for your Vedic horoscope.
-                </p>
-              </div>
+        {/* Step Body */}
+        <div style={{ margin: '32px 0', flex: 1, display: 'flex', flexDirection: 'column' }}>
 
-              <div style={{ marginTop: '8px' }}>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Enter your full name"
-                  style={{
-                    width: '100%',
-                    padding: '16px 20px',
-                    borderRadius: '20px',
-                    backgroundColor: '#FFFFFF',
-                    border: '2px solid #FDE68A',
-                    fontSize: '17px',
-                    fontWeight: '700',
-                    color: '#1E1B4B',
-                    textAlign: 'center',
-                    outline: 'none',
-                    boxShadow: '0 4px 15px rgba(229, 148, 0, 0.1)'
-                  }}
-                  onFocus={(e) => (e.target.style.borderColor = '#D97706')}
-                  onBlur={(e) => (e.target.style.borderColor = '#FDE68A')}
-                  autoFocus
-                />
-              </div>
+          {/* Step 1: What should we call you? */}
+          {step === 1 && (
+            <div>
+              <h1 style={{
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#1E1B4B',
+                marginBottom: '24px',
+                letterSpacing: '-0.5px'
+              }}>
+                What should we call you?
+              </h1>
+
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="Your name"
+                style={{
+                  width: '100%',
+                  padding: '18px 24px',
+                  borderRadius: '35px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                  border: '1.5px solid #E2E8F0',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  color: '#1E1B4B',
+                  outline: 'none',
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.03)'
+                }}
+                onFocus={(e) => (e.target.style.borderColor = '#C85A32')}
+                onBlur={(e) => (e.target.style.borderColor = '#E2E8F0')}
+                autoFocus
+              />
             </div>
           )}
 
-          {/* Step 2: Gender */}
+          {/* Step 2: What is your gender? */}
           {step === 2 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ textAlign: 'center' }}>
-                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
-                  Select Gender Energy
-                </h2>
-                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
-                  Vedic astrology considers solar and lunar biorhythms.
-                </p>
-              </div>
+            <div>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#1E1B4B',
+                marginBottom: '24px',
+                letterSpacing: '-0.5px'
+              }}>
+                What is your gender?
+              </h1>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '4px' }}>
-                {['Male', 'Female', 'Non-Binary', 'Prefer not to say'].map((g) => {
-                  const isSelected = formData.gender === g;
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                {[
+                  { id: 'Male', label: '♂ Male' },
+                  { id: 'Female', label: '♀ Female' }
+                ].map((g) => {
+                  const isSelected = formData.gender === g.id;
                   return (
                     <button
-                      key={g}
-                      onClick={() => setFormData({ ...formData, gender: g })}
+                      key={g.id}
+                      onClick={() => setFormData({ ...formData, gender: g.id })}
                       style={{
-                        padding: '16px 12px',
-                        borderRadius: '20px',
-                        border: isSelected ? '2px solid #D97706' : '1.5px solid #E2E8F0',
-                        backgroundColor: isSelected ? '#FFFBEB' : '#FFFFFF',
-                        color: isSelected ? '#B45309' : '#334155',
-                        fontSize: '14px',
-                        fontWeight: '800',
+                        padding: '18px',
+                        borderRadius: '35px',
+                        border: isSelected ? '2px solid #C85A32' : '1.5px solid #E2E8F0',
+                        backgroundColor: isSelected ? 'rgba(200, 90, 50, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+                        color: isSelected ? '#C85A32' : '#334155',
+                        fontSize: '16px',
+                        fontWeight: '700',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',
-                        boxShadow: isSelected ? '0 4px 12px rgba(217, 119, 6, 0.15)' : 'none'
+                        boxShadow: isSelected ? '0 4px 15px rgba(200, 90, 50, 0.15)' : 'none'
                       }}
                     >
-                      {g}
+                      {g.label}
                     </button>
                   );
                 })}
@@ -270,69 +336,113 @@ export default function OnboardingScreen({ onFinish }) {
             </div>
           )}
 
-          {/* Step 3: Concerns */}
-          {step === 3 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ textAlign: 'center' }}>
-                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
-                  What brings you to the stars?
-                </h2>
-                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
-                  Select all areas where you seek planetary clarity and remedies.
-                </p>
-              </div>
+          {/* Step 3: What's on your mind? / Sub-options */}
+          {step === 3 && !subStep && (
+            <div>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#1E1B4B',
+                marginBottom: '20px',
+                letterSpacing: '-0.5px'
+              }}>
+                What's on your mind?
+              </h1>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {concernOptions.map((c) => {
-                  const isSelected = formData.concerns.includes(c.id);
-                  const Icon = c.icon;
+                {topics.map((t) => {
+                  const isSelected = formData.topic === t.id;
+                  const Icon = t.icon;
                   return (
                     <div
-                      key={c.id}
-                      onClick={() => toggleConcern(c.id)}
+                      key={t.id}
+                      onClick={() => {
+                        setFormData({ ...formData, topic: t.id });
+                        if (t.hasSub) {
+                          setSubStep(t.id);
+                        }
+                      }}
                       style={{
-                        padding: '14px 16px',
-                        borderRadius: '20px',
-                        border: isSelected ? '2px solid #D97706' : '1.5px solid #E2E8F0',
-                        backgroundColor: isSelected ? '#FFFBEB' : '#FFFFFF',
+                        padding: '16px 20px',
+                        borderRadius: '35px',
+                        border: isSelected ? '2px solid #C85A32' : '1.5px solid #E2E8F0',
+                        backgroundColor: isSelected ? 'rgba(200, 90, 50, 0.08)' : 'rgba(255, 255, 255, 0.9)',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'space-between',
+                        gap: '14px',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease'
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <div style={{
-                          width: '38px',
-                          height: '38px',
-                          borderRadius: '12px',
-                          backgroundColor: c.bg,
-                          color: c.color,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}>
-                          <Icon size={20} />
-                        </div>
-                        <span style={{ fontSize: '13.5px', fontWeight: '800', color: '#1E1B4B' }}>
-                          {c.label}
-                        </span>
-                      </div>
-
                       <div style={{
-                        width: '22px',
-                        height: '22px',
-                        borderRadius: '6px',
-                        border: isSelected ? 'none' : '2px solid #CBD5E1',
-                        backgroundColor: isSelected ? '#D97706' : 'transparent',
-                        color: '#FFFFFF',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        backgroundColor: isSelected ? '#C85A32' : 'rgba(241, 245, 249, 0.9)',
+                        color: isSelected ? '#FFFFFF' : '#475569',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                        <Icon size={18} />
+                      </div>
+                      <span style={{ fontSize: '15px', fontWeight: '700', color: '#1E1B4B' }}>
+                        {t.label}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Step 3 Drilldown: e.g. What about your career? / What about money? */}
+          {step === 3 && subStep && (
+            <div>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#1E1B4B',
+                marginBottom: '20px',
+                letterSpacing: '-0.5px'
+              }}>
+                {subOptionsMap[subStep]?.title}
+              </h1>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {subOptionsMap[subStep]?.options.map((opt, i) => {
+                  const isSelected = formData.subTopic === opt;
+                  return (
+                    <div
+                      key={i}
+                      onClick={() => setFormData({ ...formData, subTopic: opt })}
+                      style={{
+                        padding: '16px 20px',
+                        borderRadius: '35px',
+                        border: isSelected ? '2px solid #C85A32' : '1.5px solid #E2E8F0',
+                        backgroundColor: isSelected ? 'rgba(200, 90, 50, 0.08)' : 'rgba(255, 255, 255, 0.9)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '14px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <div style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%',
+                        backgroundColor: isSelected ? '#C85A32' : '#F1F5F9',
+                        color: isSelected ? '#FFFFFF' : '#64748B',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
                       }}>
-                        {isSelected && <Check size={14} />}
+                        {isSelected ? <Check size={16} /> : <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#CBD5E1' }} />}
                       </div>
+                      <span style={{ fontSize: '15px', fontWeight: '700', color: '#1E1B4B' }}>
+                        {opt}
+                      </span>
                     </div>
                   );
                 })}
@@ -340,36 +450,54 @@ export default function OnboardingScreen({ onFinish }) {
             </div>
           )}
 
-          {/* Step 4: Experience */}
+          {/* Step 4: Have you talked to an astrologer before? */}
           {step === 4 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ textAlign: 'center' }}>
-                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
-                  Your Astrology Experience
-                </h2>
-                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
-                  Helps us calibrate how deeply technical your readings should be.
-                </p>
-              </div>
+            <div>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#1E1B4B',
+                marginBottom: '20px',
+                letterSpacing: '-0.5px'
+              }}>
+                Have you talked to an astrologer before?
+              </h1>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {experienceOptions.map((e) => {
-                  const isSelected = formData.experience === e.id;
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {astrologerExp.map((exp) => {
+                  const isSelected = formData.experience === exp.id;
+                  const Icon = exp.icon;
                   return (
                     <div
-                      key={e.id}
-                      onClick={() => setFormData({ ...formData, experience: e.id })}
+                      key={exp.id}
+                      onClick={() => setFormData({ ...formData, experience: exp.id })}
                       style={{
-                        padding: '16px',
-                        borderRadius: '20px',
-                        border: isSelected ? '2px solid #D97706' : '1.5px solid #E2E8F0',
-                        backgroundColor: isSelected ? '#FFFBEB' : '#FFFFFF',
+                        padding: '16px 20px',
+                        borderRadius: '35px',
+                        border: isSelected ? '2px solid #C85A32' : '1.5px solid #E2E8F0',
+                        backgroundColor: isSelected ? 'rgba(200, 90, 50, 0.08)' : 'rgba(255, 255, 255, 0.9)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '14px',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease'
                       }}
                     >
-                      <h4 style={{ fontSize: '14px', fontWeight: '800', color: '#1E1B4B' }}>{e.title}</h4>
-                      <p style={{ fontSize: '12px', color: '#64748B', marginTop: '3px' }}>{e.desc}</p>
+                      <div style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        backgroundColor: isSelected ? '#C85A32' : '#F1F5F9',
+                        color: isSelected ? '#FFFFFF' : '#64748B',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <Icon size={18} />
+                      </div>
+                      <span style={{ fontSize: '15px', fontWeight: '700', color: '#1E1B4B' }}>
+                        {exp.label}
+                      </span>
                     </div>
                   );
                 })}
@@ -377,212 +505,293 @@ export default function OnboardingScreen({ onFinish }) {
             </div>
           )}
 
-          {/* Step 5: Birth Date */}
+          {/* Step 5: When were you born? (Date of birth & Time of birth wheel) */}
           {step === 5 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
-              <div>
-                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
-                  Date of Birth
-                </h2>
-                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
-                  Crucial for planetary degree and solar transits.
-                </p>
-              </div>
-
-              <div style={{
-                backgroundColor: '#FFFFFF',
-                padding: '20px',
-                borderRadius: '22px',
-                border: '1.5px solid #E2E8F0',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '10px',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.03)'
+            <div>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#1E1B4B',
+                marginBottom: '20px',
+                letterSpacing: '-0.5px'
               }}>
-                <Calendar size={22} color="#D97706" />
-                <input
-                  type="date"
-                  value={formData.birthDate}
-                  onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
-                  style={{
-                    fontSize: '17px',
-                    fontWeight: '700',
-                    color: '#1E1B4B',
-                    border: 'none',
-                    outline: 'none',
-                    backgroundColor: 'transparent'
-                  }}
-                />
-              </div>
-            </div>
-          )}
+                When were you born?
+              </h1>
 
-          {/* Step 6: Birth Time */}
-          {step === 6 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
-              <div>
-                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
-                  Time of Birth
-                </h2>
-                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
-                  Determines your exact Lagna (Ascendant) and house cusps.
-                </p>
-              </div>
-
-              {!formData.unknownTime && (
+              {/* Date of birth wheel capsule */}
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{ fontSize: '13px', fontWeight: '700', color: '#64748B', marginBottom: '8px', display: 'block' }}>
+                  Date of birth
+                </label>
                 <div style={{
-                  backgroundColor: '#FFFFFF',
-                  padding: '20px',
-                  borderRadius: '22px',
-                  border: '1.5px solid #E2E8F0',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '10px',
+                  justifyContent: 'space-around',
+                  padding: '16px',
+                  borderRadius: '35px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                  border: '1.5px solid #E2E8F0',
                   boxShadow: '0 4px 15px rgba(0,0,0,0.03)'
                 }}>
-                  <Clock size={22} color="#D97706" />
-                  <input
-                    type="time"
-                    value={formData.birthTime}
-                    onChange={(e) => setFormData({ ...formData, birthTime: e.target.value })}
-                    style={{
-                      fontSize: '18px',
-                      fontWeight: '700',
-                      color: '#1E1B4B',
-                      border: 'none',
-                      outline: 'none',
-                      backgroundColor: 'transparent'
-                    }}
-                  />
-                </div>
-              )}
+                  <select
+                    value={formData.birthDay}
+                    onChange={(e) => setFormData({ ...formData, birthDay: e.target.value })}
+                    style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
+                  >
+                    {[...Array(31)].map((_, i) => (
+                      <option key={i+1} value={String(i+1)}>{i+1}</option>
+                    ))}
+                  </select>
 
-              <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer', fontSize: '12px', color: '#64748B' }}>
+                  <select
+                    value={formData.birthMonth}
+                    onChange={(e) => setFormData({ ...formData, birthMonth: e.target.value })}
+                    style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
+                  >
+                    {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(m => (
+                      <option key={m} value={m}>{m}</option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={formData.birthYear}
+                    onChange={(e) => setFormData({ ...formData, birthYear: e.target.value })}
+                    style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
+                  >
+                    {[...Array(70)].map((_, i) => {
+                      const yr = 2010 - i;
+                      return <option key={yr} value={String(yr)}>{yr}</option>;
+                    })}
+                  </select>
+                </div>
+              </div>
+
+              {/* Time of birth wheel capsule */}
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ fontSize: '13px', fontWeight: '700', color: '#64748B', marginBottom: '8px', display: 'block' }}>
+                  Time of birth
+                </label>
+                {!formData.unknownTime && (
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                    padding: '16px',
+                    borderRadius: '35px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    border: '1.5px solid #E2E8F0',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.03)'
+                  }}>
+                    <select
+                      value={formData.birthHour}
+                      onChange={(e) => setFormData({ ...formData, birthHour: e.target.value })}
+                      style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
+                    >
+                      {[...Array(12)].map((_, i) => (
+                        <option key={i+1} value={String(i+1).padStart(2, '0')}>{String(i+1).padStart(2, '0')}</option>
+                      ))}
+                    </select>
+                    <span>:</span>
+                    <select
+                      value={formData.birthMinute}
+                      onChange={(e) => setFormData({ ...formData, birthMinute: e.target.value })}
+                      style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
+                    >
+                      {['00', '15', '30', '45'].map(m => (
+                        <option key={m} value={m}>{m}</option>
+                      ))}
+                    </select>
+
+                    <select
+                      value={formData.birthAmPm}
+                      onChange={(e) => setFormData({ ...formData, birthAmPm: e.target.value })}
+                      style={{ fontSize: '16px', fontWeight: '800', color: '#1E1B4B', border: 'none', background: 'none', outline: 'none', cursor: 'pointer' }}
+                    >
+                      <option value="AM">AM</option>
+                      <option value="PM">PM</option>
+                    </select>
+                  </div>
+                )}
+              </div>
+
+              {/* Checkbox: I don't know my exact time of birth */}
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', marginTop: '10px' }}>
                 <input
                   type="checkbox"
                   checked={formData.unknownTime}
                   onChange={(e) => setFormData({ ...formData, unknownTime: e.target.checked })}
-                  style={{ width: '16px', height: '16px', accentColor: '#D97706', cursor: 'pointer' }}
+                  style={{ width: '18px', height: '18px', accentColor: '#C85A32', cursor: 'pointer' }}
                 />
-                <span>I don't know my exact birth time (use Surya Lagna)</span>
+                <span style={{ fontSize: '13.5px', fontWeight: '600', color: '#475569' }}>
+                  I don't know my exact time of birth
+                </span>
               </label>
             </div>
           )}
 
-          {/* Step 7: Birth City */}
-          {step === 7 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
-              <div>
-                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
-                  Place of Birth
-                </h2>
-                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
-                  Used to pinpoint precise latitude, longitude and Ayanamsha.
-                </p>
-              </div>
-
-              <div style={{
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center'
+          {/* Step 6: Where were you born? */}
+          {step === 6 && (
+            <div>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#1E1B4B',
+                marginBottom: '20px',
+                letterSpacing: '-0.5px'
               }}>
-                <MapPin size={20} color="#94A3B8" style={{ position: 'absolute', left: '16px' }} />
+                Where were you born?
+              </h1>
+
+              {/* Search city capsule */}
+              <div style={{ position: 'relative', marginBottom: '14px' }}>
+                <Search size={18} color="#94A3B8" style={{ position: 'absolute', left: '20px', top: '18px' }} />
                 <input
                   type="text"
                   value={formData.birthCity}
                   onChange={(e) => setFormData({ ...formData, birthCity: e.target.value })}
-                  placeholder="e.g. New Delhi, Mumbai, Varanasi..."
+                  placeholder="Start typing a city..."
                   style={{
                     width: '100%',
-                    padding: '16px 16px 16px 48px',
-                    borderRadius: '20px',
-                    backgroundColor: '#FFFFFF',
+                    padding: '16px 20px 16px 50px',
+                    borderRadius: '35px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
                     border: '1.5px solid #E2E8F0',
                     fontSize: '15px',
-                    fontWeight: '700',
+                    fontWeight: '600',
                     color: '#1E1B4B',
-                    outline: 'none'
+                    outline: 'none',
                   }}
-                  onFocus={(e) => (e.target.style.borderColor = '#D97706')}
+                  onFocus={(e) => (e.target.style.borderColor = '#C85A32')}
                   onBlur={(e) => (e.target.style.borderColor = '#E2E8F0')}
                 />
               </div>
+
+              <div style={{ fontSize: '13px', color: '#64748B', fontWeight: '600', marginBottom: '10px' }}>
+                Pick your city from the list
+              </div>
+
+              {/* Location pill */}
+              <button
+                onClick={() => setFormData({ ...formData, birthCity: 'Hyderabad, Telangana, India' })}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '10px 18px',
+                  borderRadius: '30px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  border: '1.5px solid #E2E8F0',
+                  color: '#1E1B4B',
+                  fontSize: '13px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  marginBottom: '16px'
+                }}
+              >
+                <MapPin size={15} color="#C85A32" />
+                <span>Search near Hyderabad</span>
+              </button>
             </div>
           )}
 
-          {/* Step 8: Current City */}
-          {step === 8 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
-              <div>
-                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
-                  Current Residence City
-                </h2>
-                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
-                  Powers local sunrise, Rahu Kaal, and localized transit horoscopes.
-                </p>
-              </div>
-
-              <div style={{
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center'
+          {/* Step 7: Where do you live now? */}
+          {step === 7 && (
+            <div>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#1E1B4B',
+                marginBottom: '6px',
+                letterSpacing: '-0.5px'
               }}>
-                <MapPin size={20} color="#94A3B8" style={{ position: 'absolute', left: '16px' }} />
+                Where do you live now?
+              </h1>
+              <p style={{ fontSize: '13.5px', color: '#64748B', marginBottom: '20px' }}>
+                Helps astrologers understand where you're from.
+              </p>
+
+              <div style={{ position: 'relative', marginBottom: '14px' }}>
+                <Search size={18} color="#94A3B8" style={{ position: 'absolute', left: '20px', top: '18px' }} />
                 <input
                   type="text"
                   value={formData.currentCity}
                   onChange={(e) => setFormData({ ...formData, currentCity: e.target.value })}
-                  placeholder="e.g. Bangalore, London, New York..."
+                  placeholder="Search your city"
                   style={{
                     width: '100%',
-                    padding: '16px 16px 16px 48px',
-                    borderRadius: '20px',
-                    backgroundColor: '#FFFFFF',
+                    padding: '16px 20px 16px 50px',
+                    borderRadius: '35px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
                     border: '1.5px solid #E2E8F0',
                     fontSize: '15px',
-                    fontWeight: '700',
+                    fontWeight: '600',
                     color: '#1E1B4B',
-                    outline: 'none'
+                    outline: 'none',
                   }}
-                  onFocus={(e) => (e.target.style.borderColor = '#D97706')}
+                  onFocus={(e) => (e.target.style.borderColor = '#C85A32')}
                   onBlur={(e) => (e.target.style.borderColor = '#E2E8F0')}
                 />
               </div>
+
+              {/* Use my location pill */}
+              <button
+                onClick={() => setFormData({ ...formData, currentCity: 'Bengaluru, Karnataka, India' })}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  padding: '16px',
+                  borderRadius: '35px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  border: '1.5px solid #E2E8F0',
+                  color: '#1E1B4B',
+                  fontSize: '14px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                }}
+              >
+                <Compass size={16} color="#6C4AB6" />
+                <span>Use my location</span>
+              </button>
             </div>
           )}
 
-          {/* Step 9: Language */}
-          {step === 9 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
-              <div>
-                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', fontWeight: '800', color: '#1E1B4B' }}>
-                  Consultation Languages
-                </h2>
-                <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
-                  We pair you with certified acharyas fluent in your native tongue.
-                </p>
-              </div>
+          {/* Step 8: Which languages should your astrologer speak? */}
+          {step === 8 && (
+            <div>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#1E1B4B',
+                marginBottom: '6px',
+                letterSpacing: '-0.5px'
+              }}>
+                Which languages should your astrologer speak?
+              </h1>
+              <p style={{ fontSize: '13.5px', color: '#64748B', marginBottom: '20px' }}>
+                Pick as many as you are comfortable in.
+              </p>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
-                {languageOptions.map((lang) => {
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                {languagesList.map((lang) => {
                   const isSelected = formData.languages.includes(lang);
                   return (
                     <button
                       key={lang}
                       onClick={() => toggleLanguage(lang)}
                       style={{
-                        padding: '10px 18px',
-                        borderRadius: '16px',
-                        border: isSelected ? '2px solid #D97706' : '1.5px solid #E2E8F0',
-                        backgroundColor: isSelected ? '#D97706' : '#FFFFFF',
-                        color: isSelected ? '#FFFFFF' : '#334155',
-                        fontSize: '13px',
-                        fontWeight: '800',
+                        padding: '12px 20px',
+                        borderRadius: '30px',
+                        border: isSelected ? '2px solid #C85A32' : '1.5px solid #E2E8F0',
+                        backgroundColor: isSelected ? '#C85A32' : 'rgba(255, 255, 255, 0.9)',
+                        color: isSelected ? '#FFFFFF' : '#1E1B4B',
+                        fontSize: '14px',
+                        fontWeight: '700',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',
-                        boxShadow: isSelected ? '0 4px 12px rgba(217, 119, 6, 0.25)' : 'none'
+                        boxShadow: isSelected ? '0 4px 12px rgba(200, 90, 50, 0.25)' : 'none'
                       }}
                     >
                       {lang}
@@ -592,41 +801,102 @@ export default function OnboardingScreen({ onFinish }) {
               </div>
             </div>
           )}
+
+          {/* Step 9: How did you find Bhavishyaa? */}
+          {step === 9 && (
+            <div>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#1E1B4B',
+                marginBottom: '20px',
+                letterSpacing: '-0.5px'
+              }}>
+                How did you find Bhavishyaa?
+              </h1>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                {referralSources.map((ref) => {
+                  const isSelected = formData.referral === ref.id;
+                  return (
+                    <button
+                      key={ref.id}
+                      onClick={() => setFormData({ ...formData, referral: ref.id })}
+                      style={{
+                        padding: '14px 16px',
+                        borderRadius: '30px',
+                        border: isSelected ? '2px solid #C85A32' : '1.5px solid #E2E8F0',
+                        backgroundColor: isSelected ? 'rgba(200, 90, 50, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+                        color: isSelected ? '#C85A32' : '#334155',
+                        fontSize: '13.5px',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      {ref.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <p style={{
+                fontSize: '11.5px',
+                color: '#64748B',
+                textAlign: 'center',
+                marginTop: '20px',
+                fontWeight: '500'
+              }}>
+                By continuing, you agree to the <span style={{ textDecoration: 'underline' }}>Terms</span> and <span style={{ textDecoration: 'underline' }}>Privacy Policy</span>.
+              </p>
+            </div>
+          )}
         </div>
 
-        {/* Bottom Continue Action */}
-        <div style={{ paddingTop: '10px', borderTop: '1px solid #E2E8F0' }}>
+        {/* Bottom Navigation Buttons: Back & Continue */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: step > 1 ? '1fr 1.3fr' : '1fr',
+          gap: '12px',
+          paddingTop: '16px',
+        }}>
+          {step > 1 && (
+            <button
+              onClick={handleBack}
+              style={{
+                padding: '16px 20px',
+                borderRadius: '35px',
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                border: '1.5px solid #CBD5E1',
+                color: '#1E1B4B',
+                fontSize: '15px',
+                fontWeight: '700',
+                cursor: 'pointer',
+              }}
+            >
+              Back
+            </button>
+          )}
+
           <button
             onClick={handleNext}
             style={{
-              width: '100%',
               padding: '16px 24px',
-              borderRadius: '20px',
-              background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+              borderRadius: '35px',
+              backgroundColor: '#C85A32',
+              background: 'linear-gradient(135deg, #D46A43 0%, #B84D28 100%)',
+              border: 'none',
               color: '#FFFFFF',
               fontSize: '15px',
               fontWeight: '800',
-              boxShadow: '0 8px 24px rgba(217, 119, 6, 0.35)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
               cursor: 'pointer',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 12px 28px rgba(217, 119, 6, 0.45)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(217, 119, 6, 0.35)';
+              boxShadow: '0 6px 20px rgba(184, 77, 40, 0.35)',
             }}
           >
-            <span>{step === totalSteps ? '✨ Synthesize My Destiny Chart' : 'Continue'}</span>
-            <ArrowRight size={18} />
+            Continue
           </button>
         </div>
+
       </div>
     </div>
   );

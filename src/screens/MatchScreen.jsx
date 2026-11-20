@@ -1,174 +1,222 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, CheckCircle2, ShieldCheck, Compass } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 
-export default function MatchScreen({ onComplete, seekerName = 'Rohan' }) {
-  const steps = [
-    'Calculating Exact Lahiri Ayanamsha (24° 15\' 12")...',
-    'Aligning Vimshottari Mahadasha & Antardasha Matrix...',
-    'Scanning 4,200+ Certified Vedic Masters & Gurus...',
-    'Harmonizing Astrological Specialty & Linguistic Affinity...',
-    'Paired with Acharya Sandhya (32 yrs exp • 99.4% Accuracy)!'
-  ];
-
+export default function MatchScreen({ onComplete, seekerName = 'Mahi' }) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+
+  const steps = [
+    { title: 'Reading your birth chart', desc: '14 October 1980 · New Delhi, India' },
+    { title: 'Focusing on what\'s on your mind', desc: 'Career & Promotions' },
+    { title: 'Shortlisting astrologers who speak', desc: 'English · हिंदी' },
+    { title: 'Checking who\'s available right now', desc: '12 online' },
+    { title: 'Picking your best match', desc: 'Best fit for you' },
+  ];
 
   useEffect(() => {
     if (currentStepIndex < steps.length - 1) {
       const timer = setTimeout(() => {
         setCurrentStepIndex(prev => prev + 1);
-      }, 1100);
+      }, 1000);
       return () => clearInterval(timer);
     } else {
       const finishTimer = setTimeout(() => {
         onComplete();
-      }, 1400);
+      }, 1300);
       return () => clearInterval(finishTimer);
     }
   }, [currentStepIndex]);
 
   return (
     <div style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 50,
-      background: 'radial-gradient(circle at 50% 50%, rgba(254, 243, 199, 0.7) 0%, rgba(248, 249, 254, 0.96) 100%)',
-      backdropFilter: 'blur(20px)',
-      WebkitBackdropFilter: 'blur(20px)',
+      minHeight: '100vh',
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '24px'
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      padding: '30px 20px',
+      background: 'radial-gradient(circle at 50% 25%, rgba(254, 240, 138, 0.45) 0%, transparent 45%), radial-gradient(circle at 10% 80%, rgba(244, 114, 182, 0.35) 0%, transparent 45%), radial-gradient(circle at 90% 75%, rgba(147, 197, 253, 0.45) 0%, transparent 50%), radial-gradient(circle at 50% 90%, rgba(167, 243, 208, 0.4) 0%, transparent 40%), #FFFFFF',
+      color: '#1E1B4B',
+      userSelect: 'none',
+      position: 'relative',
+      overflow: 'hidden',
     }}>
-      <div 
-        className="glass-panel"
-        style={{
-          width: '100%',
-          maxWidth: '460px',
-          borderRadius: '32px',
-          padding: '36px 28px',
-          textAlign: 'center',
-          boxShadow: '0 25px 50px rgba(108, 74, 182, 0.15)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}
-      >
-        {/* Animated Compass Orb */}
+      {/* Background Constellation / Orbit Rings */}
+      <div style={{
+        position: 'absolute',
+        top: '12%',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '320px',
+        height: '320px',
+        borderRadius: '50%',
+        border: '1px dashed rgba(200, 90, 50, 0.25)',
+        pointerEvents: 'none',
+      }} />
+
+      <div style={{
+        position: 'absolute',
+        top: '5%',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '420px',
+        height: '420px',
+        borderRadius: '50%',
+        border: '1px dashed rgba(200, 90, 50, 0.18)',
+        pointerEvents: 'none',
+      }} />
+
+      {/* Top Header with Close Button */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative', zIndex: 10 }}>
+        <button
+          onClick={onComplete}
+          style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '50%',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            border: '1px solid #E2E8F0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#64748B',
+            cursor: 'pointer',
+          }}
+        >
+          <X size={18} />
+        </button>
+      </div>
+
+      {/* Center Animated Solar System / Star Orb */}
+      <div style={{
+        maxWidth: '460px',
+        width: '100%',
+        margin: '0 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        position: 'relative',
+        zIndex: 10,
+      }}>
+        {/* Glowing Orange Circle with 4-Pointed Star from reference photo */}
         <div style={{
           width: '90px',
           height: '90px',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+          backgroundColor: '#C85A32',
+          background: 'linear-gradient(135deg, #D46A43 0%, #B84D28 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 10px 25px rgba(217, 119, 6, 0.35)',
-          marginBottom: '20px',
+          boxShadow: '0 10px 30px rgba(184, 77, 40, 0.4)',
+          marginBottom: '24px',
           position: 'relative'
         }}>
-          <Compass size={44} color="#FFFFFF" className="animate-spin-slow" />
+          {/* 4-Point Star SVG from WhatsApp Screenshot */}
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="#FFFFFF">
+            <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" />
+          </svg>
         </div>
 
-        <span style={{
-          fontSize: '11px',
-          fontWeight: '800',
-          letterSpacing: '1.5px',
-          color: '#B45309',
-          backgroundColor: '#FEF3C7',
-          padding: '4px 12px',
-          borderRadius: '20px',
-          border: '1px solid #FCD34D',
-          textTransform: 'uppercase'
-        }}>
-          Cosmic Astrologer Matchmaker
-        </span>
-
-        <h2 style={{
-          fontFamily: 'Cinzel, serif',
-          fontSize: '22px',
+        <h1 style={{
+          fontSize: '30px',
           fontWeight: '800',
           color: '#1E1B4B',
-          marginTop: '10px'
+          textAlign: 'center',
+          letterSpacing: '-0.5px',
+          marginBottom: '6px'
         }}>
-          Synthesizing {seekerName}'s Destiny Field
-        </h2>
+          Finding your<br />perfect match
+        </h1>
 
         <p style={{
-          fontSize: '12.5px',
+          fontSize: '14px',
           color: '#64748B',
-          marginTop: '4px',
-          marginBottom: '24px'
+          textAlign: 'center',
+          marginBottom: '28px',
+          fontWeight: '500'
         }}>
-          Connecting your planetary coordinates to the ideal Vedic mentor
+          Matching you against our verified astrologers.
         </p>
 
-        {/* Progress Checklist */}
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px', textAlign: 'left' }}>
-          {steps.map((text, idx) => {
+        {/* 5 Sequential Match Cards matching WhatsApp Image 2026-11-19 at 4.39.07 PM (1).jpeg */}
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {steps.map((st, idx) => {
             const isDone = idx < currentStepIndex;
             const isCurrent = idx === currentStepIndex;
+            const isPending = idx > currentStepIndex;
 
             return (
-              <div 
+              <div
                 key={idx}
                 style={{
+                  padding: '16px 20px',
+                  borderRadius: '24px',
+                  backgroundColor: isCurrent ? 'rgba(200, 90, 50, 0.08)' : isDone ? 'rgba(255, 255, 255, 0.92)' : 'rgba(255, 255, 255, 0.6)',
+                  border: isCurrent ? '1.5px solid #C85A32' : '1px solid #E2E8F0',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '12px',
-                  padding: '10px 14px',
-                  borderRadius: '16px',
-                  backgroundColor: isCurrent ? '#FFFBEB' : isDone ? '#F8FAFC' : 'transparent',
-                  border: isCurrent ? '1.5px solid #FCD34D' : isDone ? '1px solid #E2E8F0' : '1px solid transparent',
-                  opacity: isDone || isCurrent ? 1 : 0.35,
-                  transition: 'all 0.3s ease'
+                  gap: '16px',
+                  opacity: isPending ? 0.35 : 1,
+                  transition: 'all 0.3s ease',
+                  boxShadow: isCurrent ? '0 4px 15px rgba(200, 90, 50, 0.1)' : '0 2px 6px rgba(0,0,0,0.02)'
                 }}
               >
-                {isDone ? (
-                  <CheckCircle2 size={18} color="#059669" style={{ flexShrink: 0 }} />
-                ) : isCurrent ? (
-                  <div style={{
-                    width: '18px',
-                    height: '18px',
-                    borderRadius: '50%',
-                    border: '2.5px solid #D97706',
-                    borderTopColor: 'transparent',
-                    animation: 'spinSlow 1s linear infinite',
-                    flexShrink: 0
-                  }} />
-                ) : (
-                  <div style={{
-                    width: '18px',
-                    height: '18px',
-                    borderRadius: '50%',
-                    border: '1.5px solid #CBD5E1',
-                    flexShrink: 0
-                  }} />
-                )}
-                <span style={{
-                  fontSize: '12px',
-                  fontWeight: isCurrent ? '800' : '600',
-                  color: isCurrent ? '#92400E' : isDone ? '#1E293B' : '#94A3B8'
+                {/* Indicator icon */}
+                <div style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  backgroundColor: isDone ? '#C85A32' : 'transparent',
+                  border: isDone ? 'none' : isCurrent ? '2.5px solid #C85A32' : '1.5px solid #CBD5E1',
+                  borderTopColor: isCurrent ? 'transparent' : undefined,
+                  animation: isCurrent ? 'spinSlow 1s linear infinite' : 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  color: '#FFFFFF'
                 }}>
-                  {text}
-                </span>
+                  {isDone && <Check size={16} strokeWidth={3} />}
+                </div>
+
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{
+                    fontSize: '14.5px',
+                    fontWeight: '800',
+                    color: isCurrent ? '#C85A32' : '#1E1B4B'
+                  }}>
+                    {st.title}
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: '#64748B',
+                    marginTop: '2px',
+                    fontWeight: '500'
+                  }}>
+                    {st.desc}
+                  </div>
+                </div>
               </div>
             );
           })}
         </div>
+      </div>
 
-        {/* Security / Confidentiality */}
-        <div style={{
-          marginTop: '24px',
-          paddingTop: '16px',
-          borderTop: '1px solid #E2E8F0',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          fontSize: '11.5px',
-          color: '#64748B'
-        }}>
-          <ShieldCheck size={16} color="#059669" />
-          <span>Vedic privacy & sacred data confidentiality guaranteed</span>
+      {/* Bottom Horizontal Progress Bar from Reference */}
+      <div style={{
+        maxWidth: '460px',
+        width: '100%',
+        margin: '0 auto',
+        paddingTop: '20px',
+        position: 'relative',
+        zIndex: 10,
+      }}>
+        <div style={{ width: '100%', height: '4px', backgroundColor: '#E2E8F0', borderRadius: '4px', overflow: 'hidden' }}>
+          <div style={{
+            height: '100%',
+            backgroundColor: '#C85A32',
+            width: `${((currentStepIndex + 1) / steps.length) * 100}%`,
+            transition: 'width 0.4s ease'
+          }} />
         </div>
       </div>
     </div>

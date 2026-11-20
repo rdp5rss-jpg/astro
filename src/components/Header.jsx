@@ -1,129 +1,84 @@
 import React from 'react';
-import { Sparkles, Wallet, Bell, SlidersHorizontal } from 'lucide-react';
+import { Wallet, Bell, Sparkles, SlidersHorizontal, LogIn } from 'lucide-react';
 
 export default function Header({
-  walletBalance,
+  walletBalance = 185,
   onOpenWallet,
   onOpenNotifications,
   onOpenProfile,
-  onToggleOnboarding,
-  onStartOnboarding,
+  onGoToSplash,
+  onGoToLogin,
+  onGoToWelcome,
+  onGoToOnboarding,
 }) {
   return (
-    <header style={{ padding: '10px 16px 6px', position: 'sticky', top: 0, zIndex: 40 }}>
-      {/* Floating Glass Header Bar */}
+    <header style={{ position: 'sticky', top: 0, zIndex: 40, backgroundColor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(226, 232, 240, 0.8)' }}>
+      {/* Floating Header Bar matching WhatsApp Image 2026-11-19 at 4.39.13 PM (1).jpeg */}
       <div
-        className="glass-panel"
         style={{
-          borderRadius: '24px',
-          padding: '10px 16px',
+          padding: '12px 16px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          maxWidth: '520px',
+          margin: '0 auto',
         }}
       >
-        {/* Logo & Emblem */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, #8D72E1 0%, #6C4AB6 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(108, 74, 182, 0.35)',
-              position: 'relative',
-            }}
+        {/* Logo & Emblem: Sun Icon + BHAVISHYAA */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <svg 
+            width="32" 
+            height="22" 
+            viewBox="0 0 130 80" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <div
-              style={{
-                position: 'absolute',
-                width: '18px',
-                height: '18px',
-                borderRadius: '50%',
-                background: 'rgba(229, 148, 0, 0.25)',
-              }}
-            />
-            <Sparkles size={22} color="#FFFFFF" />
-          </div>
+            <path d="M20 70 C 20 28, 110 28, 110 70 Z" fill="#D97706" />
+            <circle cx="65" cy="62" r="16" fill="#FFFFFF" />
+            <circle cx="22" cy="46" r="4.5" fill="#D97706" />
+            <circle cx="42" cy="22" r="5" fill="#D97706" />
+            <circle cx="65" cy="10" r="5.5" fill="#D97706" />
+            <circle cx="88" cy="22" r="5" fill="#D97706" />
+            <circle cx="108" cy="46" r="4.5" fill="#D97706" />
+            <path d="M42 35 L 65 14 L 88 35 Z" fill="#D97706" />
+          </svg>
 
           <div>
             <div
               style={{
                 fontFamily: 'Cinzel, serif',
                 fontSize: '18px',
-                fontWeight: '800',
-                letterSpacing: '1.8px',
+                fontWeight: '900',
+                letterSpacing: '1.5px',
                 color: '#1E1B4B',
-                lineHeight: '1.1',
+                lineHeight: 1,
               }}
             >
               BHAVISHYAA
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '2px' }}>
-              <span
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: '#E59400',
-                  display: 'inline-block',
-                }}
-              />
-              <span
-                style={{
-                  fontSize: '8.5px',
-                  fontWeight: '700',
-                  letterSpacing: '1px',
-                  color: '#C77700',
-                }}
-              >
-                VEDIC DESTINY & JYOTISH
-              </span>
-            </div>
           </div>
         </div>
 
-        {/* Right Actions: Wallet, Notification, Profile */}
+        {/* Right Actions matching screenshot */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {/* Wallet Chip */}
+          {/* Wallet Chip: ₹185 */}
           <button
             onClick={onOpenWallet}
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '6px 10px',
-              borderRadius: '30px',
-              background: 'linear-gradient(135deg, #FFF9EE 0%, #FFECC4 100%)',
-              border: '1px solid rgba(229, 148, 0, 0.4)',
-              boxShadow: '0 2px 8px rgba(229, 148, 0, 0.15)',
+              padding: '6px 14px',
+              borderRadius: '25px',
+              backgroundColor: '#FEF3C7',
+              border: '1px solid #FCD34D',
+              boxShadow: '0 2px 6px rgba(217, 119, 6, 0.1)',
               cursor: 'pointer',
             }}
           >
-            <Wallet size={15} color="#C77700" />
-            <span style={{ fontSize: '13px', fontWeight: '800', color: '#8C4C00' }}>
+            <span style={{ fontSize: '13px', fontWeight: '900', color: '#92400E' }}>
               ₹{walletBalance}
             </span>
-            <div
-              style={{
-                width: '14px',
-                height: '14px',
-                borderRadius: '50%',
-                backgroundColor: '#C77700',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff',
-                fontSize: '11px',
-                fontWeight: 'bold',
-                lineHeight: 1,
-              }}
-            >
-              +
-            </div>
           </button>
 
           {/* Notification Bell */}
@@ -133,8 +88,8 @@ export default function Header({
               width: '38px',
               height: '38px',
               borderRadius: '50%',
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              border: '1px solid #E2E8F0',
+              backgroundColor: '#FFFFFF',
+              border: '1.5px solid #E2E8F0',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -142,36 +97,36 @@ export default function Header({
               cursor: 'pointer',
             }}
           >
-            <Bell size={19} color="#1E1B4B" />
+            <Bell size={18} color="#1E1B4B" />
             <span
               style={{
                 position: 'absolute',
                 top: '8px',
                 right: '8px',
-                width: '7px',
-                height: '7px',
+                width: '6px',
+                height: '6px',
                 borderRadius: '50%',
-                backgroundColor: '#F43F5E',
+                backgroundColor: '#EF4444',
               }}
             />
           </button>
 
-          {/* Profile Avatar */}
+          {/* Profile Circle */}
           <button
             onClick={onOpenProfile}
             style={{
               width: '38px',
               height: '38px',
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, #EADBFF 0%, #C7B8EA 100%)',
+              backgroundColor: '#C85A32',
               border: '2px solid #FFFFFF',
-              boxShadow: '0 2px 8px rgba(108, 74, 182, 0.15)',
+              boxShadow: '0 2px 8px rgba(200, 90, 50, 0.25)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '15px',
               fontWeight: '800',
-              color: '#6C4AB6',
+              color: '#FFFFFF',
               cursor: 'pointer',
             }}
           >
@@ -180,61 +135,89 @@ export default function Header({
         </div>
       </div>
 
-      {/* Mode Switcher Pill Banner */}
+      {/* Quick Navigation Ribbon to easily test/view every stage */}
       <div
         style={{
-          marginTop: '6px',
-          padding: '6px 14px',
-          borderRadius: '16px',
-          background: 'rgba(255, 255, 255, 0.75)',
-          border: '1px solid rgba(255, 255, 255, 0.9)',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          gap: '8px',
+          overflowX: 'auto',
+          padding: '6px 16px 8px',
+          backgroundColor: '#FFFBEB',
+          borderTop: '1px solid #FEF3C7',
+          scrollbarWidth: 'none',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: '#10B981',
-              display: 'inline-block',
-            }}
-          />
-          <span style={{ fontSize: '11px', fontWeight: '700', color: '#6C4AB6' }}>
-            BHAVISHYAA Premium Suite
-          </span>
-        </div>
+        <span style={{ fontSize: '10.5px', fontWeight: '800', color: '#B45309', textTransform: 'uppercase', flexShrink: 0 }}>
+          View Flows:
+        </span>
 
         <button
-          onClick={onToggleOnboarding || onStartOnboarding}
+          onClick={onGoToSplash}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '5px 12px',
+            padding: '3px 10px',
             borderRadius: '12px',
-            backgroundColor: '#F3E8FF',
-            border: '1px solid #D8B4FE',
-            color: '#6C4AB6',
-            fontSize: '11.5px',
-            fontWeight: '800',
+            backgroundColor: '#FFFFFF',
+            border: '1px solid #FDE68A',
+            color: '#B45309',
+            fontSize: '11px',
+            fontWeight: '700',
             cursor: 'pointer',
-            transition: 'all 0.2s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#6C4AB6';
-            e.currentTarget.style.color = '#FFFFFF';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = '#F3E8FF';
-            e.currentTarget.style.color = '#6C4AB6';
+            flexShrink: 0
           }}
         >
-          <SlidersHorizontal size={13} />
-          View 9-Step Onboarding Flow
+          🌅 Splash Screen
+        </button>
+
+        <button
+          onClick={onGoToLogin}
+          style={{
+            padding: '3px 10px',
+            borderRadius: '12px',
+            backgroundColor: '#FFFFFF',
+            border: '1px solid #FDE68A',
+            color: '#B45309',
+            fontSize: '11px',
+            fontWeight: '700',
+            cursor: 'pointer',
+            flexShrink: 0
+          }}
+        >
+          🔑 Login Page
+        </button>
+
+        <button
+          onClick={onGoToWelcome}
+          style={{
+            padding: '3px 10px',
+            borderRadius: '12px',
+            backgroundColor: '#FFFFFF',
+            border: '1px solid #FDE68A',
+            color: '#B45309',
+            fontSize: '11px',
+            fontWeight: '700',
+            cursor: 'pointer',
+            flexShrink: 0
+          }}
+        >
+          🙏 Welcome Screen
+        </button>
+
+        <button
+          onClick={onGoToOnboarding}
+          style={{
+            padding: '3px 10px',
+            borderRadius: '12px',
+            backgroundColor: '#C85A32',
+            border: 'none',
+            color: '#FFFFFF',
+            fontSize: '11px',
+            fontWeight: '800',
+            cursor: 'pointer',
+            flexShrink: 0
+          }}
+        >
+          ✨ Setup (1 to 9)
         </button>
       </div>
     </header>
