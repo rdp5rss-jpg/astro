@@ -83,26 +83,20 @@ export default function AdminPanel({ onExitToUserApp }) {
             </div>
           </div>
 
-          {/* Quick Exit to User App button */}
-          <button
-            onClick={onExitToUserApp}
+          {/* Platform Status Pill */}
+          <span
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
               padding: '6px 12px',
               borderRadius: '999px',
-              backgroundColor: '#F1F5F9',
-              border: '1px solid #CBD5E1',
-              color: '#334155',
+              backgroundColor: '#DCFCE7',
+              border: '1px solid #86EFAC',
+              color: '#15803D',
               fontSize: '11px',
               fontWeight: '800',
-              cursor: 'pointer',
             }}
           >
-            <span>Seeker App</span>
-            <ArrowLeft size={13} style={{ transform: 'rotate(180deg)' }} />
-          </button>
+            ● Live HQ
+          </span>
         </div>
       </header>
 

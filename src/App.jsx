@@ -34,8 +34,8 @@ export default function App() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [walletBalance, setWalletBalance] = useState(185);
-  // Portal Perspective: 'seeker' (User app) | 'astrologer' (Guru portal) | 'admin' (HQ console)
-  const [activePortal, setActivePortal] = useState('seeker');
+  // Portal Perspective: Directly launches Astrologer Portal by default
+  const [activePortal, setActivePortal] = useState('astrologer');
 
   const notifications = [
     { id: 1, title: 'Rudranand Live Call', text: 'Acharya Rudranand is available right now for 50% off.', time: '2m ago' },
@@ -68,21 +68,11 @@ export default function App() {
 
   // 0. Astrologer Portal & Admin Portal Guards
   if (activePortal === 'astrologer') {
-    return (
-      <>
-        <AstrologerPanel onExitToUserApp={() => setActivePortal('seeker')} />
-        <PortalSwitcher currentPortal={activePortal} onSelectPortal={setActivePortal} />
-      </>
-    );
+    return <AstrologerPanel />;
   }
 
   if (activePortal === 'admin') {
-    return (
-      <>
-        <AdminPanel onExitToUserApp={() => setActivePortal('seeker')} />
-        <PortalSwitcher currentPortal={activePortal} onSelectPortal={setActivePortal} />
-      </>
-    );
+    return <AdminPanel />;
   }
 
   // 1. Splash Screen
@@ -234,12 +224,6 @@ export default function App() {
         onOpenMatchmaker={() => setActiveScreen('matchmaker')}
       />
 
-      {/* Floating Portal Switcher (Seeker / Astrologer / Admin) */}
-      <PortalSwitcher 
-        currentPortal={activePortal} 
-        onSelectPortal={setActivePortal} 
-      />
-
       {/* Profile Modal Overlay */}
       {isProfileOpen && (
         <div style={{
@@ -268,10 +252,6 @@ export default function App() {
               onClose={() => setIsProfileOpen(false)}
               walletBalance={walletBalance}
               seekerName="Mahi Sharma"
-              onSwitchPortal={(portal) => {
-                setIsProfileOpen(false);
-                setActivePortal(portal);
-              }}
               onOpenWallet={() => {
                 setIsProfileOpen(false);
                 setIsWalletOpen(true);

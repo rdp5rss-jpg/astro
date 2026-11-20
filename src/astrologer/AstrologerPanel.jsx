@@ -7,19 +7,38 @@ import {
   Sparkles, 
   LogOut,
   Bell,
-  ArrowLeft
+  Phone,
+  ShieldCheck,
+  CheckCircle2
 } from 'lucide-react';
 import { astrologers } from '../data/astrologers';
+import AstrologerAuth from './AstrologerAuth';
 import AstrologerDashboard from './AstrologerDashboard';
+import AstrologerConsultations from './AstrologerConsultations';
 import AstrologerChatView from './AstrologerChatView';
 import AstrologerEarnings from './AstrologerEarnings';
 import AstrologerProfile from './AstrologerProfile';
+import CallScreen from '../screens/CallScreen';
 
-export default function AstrologerPanel({ onExitToUserApp }) {
+export default function AstrologerPanel() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentAstro, setCurrentAstro] = useState(astrologers[0]); // Acharya Rudranand Shastri
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'consultations' | 'earnings' | 'profile'
   const [isOnline, setIsOnline] = useState(true);
   const [activeConsultation, setActiveConsultation] = useState(null);
+  const [activeCallSession, setActiveCallSession] = useState(null);
+
+  // If Astrologer is not logged in, show Register & Login Page
+  if (!isAuthenticated) {
+    return (
+      <AstrologerAuth
+        onLoginSuccess={(astro) => {
+          setCurrentAstro(astro);
+          setIsAuthenticated(true);
+        }}
+      />
+    );
+  }
 
   const tabs = [
     { id: 'dashboard', label: 'Console', icon: LayoutDashboard },
@@ -38,17 +57,16 @@ export default function AstrologerPanel({ onExitToUserApp }) {
         fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
       }}
     >
-      {/* Top Header */}
+      {/* Top Header - Strictly Astrologer Only (No Seeker Button) */}
       <header
         style={{
           position: 'sticky',
           top: 0,
           zIndex: 40,
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          borderBottom: '1px solid #E2E8F0',
+          backgroundColor: '#FFFFFF',
+          borderBottom: '1.5px solid #E2E8F0',
           padding: '12px 16px',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.04)',
         }}
       >
         <div
@@ -60,21 +78,28 @@ export default function AstrologerPanel({ onExitToUserApp }) {
             justifyContent: 'space-between',
           }}
         >
-          {/* Guru Identity + Status */}
+          {/* Guru Identity + Status Indicator */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ position: 'relative' }}>
               <img
                 src={currentAstro.avatar}
                 alt={currentAstro.name}
-                style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #FCD34D' }}
+                style={{
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  border: '2px solid #FCD34D',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.08)',
+                }}
               />
               <span
                 style={{
                   position: 'absolute',
                   bottom: '-1px',
                   right: '-1px',
-                  width: '11px',
-                  height: '11px',
+                  width: '12px',
+                  height: '12px',
                   borderRadius: '50%',
                   backgroundColor: isOnline ? '#10B981' : '#94A3B8',
                   border: '2px solid #FFFFFF',
@@ -83,41 +108,67 @@ export default function AstrologerPanel({ onExitToUserApp }) {
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <h2 style={{ fontSize: '14px', fontWeight: '900', color: '#1E1B4B', lineHeight: 1.2 }}>
+                <h2 style={{ fontSize: '15px', fontWeight: '900', color: '#1E1B4B', lineHeight: 1.2 }}>
                   {currentAstro.name}
                 </h2>
+                <CheckCircle2 size={14} color="#10B981" />
               </div>
-              <p style={{ fontSize: '11px', color: '#64748B' }}>
-                Guru Portal • {isOnline ? '🟢 Live' : '⚪ Offline'}
+              <p style={{ fontSize: '11px', color: '#64748B', fontWeight: '600' }}>
+                Verified Astrologer Portal
               </p>
             </div>
           </div>
 
-          {/* Quick Exit to User App button */}
-          <button
-            onClick={onExitToUserApp}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              padding: '6px 12px',
-              borderRadius: '999px',
-              backgroundColor: '#FFF7ED',
-              border: '1px solid #FDBA74',
-              color: '#C85A32',
-              fontSize: '11px',
-              fontWeight: '800',
-              cursor: 'pointer',
-            }}
-          >
-            <span>Seeker App</span>
-            <ArrowLeft size={13} style={{ transform: 'rotate(180deg)' }} />
-          </button>
+          {/* Right Header Actions: Online Toggle & Logout Button */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Online / Offline status badge button */}
+            <button
+              onClick={() => setIsOnline(prev => !prev)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                padding: '6px 12px',
+                borderRadius: '999px',
+                backgroundColor: isOnline ? '#DCFCE7' : '#F1F5F9',
+                border: isOnline ? '1.5px solid #86EFAC' : '1.5px solid #CBD5E1',
+                color: isOnline ? '#15803D' : '#64748B',
+                fontSize: '11.5px',
+                fontWeight: '900',
+                cursor: 'pointer',
+              }}
+              title="Toggle Live Availability"
+            >
+              <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: isOnline ? '#10B981' : '#94A3B8' }} />
+              <span>{isOnline ? 'Online' : 'Offline'}</span>
+            </button>
+
+            {/* Logout Button */}
+            <button
+              onClick={() => setIsAuthenticated(false)}
+              style={{
+                width: '34px',
+                height: '34px',
+                borderRadius: '50%',
+                backgroundColor: '#F8FAFC',
+                border: '1.5px solid #E2E8F0',
+                color: '#64748B',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+              title="Sign Out of Guru Console"
+            >
+              <LogOut size={15} />
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Main Container */}
       <main style={{ maxWidth: '520px', margin: '0 auto', padding: '16px 16px 0' }}>
+        {/* Tab 1: Dashboard Console */}
         {activeTab === 'dashboard' && (
           <AstrologerDashboard
             astrologer={currentAstro}
@@ -128,20 +179,20 @@ export default function AstrologerPanel({ onExitToUserApp }) {
           />
         )}
 
+        {/* Tab 2: Approved Consultations Hub */}
         {activeTab === 'consultations' && (
-          <AstrologerDashboard
-            astrologer={currentAstro}
-            isOnline={isOnline}
-            onToggleOnline={() => setIsOnline(prev => !prev)}
-            onOpenConsultation={(req) => setActiveConsultation(req)}
-            onNavigateTab={(tab) => setActiveTab(tab)}
+          <AstrologerConsultations
+            onOpenChatSession={(item) => setActiveConsultation(item)}
+            onOpenCallSession={(item) => setActiveCallSession(item)}
           />
         )}
 
+        {/* Tab 3: Earnings & Bank Withdrawal */}
         {activeTab === 'earnings' && (
           <AstrologerEarnings astrologer={currentAstro} />
         )}
 
+        {/* Tab 4: Profile & Rates Settings */}
         {activeTab === 'profile' && (
           <AstrologerProfile
             astrologer={currentAstro}
@@ -150,7 +201,7 @@ export default function AstrologerPanel({ onExitToUserApp }) {
         )}
       </main>
 
-      {/* Live Active Consultation Overlay */}
+      {/* Live Active Chat Consultation Workspace */}
       {activeConsultation && (
         <AstrologerChatView
           consultation={activeConsultation}
@@ -159,7 +210,26 @@ export default function AstrologerPanel({ onExitToUserApp }) {
         />
       )}
 
-      {/* Bottom Astrologer Portal Navigation Bar */}
+      {/* Live Active Voice Call Consultation Workspace */}
+      {activeCallSession && (
+        <CallScreen
+          astrologer={{
+            name: activeCallSession.seekerName,
+            avatar: activeCallSession.avatar,
+            title: `Seeker Consultation • ${activeCallSession.rashi || 'Kundli Milan'}`,
+            ratePerMin: activeCallSession.rate || 35,
+          }}
+          onEndCall={() => setActiveCallSession(null)}
+          onSwitchToChat={() => {
+            const s = activeCallSession;
+            setActiveCallSession(null);
+            setActiveConsultation(s);
+          }}
+          walletBalance={24850}
+        />
+      )}
+
+      {/* Bottom Astrologer Navigation Bar */}
       <nav
         style={{
           position: 'fixed',
@@ -182,10 +252,8 @@ export default function AstrologerPanel({ onExitToUserApp }) {
             justifyContent: 'space-around',
             padding: '0 8px',
             boxShadow: '0 12px 36px rgba(0, 0, 0, 0.12)',
-            backgroundColor: 'rgba(255, 255, 255, 0.96)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1.5px solid rgba(255, 255, 255, 0.95)',
+            backgroundColor: 'rgba(255, 255, 255, 0.98)',
+            border: '1.5px solid #E2E8F0',
             pointerEvents: 'auto',
           }}
         >

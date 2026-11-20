@@ -27,8 +27,7 @@ export default function ProfileScreen({
   walletBalance = 185, 
   onOpenWallet, 
   onSignOut,
-  seekerName = 'Mahi Sharma',
-  onSwitchPortal
+  seekerName = 'Mahi Sharma'
 }) {
   const [activeTab, setActiveTab] = useState('profile'); // 'profile' | 'family' | 'settings'
 
@@ -396,68 +395,6 @@ export default function ProfileScreen({
               </div>
               <ChevronRight size={16} color="#94A3B8" />
             </button>
-
-            {onSwitchPortal && (
-              <div style={{ marginTop: '14px', paddingTop: '14px', borderTop: '1px solid #F1F5F9', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  BHAVISHYAA Ecosystem
-                </span>
-
-                <button
-                  onClick={() => {
-                    onClose();
-                    onSwitchPortal('astrologer');
-                  }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '12px 14px',
-                    borderRadius: '14px',
-                    backgroundColor: '#FEF3C7',
-                    border: '1px solid #FCD34D',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <span style={{ fontSize: '18px' }}>🔮</span>
-                    <div>
-                      <div style={{ fontSize: '13px', fontWeight: '800', color: '#78350F' }}>Astrologer Guru Console</div>
-                      <div style={{ fontSize: '10.5px', color: '#92400E' }}>Live consultations, queue & earnings</div>
-                    </div>
-                  </div>
-                  <ChevronRight size={16} color="#B45309" />
-                </button>
-
-                <button
-                  onClick={() => {
-                    onClose();
-                    onSwitchPortal('admin');
-                  }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '12px 14px',
-                    borderRadius: '14px',
-                    backgroundColor: '#EEF2FF',
-                    border: '1px solid #C7D2FE',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <span style={{ fontSize: '18px' }}>⚡</span>
-                    <div>
-                      <div style={{ fontSize: '13px', fontWeight: '800', color: '#1E1B4B' }}>Platform Admin Console</div>
-                      <div style={{ fontSize: '10.5px', color: '#4338CA' }}>Seekers, Gurus, commissions & offer manager</div>
-                    </div>
-                  </div>
-                  <ChevronRight size={16} color="#4338CA" />
-                </button>
-              </div>
-            )}
           </div>
         </div>
       )}
