@@ -8,7 +8,7 @@ import OnboardingScreen from './screens/OnboardingScreen';
 import MatchScreen from './screens/MatchScreen';
 import HomeScreen from './screens/HomeScreen';
 import ReadingsScreen from './screens/ReadingsScreen';
-import KundliScreen from './screens/KundliScreen';
+import FreeScreen from './screens/FreeScreen';
 import ReportsScreen from './screens/ReportsScreen';
 import ChatScreen from './screens/ChatScreen';
 import WalletScreen from './screens/WalletScreen';
@@ -22,8 +22,8 @@ export default function App() {
   const [activeScreen, setActiveScreen] = useState('splash');
   
   // Tabs for Main Dashboard:
-  const TAB_KEYS = ['explore', 'readings', 'kundli', 'reports'];
-  const [activeTab, setActiveTab] = useState('explore'); // 'explore' | 'readings' | 'kundli' | 'reports'
+  const TAB_KEYS = ['explore', 'readings', 'free', 'reports'];
+  const [activeTab, setActiveTab] = useState('explore'); // 'explore' | 'readings' | 'free' | 'reports'
   
   const [activeAstrologer, setActiveAstrologer] = useState(astrologers[0]);
   const [isWalletOpen, setIsWalletOpen] = useState(false);
@@ -161,8 +161,11 @@ export default function App() {
           <ReadingsScreen onStartChat={handleStartChat} />
         )}
 
-        {activeTab === 'kundli' && (
-          <KundliScreen onConsultClick={() => handleTabChange('readings')} />
+        {activeTab === 'free' && (
+          <FreeScreen 
+            onConsultClick={() => handleTabChange('readings')} 
+            onStartMatch={() => setActiveScreen('matchmaker')} 
+          />
         )}
 
         {activeTab === 'reports' && (

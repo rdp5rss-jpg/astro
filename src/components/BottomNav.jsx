@@ -1,5 +1,5 @@
 import React from 'react';
-import { Compass, MessageSquare, Grid, BookOpen, Sparkles } from 'lucide-react';
+import { Compass, MessageSquare, BookOpen, Gift } from 'lucide-react';
 
 export default function BottomNav({ 
   activeTab, 
@@ -7,17 +7,16 @@ export default function BottomNav({
   onSelectTab, 
   onOpenMatchmaker,
 }) {
-  const handleTab = (id, key) => {
-    if (onTabChange) onTabChange(id);
+  const handleTab = (key) => {
     if (onSelectTab) onSelectTab(key);
+    if (onTabChange) onTabChange(key);
   };
 
   const navItems = [
-    { id: 0, key: 'explore', label: 'Explore', icon: Compass },
-    { id: 1, key: 'readings', label: 'Readings', icon: MessageSquare, badge: 'LIVE' },
-    { id: 'fab', isFab: true },
-    { id: 2, key: 'kundli', label: 'Kundli', icon: Grid },
-    { id: 3, key: 'reports', label: 'Reports', icon: BookOpen },
+    { key: 'explore', label: 'Explore', icon: Compass },
+    { key: 'readings', label: 'Readings', icon: MessageSquare, hasLiveDot: true },
+    { key: 'free', label: 'Free', icon: Gift, isPill: true },
+    { key: 'reports', label: 'Reports', icon: BookOpen },
   ];
 
   return (
@@ -27,108 +26,124 @@ export default function BottomNav({
         bottom: '16px',
         left: 0,
         right: 0,
-        maxWidth: '460px',
+        maxWidth: '480px',
         margin: '0 auto',
         padding: '0 16px',
         zIndex: 50,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '12px',
+        pointerEvents: 'none',
       }}
     >
+      {/* 4-Item Floating Nav Pill matching user screenshot */}
       <div
-        className="glass-panel"
         style={{
-          borderRadius: '35px',
-          height: '74px',
+          flex: 1,
+          borderRadius: '36px',
+          height: '68px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-around',
           padding: '0 8px',
-          boxShadow: '0 12px 35px rgba(0, 0, 0, 0.12)',
+          boxShadow: '0 12px 36px rgba(0, 0, 0, 0.12)',
           backgroundColor: 'rgba(255, 255, 255, 0.96)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
           border: '1.5px solid rgba(255, 255, 255, 0.95)',
+          pointerEvents: 'auto',
         }}
       >
         {navItems.map((item) => {
-          if (item.isFab) {
+          const isSelected = activeTab === item.key;
+          const IconComponent = item.icon;
+
+          // Special "Free" Pill Button matching screenshot
+          if (item.isPill) {
             return (
               <button
-                key="fab"
-                onClick={onOpenMatchmaker}
-                title="Smart Cosmic Matchmaker"
+                key={item.key}
+                onClick={() => handleTab(item.key)}
                 style={{
-                  width: '54px',
-                  height: '54px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #D46A43 0%, #B84D28 100%)',
-                  border: '3px solid #FFFFFF',
-                  boxShadow: '0 6px 20px rgba(184, 77, 40, 0.5)',
                   display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  gap: '2px',
+                  padding: '6px 14px',
+                  borderRadius: '26px',
+                  backgroundColor: isSelected ? 'rgba(254, 215, 170, 0.95)' : 'rgba(254, 237, 222, 0.85)',
+                  border: '1px solid rgba(251, 146, 60, 0.35)',
                   cursor: 'pointer',
-                  transform: 'translateY(-6px)',
-                  transition: 'all 0.2s ease',
+                  outline: 'none',
+                  boxShadow: isSelected ? '0 3px 10px rgba(200, 90, 50, 0.2)' : 'none',
+                  transition: 'all 0.15s ease',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)')}
-                onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(-6px) scale(1)')}
               >
-                <Sparkles size={24} color="#FFFFFF" />
+                <IconComponent size={20} color="#C85A32" strokeWidth={2.4} />
+                <span
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: '900',
+                    color: '#C85A32',
+                    letterSpacing: '0.2px',
+                  }}
+                >
+                  {item.label}
+                </span>
               </button>
             );
           }
 
-          const isSelected = activeTab === item.id || activeTab === item.key;
-          const IconComponent = item.icon;
-
+          // Regular Tabs (Explore, Readings, Reports)
           return (
             <button
-              key={item.id}
-              onClick={() => handleTab(item.id, item.key)}
+              key={item.key}
+              onClick={() => handleTab(item.key)}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                justifyContent: 'center',
                 gap: '3px',
-                padding: '6px 12px',
+                padding: '6px 10px',
                 borderRadius: '20px',
                 cursor: 'pointer',
                 background: 'transparent',
                 border: 'none',
                 outline: 'none',
+                transition: 'all 0.15s ease',
               }}
             >
               <div
                 style={{
-                  padding: isSelected ? '6px' : '4px',
-                  borderRadius: '50%',
-                  backgroundColor: isSelected ? 'rgba(200, 90, 50, 0.12)' : 'transparent',
+                  position: 'relative',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  transition: 'all 0.2s',
-                  position: 'relative',
                 }}
               >
                 <IconComponent
-                  size={isSelected ? 22 : 20}
-                  color={isSelected ? '#C85A32' : '#64748B'}
+                  size={21}
+                  color={isSelected ? '#C85A32' : '#475569'}
+                  strokeWidth={isSelected ? 2.5 : 2}
                 />
 
-                {item.badge && (
+                {/* Green Live Dot for Readings */}
+                {item.hasLiveDot && (
                   <span
                     style={{
                       position: 'absolute',
-                      top: '-4px',
-                      right: '-8px',
-                      fontSize: '7.5px',
-                      fontWeight: '900',
+                      top: '-2px',
+                      right: '-3px',
+                      width: '7px',
+                      height: '7px',
+                      borderRadius: '50%',
                       backgroundColor: '#10B981',
-                      color: '#FFFFFF',
-                      padding: '1px 4.5px',
-                      borderRadius: '6px',
+                      border: '1.5px solid #FFFFFF',
                     }}
-                  >
-                    {item.badge}
-                  </span>
+                  />
                 )}
               </div>
 
@@ -136,7 +151,8 @@ export default function BottomNav({
                 style={{
                   fontSize: '11px',
                   fontWeight: isSelected ? '800' : '600',
-                  color: isSelected ? '#C85A32' : '#64748B',
+                  color: isSelected ? '#C85A32' : '#475569',
+                  letterSpacing: '0.1px',
                 }}
               >
                 {item.label}
@@ -145,6 +161,54 @@ export default function BottomNav({
           );
         })}
       </div>
+
+      {/* Floating AI Finder Magic Button (FAB) on the FAR RIGHT */}
+      <button
+        onClick={onOpenMatchmaker}
+        title="AI Celestial Finder & Matchmaker"
+        style={{
+          width: '58px',
+          height: '58px',
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #E06D3F 0%, #C85A32 100%)',
+          border: '2.5px solid #FFFFFF',
+          boxShadow: '0 8px 24px rgba(200, 90, 50, 0.42)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          flexShrink: 0,
+          pointerEvents: 'auto',
+          transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'scale(1.08)';
+          e.currentTarget.style.boxShadow = '0 10px 28px rgba(200, 90, 50, 0.52)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'scale(1)';
+          e.currentTarget.style.boxShadow = '0 8px 24px rgba(200, 90, 50, 0.42)';
+        }}
+        aria-label="AI Astrologer Matchmaker"
+      >
+        {/* Magic Wand with Sparkles SVG matching user's photo */}
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#FFFFFF"
+          strokeWidth="2.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="m14 10 7-7" />
+          <path d="M12.5 4.5 15 2l4.5 4.5-2.5 2.5" />
+          <path d="M3 21l8.5-8.5" />
+          <path d="M9 3l1 2 2 1-2 1-1 2-1-2-2-1 2-1z" />
+          <path d="M19 13l1 2 2 1-2 1-1 2-1-2-2-1 2-1z" />
+        </svg>
+      </button>
     </nav>
   );
 }
