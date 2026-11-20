@@ -14,7 +14,9 @@ import {
   ChevronRight,
   UserPlus,
   RefreshCw,
-  AlertCircle
+  AlertCircle,
+  FileText,
+  CreditCard
 } from 'lucide-react';
 import { astrologers } from '../data/astrologers';
 
@@ -34,7 +36,11 @@ export default function AstrologerAuth({ onLoginSuccess }) {
   const [regLanguages, setRegLanguages] = useState('');
   const [regBio, setRegBio] = useState('');
 
-  // Verification Step State
+  // Mandatory KYC Form State (empty by default)
+  const [regAadhaar, setRegAadhaar] = useState('');
+  const [regPan, setRegPan] = useState('');
+
+  // Verification Step State (no auto-fill)
   const [pendingAstro, setPendingAstro] = useState(null);
   const [verificationContext, setVerificationContext] = useState('login'); // 'login' | 'register'
   const [verificationTarget, setVerificationTarget] = useState('');
@@ -43,9 +49,6 @@ export default function AstrologerAuth({ onLoginSuccess }) {
   const [countdown, setCountdown] = useState(30);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerifiedSuccess, setIsVerifiedSuccess] = useState(false);
-
-  // Standard demo OTP
-  const DEMO_OTP = '482910';
 
   useEffect(() => {
     let timer;
@@ -85,6 +88,17 @@ export default function AstrologerAuth({ onLoginSuccess }) {
       return;
     }
 
+    const cleanAadhaar = regAadhaar.replace(/\s/g, '');
+    if (!cleanAadhaar || cleanAadhaar.length !== 12) {
+      alert('Please enter a valid 12-digit Aadhaar Card number for KYC.');
+      return;
+    }
+
+    if (!regPan.trim() || regPan.length !== 10) {
+      alert('Please enter a valid 10-character PAN Card number for KYC.');
+      return;
+    }
+
     const newAstro = {
       id: String(Date.now()),
       name: regName,
@@ -99,7 +113,9 @@ export default function AstrologerAuth({ onLoginSuccess }) {
       isOnline: true,
       isCelebrity: false,
       phone: regPhone,
-      verified: true,
+      aadhaar: regAadhaar,
+      pan: regPan,
+      kycVerified: true,
     };
 
     setPendingAstro(newAstro);
@@ -114,7 +130,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
   const handleVerifyOtp = (e) => {
     e.preventDefault();
     if (otpCode.trim().length !== 6) {
-      setOtpError('Please enter the complete 6-digit verification code.');
+      setOtpError('Please enter the 6-digit verification code sent to your mobile.');
       return;
     }
 
@@ -185,7 +201,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
         </div>
 
         {/* Auth Mode Toggle Pill (Only shown when not in verify step) */}
-        {mode !== 'verify' ? (
+        {mode !== 'verify' && (
           <div
             style={{
               display: 'flex',
@@ -233,7 +249,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
               Register as Guru
             </button>
           </div>
-        ) : null}
+        )}
 
         {/* 1. SIGN IN FORM */}
         {mode === 'login' && (
@@ -338,7 +354,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
           </form>
         )}
 
-        {/* 2. REGISTER FORM */}
+        {/* 2. REGISTER FORM WITH MANDATORY AADHAAR & PAN KYC */}
         {mode === 'register' && (
           <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div>
@@ -470,6 +486,86 @@ export default function AstrologerAuth({ onLoginSuccess }) {
               </div>
             </div>
 
+            {/* MANDATORY GOVERNMENT KYC DETAILS (AADHAAR & PAN) */}
+            <div
+              style={{
+                backgroundColor: '#F8FAFC',
+                borderRadius: '16px',
+                padding: '14px',
+                border: '1.5px solid #CBD5E1',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '12px', fontWeight: '900', color: '#1E1B4B', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <ShieldCheck size={16} color="#C85A32" />
+                  Government KYC Verification
+                </span>
+                <span style={{ fontSize: '10px', fontWeight: '800', color: '#15803D', backgroundColor: '#DCFCE7', border: '1px solid #86EFAC', padding: '2px 7px', borderRadius: '6px' }}>
+                  Mandatory
+                </span>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '4px' }}>
+                  Aadhaar Card Number (12 Digits)
+                </label>
+                <input
+                  type="text"
+                  required
+                  maxLength={14}
+                  value={regAadhaar}
+                  onChange={(e) => {
+                    const clean = e.target.value.replace(/[^0-9]/g, '').slice(0, 12);
+                    const formatted = clean.replace(/(\d{4})(?=\d)/g, '$1 ');
+                    setRegAadhaar(formatted);
+                  }}
+                  placeholder="XXXX XXXX XXXX"
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '12px',
+                    border: '1.5px solid #CBD5E1',
+                    backgroundColor: '#FFFFFF',
+                    fontSize: '13px',
+                    fontWeight: '800',
+                    color: '#1E1B4B',
+                    letterSpacing: '1.5px',
+                    outline: 'none',
+                  }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '4px' }}>
+                  Permanent Account Number (PAN)
+                </label>
+                <input
+                  type="text"
+                  required
+                  maxLength={10}
+                  value={regPan}
+                  onChange={(e) => setRegPan(e.target.value.toUpperCase())}
+                  placeholder="e.g. ABCDE1234F"
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '12px',
+                    border: '1.5px solid #CBD5E1',
+                    backgroundColor: '#FFFFFF',
+                    fontSize: '13px',
+                    fontWeight: '800',
+                    color: '#1E1B4B',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1.5px',
+                    outline: 'none',
+                  }}
+                />
+              </div>
+            </div>
+
             <div>
               <label style={{ fontSize: '11px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '4px' }}>
                 Languages Spoken
@@ -518,7 +614,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
           </form>
         )}
 
-        {/* 3. DEDICATED VERIFICATION STEP */}
+        {/* 3. DEDICATED VERIFICATION STEP (NO AUTO-FILL) */}
         {mode === 'verify' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div style={{ textAlign: 'center' }}>
@@ -549,35 +645,10 @@ export default function AstrologerAuth({ onLoginSuccess }) {
               </p>
             </div>
 
-            {/* Test Helper Pill */}
-            <div
-              onClick={() => setOtpCode(DEMO_OTP)}
-              style={{
-                backgroundColor: '#FFFBEB',
-                border: '1.5px solid #FCD34D',
-                borderRadius: '14px',
-                padding: '10px 14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                cursor: 'pointer',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={15} color="#D97706" />
-                <span style={{ fontSize: '12px', fontWeight: '800', color: '#92400E' }}>
-                  Verification Code: <span style={{ letterSpacing: '2px', fontFamily: 'monospace' }}>{DEMO_OTP}</span>
-                </span>
-              </div>
-              <span style={{ fontSize: '11px', fontWeight: '800', color: '#C85A32' }}>
-                Tap to Fill
-              </span>
-            </div>
-
             <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
                 <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '6px', textAlign: 'center' }}>
-                  Enter 6-Digit OTP Code
+                  Enter 6-Digit Verification Code
                 </label>
                 <input
                   type="text"
@@ -623,8 +694,7 @@ export default function AstrologerAuth({ onLoginSuccess }) {
                     type="button"
                     onClick={() => {
                       setCountdown(30);
-                      setOtpCode(DEMO_OTP);
-                      alert(`📲 A new verification code has been dispatched: ${DEMO_OTP}`);
+                      alert(`📲 A fresh 6-digit verification code has been dispatched to ${verificationTarget}.`);
                     }}
                     style={{ background: 'none', border: 'none', color: '#C85A32', fontWeight: '800', cursor: 'pointer', fontSize: '12px' }}
                   >
