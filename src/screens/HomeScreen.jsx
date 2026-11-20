@@ -13,6 +13,7 @@ import {
   Gem
 } from 'lucide-react';
 import { astrologers } from '../data/astrologers';
+import guruBannerImg from '../assets/guru-banner.png';
 
 export default function HomeScreen({ onSelectAstrologer, onNavigateTab, onOpenMatchmaker }) {
   const [offerSeconds, setOfferSeconds] = useState(9 * 3600 + 22 * 60 + 8);
@@ -238,7 +239,7 @@ export default function HomeScreen({ onSelectAstrologer, onNavigateTab, onOpenMa
             }}
           />
           <img
-            src="/guru-banner.png"
+            src={guruBannerImg}
             alt="Vedic Astrologer Guru"
             style={{
               width: '100%',

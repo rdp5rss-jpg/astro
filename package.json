@@ -7,9 +7,15 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cap:sync": "cap sync",
+    "cap:build": "vite build && cap sync android",
+    "build:apk": "build-apk.bat"
   },
   "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/cli": "^8.6.2",
+    "@capacitor/core": "^8.6.2",
     "lucide-react": "^1.76.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"

@@ -518,7 +518,7 @@ export default function OnboardingScreen({ onFinish, onSignOut }) {
           {step === 5 && (
             <div>
               <h1 style={{
-                fontSize: 'clamp(21px, 5.5vw, 26px)',
+                fontSize: 'clamp(18px, 5vw, 25px)',
                 fontWeight: '800',
                 color: '#1E1B4B',
                 marginBottom: '20px',
