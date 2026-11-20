@@ -11,6 +11,7 @@ import ReadingsScreen from './screens/ReadingsScreen';
 import FreeScreen from './screens/FreeScreen';
 import ReportsScreen from './screens/ReportsScreen';
 import ChatScreen from './screens/ChatScreen';
+import CallScreen from './screens/CallScreen';
 import WalletScreen from './screens/WalletScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { astrologers } from './data/astrologers';
@@ -51,6 +52,12 @@ export default function App() {
   const handleStartChat = (astro) => {
     setActiveAstrologer(astro || astrologers[0]);
     setActiveScreen('chat');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleStartCall = (astro) => {
+    setActiveAstrologer(astro || astrologers[0]);
+    setActiveScreen('call');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -99,16 +106,17 @@ export default function App() {
     return (
       <MatchScreen 
         seekerName="Mahi" 
-        onComplete={(matchedAstro) => {
+        onComplete={(matchedAstro, mode) => {
           if (matchedAstro) {
             setActiveAstrologer(matchedAstro);
-            setActiveScreen('chat');
+            setActiveScreen(mode === 'call' ? 'call' : 'chat');
           } else {
             setActiveScreen('main');
             setActiveTab('explore');
           }
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
+        onStartCall={handleStartCall}
         onExploreAll={() => {
           setActiveScreen('main');
           setActiveTab('explore');
@@ -124,6 +132,21 @@ export default function App() {
       <ChatScreen 
         astrologer={activeAstrologer} 
         onBack={() => setActiveScreen('main')} 
+      />
+    );
+  }
+
+  // 6b. Live Voice Consultation Call Screen
+  if (activeScreen === 'call') {
+    return (
+      <CallScreen
+        astrologer={activeAstrologer}
+        onEndCall={() => setActiveScreen('main')}
+        onSwitchToChat={(astro) => {
+          setActiveAstrologer(astro || activeAstrologer);
+          setActiveScreen('chat');
+        }}
+        walletBalance={walletBalance}
       />
     );
   }
@@ -151,14 +174,20 @@ export default function App() {
       <main style={{ flex: 1, maxWidth: '520px', width: '100%', margin: '0 auto', paddingTop: '10px' }}>
         {activeTab === 'explore' && (
           <HomeScreen 
-            onSelectAstrologer={handleStartChat}
+            onSelectAstrologer={(astro, mode) => {
+              if (mode === 'call') handleStartCall(astro);
+              else handleStartChat(astro);
+            }}
             onNavigateTab={handleTabChange}
             onOpenMatchmaker={() => setActiveScreen('matchmaker')}
           />
         )}
 
         {activeTab === 'readings' && (
-          <ReadingsScreen onStartChat={handleStartChat} />
+          <ReadingsScreen 
+            onStartChat={handleStartChat} 
+            onStartCall={handleStartCall}
+          />
         )}
 
         {activeTab === 'free' && (

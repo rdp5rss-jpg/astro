@@ -4,6 +4,7 @@ import {
   X, 
   Sparkles, 
   MessageSquare, 
+  Phone,
   Star, 
   ShieldCheck, 
   ArrowRight,
@@ -15,6 +16,7 @@ import { astrologers } from '../data/astrologers';
 
 export default function MatchScreen({ 
   onComplete, 
+  onStartCall,
   onExploreAll,
   seekerName = 'Seeker', 
   seekerData 
@@ -435,37 +437,61 @@ export default function MatchScreen({
               </span>
             </div>
 
-            {/* Start Chat Button */}
-            <button
-              onClick={handleStartChat}
-              style={{
-                width: '100%',
-                padding: '14px',
-                borderRadius: '16px',
-                background: 'linear-gradient(135deg, #D46A43 0%, #C85A32 60%, #B84D28 100%)',
-                color: '#FFFFFF',
-                fontSize: '14px',
-                fontWeight: '900',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                border: 'none',
-                boxShadow: '0 6px 20px rgba(200, 90, 50, 0.35)',
-                cursor: 'pointer',
-                transition: 'transform 0.15s ease'
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
-            >
-              <MessageSquare size={18} />
-              Start 1-on-1 Astro Chat Now
-              <ArrowRight size={16} />
-            </button>
+            {/* Start Chat & Call Action Buttons */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <button
+                onClick={handleStartChat}
+                style={{
+                  padding: '13px 8px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg, #D46A43 0%, #C85A32 60%, #B84D28 100%)',
+                  color: '#FFFFFF',
+                  fontSize: '13.5px',
+                  fontWeight: '900',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  border: 'none',
+                  boxShadow: '0 6px 18px rgba(200, 90, 50, 0.35)',
+                  cursor: 'pointer',
+                  transition: 'transform 0.15s ease'
+                }}
+              >
+                <MessageSquare size={16} />
+                <span>Chat Now</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  if (onStartCall) onStartCall(matchedAstrologer);
+                  else if (onComplete) onComplete(matchedAstrologer, 'call');
+                }}
+                style={{
+                  padding: '13px 8px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                  color: '#FFFFFF',
+                  fontSize: '13.5px',
+                  fontWeight: '900',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  border: 'none',
+                  boxShadow: '0 6px 18px rgba(16, 185, 129, 0.35)',
+                  cursor: 'pointer',
+                  transition: 'transform 0.15s ease'
+                }}
+              >
+                <Phone size={16} />
+                <span>Voice Call</span>
+              </button>
+            </div>
 
             {/* Countdown notice */}
             <div style={{ textAlign: 'center', fontSize: '11px', color: '#64748B' }}>
-              Auto-connecting in <strong style={{ color: '#C85A32' }}>{autoChatCountdown}s</strong> • Or tap above to connect now
+              Auto-connecting chat in <strong style={{ color: '#C85A32' }}>{autoChatCountdown}s</strong> • Or tap above to connect now
             </div>
           </div>
         </div>

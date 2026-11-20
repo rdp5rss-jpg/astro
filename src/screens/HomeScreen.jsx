@@ -10,7 +10,9 @@ import {
   Compass,
   Clock,
   CheckCircle,
-  Gem
+  Gem,
+  MessageSquare,
+  Phone
 } from 'lucide-react';
 import { astrologers } from '../data/astrologers';
 import guruBannerImg from '../assets/guru-banner.png';
@@ -383,14 +385,14 @@ export default function HomeScreen({ onSelectAstrologer, onNavigateTab, onOpenMa
 
               {/* Name & Title */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <span style={{ fontSize: '14.5px', fontWeight: '800', color: '#1E1B4B' }}>
+                <span style={{ fontSize: '14.5px', fontWeight: '800', color: '#1E1B4B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {astro.name}
                 </span>
-                <CheckCircle size={14} color="#10B981" />
+                <CheckCircle size={14} color="#10B981" style={{ flexShrink: 0 }} />
               </div>
 
-              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px', fontWeight: '500' }}>
-                {astro.specialty}
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px', fontWeight: '500', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {astro.title || astro.specialty || 'Vedic Astrologer'}
               </div>
 
               {/* Stats: Rating & Exp */}
@@ -399,19 +401,74 @@ export default function HomeScreen({ onSelectAstrologer, onNavigateTab, onOpenMa
                   <Star size={12} fill="#D97706" color="#D97706" /> {astro.rating}
                 </span>
                 <span>•</span>
-                <span>{astro.consults}</span>
+                <span>{astro.consultations || astro.consults || '35k'}</span>
                 <span>•</span>
-                <span>{astro.exp}</span>
+                <span>{astro.experienceYears ? `${astro.experienceYears}y` : (astro.exp || '10y')}</span>
               </div>
 
               {/* Price & Action */}
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #F1F5F9' }}>
-                <span style={{ fontSize: '16px', fontWeight: '900', color: '#C85A32' }}>
-                  ₹{astro.rate}/min
+                <span style={{ fontSize: '15px', fontWeight: '900', color: '#C85A32' }}>
+                  ₹{astro.ratePerMin || astro.rate || 30}/min
                 </span>
-                <span style={{ fontSize: '12px', color: '#94A3B8', textDecoration: 'line-through' }}>
-                  ₹{astro.rate * 2}
+                <span style={{ fontSize: '11px', color: '#94A3B8', textDecoration: 'line-through' }}>
+                  ₹{(astro.ratePerMin || astro.rate || 30) * 2}
                 </span>
+              </div>
+
+              {/* Chat & Call Action Buttons */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginTop: '8px' }}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectAstrologer(astro, 'chat');
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4px',
+                    padding: '8px 0',
+                    borderRadius: '12px',
+                    backgroundColor: '#FFF7ED',
+                    border: '1.5px solid #FDBA74',
+                    color: '#C2410C',
+                    fontSize: '12px',
+                    fontWeight: '800',
+                    cursor: 'pointer',
+                    boxShadow: '0 2px 6px rgba(194, 65, 12, 0.08)',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <MessageSquare size={13} color="#C2410C" />
+                  <span>Chat</span>
+                </button>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectAstrologer(astro, 'call');
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4px',
+                    padding: '8px 0',
+                    borderRadius: '12px',
+                    backgroundColor: '#F0FDF4',
+                    border: '1.5px solid #86EFAC',
+                    color: '#15803D',
+                    fontSize: '12px',
+                    fontWeight: '800',
+                    cursor: 'pointer',
+                    boxShadow: '0 2px 6px rgba(21, 128, 61, 0.08)',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <Phone size={13} color="#15803D" />
+                  <span>Call</span>
+                </button>
               </div>
             </div>
           ))}
